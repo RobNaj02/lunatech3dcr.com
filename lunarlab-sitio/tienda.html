@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tienda · LunarLab</title>
+<meta name="description" content="Catálogo completo de filamentos, resinas, repuestos y accesorios para impresión 3D. Agregá al carrito y coordiná tu pago con LunarLab.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="index.html" class="brand"><img src="assets/img/icon-header.png" alt="LunarLab"> LunarLab</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#inicio">Inicio</a></li>
+      <li><a href="tienda.html">Tienda</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="index.html#contacto">Contacto</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a class="btn btn-primary btn-primary-desktop" href="https://wa.me/50688019404?text=Hola%20LunarLab%2C%20quisiera%20hacer%20una%20consulta" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+      <button class="cart-btn" id="cartBtn" aria-label="Ver carrito">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.2a2 2 0 002-1.6L21 8H6"/><circle cx="9.5" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>
+        <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
+      </button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <section class="page-hero">
+    <div class="wrap reveal in">
+      <p class="eyebrow">Tienda</p>
+      <h1>Catálogo completo</h1>
+      <p>Explorá por categoría, agregá al carrito y finalizá tu pedido — te confirmamos el pago por WhatsApp (SINPE o enlace de tarjeta).</p>
+    </div>
+  </section>
+
+  <section class="store-section">
+    <div class="wrap">
+      <div class="filters reveal in">
+        <button class="filter-btn active" data-filter="todos">Todos</button>
+        <button class="filter-btn" data-filter="filamentos">Filamentos</button>
+        <button class="filter-btn" data-filter="resinas">Resinas</button>
+        <button class="filter-btn" data-filter="repuestos">Repuestos y accesorios</button>
+      </div>
+
+      <div class="store-grid">
+
+        <div class="prod-card reveal in" data-category="filamentos">
+          <div class="prod-cat-label">Filamento</div>
+          <a href="producto.html?id=sunlu-pla-1kg">
+            <div class="prod-thumb has-photo"><img src="assets/img/products/shared/principal-filamento.jpg" alt="SUNLU Filamento PLA 1kg 1.75mm" loading="lazy"></div>
+            <h3>SUNLU Filamento PLA 1kg 1.75mm</h3>
+          </a>
+          <p class="prod-spec">1.75mm · 1kg</p>
+          <div class="color-preview"><span class="dot" style="background:#F5F5F5"></span><span class="dot" style="background:#1A1A1A"></span><span class="dot" style="background:#2E6FDB"></span><span class="dot" style="background:#9E1B32"></span><span class="more">+4 colores</span></div>
+          <div class="prod-foot">
+            <div class="prod-price">₡9,000<span>+ IVA</span></div>
+            <a class="mini-btn" href="producto.html?id=sunlu-pla-1kg">Ver colores <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+
+        <div class="prod-card reveal in" data-category="filamentos">
+          <div class="prod-cat-label">Filamento</div>
+          <a href="producto.html?id=sunlu-petg-1kg">
+            <div class="prod-thumb has-photo"><img src="assets/img/products/shared/principal-filamento.jpg" alt="SUNLU Filamento PETG 1kg 1.75mm" loading="lazy"></div>
+            <h3>SUNLU Filamento PETG 1kg 1.75mm</h3>
+          </a>
+          <p class="prod-spec">1.75mm · 1kg</p>
+          <div class="color-preview"><span class="dot" style="background:#F5F5F5"></span><span class="dot" style="background:#6B4226"></span><span class="more">2 colores</span></div>
+          <div class="prod-foot">
+            <div class="prod-price">₡9,800<span>+ IVA</span></div>
+            <a class="mini-btn" href="producto.html?id=sunlu-petg-1kg">Ver colores <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+
+        <div class="prod-card reveal in" data-category="resinas">
+          <div class="prod-cat-label">Resina</div>
+          <a href="producto.html?id=sunlu-resina-estandar-1kg">
+            <div class="prod-thumb has-photo"><img src="assets/img/products/shared/principal-resina.jpg" alt="Resina Estándar Lavable en Agua SUNLU 1000g" loading="lazy"></div>
+            <h3>Resina Estándar Lavable en Agua SUNLU 1000g</h3>
+          </a>
+          <p class="prod-spec">405nm · lavable en agua</p>
+          <div class="color-preview"><span class="dot" style="background:#1A1A1A"></span><span class="dot" style="background:#F5F5F5"></span><span class="more">2 colores</span></div>
+          <div class="prod-foot">
+            <div class="prod-price">₡13,500<span>+ IVA</span></div>
+            <a class="mini-btn" href="producto.html?id=sunlu-resina-estandar-1kg">Ver colores <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+
+        <div class="prod-card reveal in" data-category="repuestos" data-id="alicate-corte-precision" data-name="Alicate de Corte Diagonal de Precisión" data-price="5500" data-spec="Corte diagonal · uso general">
+          <div class="prod-cat-label">Herramienta</div>
+          <a href="producto.html?id=alicate-corte-precision">
+            <div class="prod-thumb has-photo"><img src="assets/img/products/alicate/principal.jpg" alt="Alicate de Corte Diagonal de Precisión" loading="lazy"></div>
+            <h3>Alicate de Corte Diagonal de Precisión</h3>
+          </a>
+          <p class="prod-spec">Corte diagonal · uso general</p>
+          <div class="prod-foot">
+            <div class="prod-price">₡5,500<span>+ IVA</span></div>
+            <button class="mini-btn add-cart">Agregar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+          </div>
+        </div>
+
+        <div class="prod-card reveal in" data-category="repuestos" data-id="bolsas-vacio-filamento" data-name="Bolsas al Vacío para Almacenamiento de Filamento (Pack)" data-price="6500" data-spec="26 piezas · bolsas + bomba + clips">
+          <div class="prod-cat-label">Accesorio</div>
+          <a href="producto.html?id=bolsas-vacio-filamento">
+            <div class="prod-thumb has-photo"><img src="assets/img/products/bolsas/principal.jpg" alt="Bolsas al Vacío para Almacenamiento de Filamento (Pack)" loading="lazy"></div>
+            <h3>Bolsas al Vacío para Almacenamiento de Filamento (Pack)</h3>
+          </a>
+          <p class="prod-spec">26 piezas · bolsas + bomba + clips</p>
+          <div class="prod-foot">
+            <div class="prod-price">₡6,500<span>+ IVA</span></div>
+            <button class="mini-btn add-cart">Agregar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+          </div>
+        </div>
+
+        <div class="prod-card reveal in" data-category="repuestos" data-id="funda-protectora-impresora" data-name="Funda Protectora para Impresoras 3D" data-price="15000" data-spec="42×46×43cm · tela oxford">
+          <div class="prod-cat-label">Accesorio</div>
+          <a href="producto.html?id=funda-protectora-impresora">
+            <div class="prod-thumb has-photo"><img src="assets/img/products/funda/principal.jpg" alt="Funda Protectora para Impresoras 3D" loading="lazy"></div>
+            <h3>Funda Protectora para Impresoras 3D</h3>
+          </a>
+          <p class="prod-spec">42×46×43cm · tela oxford</p>
+          <div class="prod-foot">
+            <div class="prod-price">₡15,000<span>+ IVA</span></div>
+            <button class="mini-btn add-cart">Agregar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+          </div>
+        </div>
+
+        <div class="prod-card reveal in" data-category="repuestos" data-id="creality-clog-poke" data-name="Creality Clog Poke – Herramienta para Destapar Boquillas" data-price="4000" data-spec="0.4mm · acero inoxidable">
+          <div class="prod-cat-label">Herramienta</div>
+          <a href="producto.html?id=creality-clog-poke">
+            <div class="prod-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v14"/><circle cx="12" cy="19" r="2"/></svg></div>
+            <h3>Creality Clog Poke – Herramienta para Destapar Boquillas</h3>
+          </a>
+          <p class="prod-spec">0.4mm · acero inoxidable</p>
+          <div class="prod-foot">
+            <div class="prod-price">₡4,000<span>+ IVA</span></div>
+            <button class="mini-btn add-cart">Agregar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+          </div>
+        </div>
+
+        <div class="prod-card reveal in" data-category="repuestos" data-id="etiquetas-nfc" data-name="Etiquetas NFC Programables" data-price="8000" data-spec="Pack de 5 · NTAG213">
+          <div class="prod-cat-label">Accesorio</div>
+          <a href="producto.html?id=etiquetas-nfc">
+            <div class="prod-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11l8-8h8v8l-8 8z"/><circle cx="15" cy="9" r="1.5"/></svg></div>
+            <h3>Etiquetas NFC Programables</h3>
+          </a>
+          <p class="prod-spec">Pack de 5 · NTAG213</p>
+          <div class="prod-foot">
+            <div class="prod-price">₡8,000<span>+ IVA</span></div>
+            <button class="mini-btn add-cart">Agregar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+          </div>
+        </div>
+
+        <div class="prod-card reveal in" data-category="repuestos">
+          <div class="prod-cat-label">Accesorio</div>
+          <a href="producto.html?id=imanes-neodimio">
+            <div class="prod-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 4v8a6 6 0 0012 0V4"/><rect x="4" y="2" width="4" height="4"/><rect x="16" y="2" width="4" height="4"/></svg></div>
+            <h3>Imanes de Neodimio (Pack de 20)</h3>
+          </a>
+          <p class="prod-spec">Neodimio N35 · pack de 20</p>
+          <div class="prod-foot">
+            <div class="prod-price">₡7,000<span>+ IVA</span></div>
+            <a class="mini-btn" href="producto.html?id=imanes-neodimio">Ver tamaños <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+
+        <div class="prod-card reveal in" data-category="repuestos" data-id="switches-blue" data-name="Switches Mecánicos Azules para Teclado (Blue Switches)" data-price="9000" data-spec="Tipo clicky · pack de 10">
+          <div class="prod-cat-label">Accesorio</div>
+          <a href="producto.html?id=switches-blue">
+            <div class="prod-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="14" height="14" rx="3"/><circle cx="12" cy="12" r="2"/></svg></div>
+            <h3>Switches Mecánicos Azules para Teclado (Blue Switches)</h3>
+          </a>
+          <p class="prod-spec">Tipo clicky · pack de 10</p>
+          <div class="prod-foot">
+            <div class="prod-price">₡9,000<span>+ IVA</span></div>
+            <button class="mini-btn add-cart">Agregar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+          </div>
+        </div>
+
+        <div class="prod-card reveal in" data-category="repuestos" data-id="lampara-led-usb" data-name="Lámpara LED USB para Proyectos de Impresión 3D" data-price="6000" data-spec="USB · brazo flexible">
+          <div class="prod-cat-label">Accesorio</div>
+          <a href="producto.html?id=lampara-led-usb">
+            <div class="prod-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 00-3 11c.6.5 1 1.2 1 2h4c0-.8.4-1.5 1-2a6 6 0 00-3-11z"/></svg></div>
+            <h3>Lámpara LED USB para Proyectos de Impresión 3D</h3>
+          </a>
+          <p class="prod-spec">USB · brazo flexible</p>
+          <div class="prod-foot">
+            <div class="prod-price">₡6,000<span>+ IVA</span></div>
+            <button class="mini-btn add-cart">Agregar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+          </div>
+        </div>
+
+        <div class="prod-card reveal in" data-category="repuestos" data-id="insertos-roscados-laton" data-name="Insertos Roscados de Latón para Impresión 3D" data-price="5000" data-spec="M3 · pack de 50">
+          <div class="prod-cat-label">Repuesto</div>
+          <a href="producto.html?id=insertos-roscados-laton">
+            <div class="prod-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v4M9 6h6l2 3-2 3H9l-2-3z"/><path d="M12 12v10"/></svg></div>
+            <h3>Insertos Roscados de Latón para Impresión 3D</h3>
+          </a>
+          <p class="prod-spec">M3 · pack de 50</p>
+          <div class="prod-foot">
+            <div class="prod-price">₡5,000<span>+ IVA</span></div>
+            <button class="mini-btn add-cart">Agregar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+          </div>
+        </div>
+
+        <div class="prod-card reveal in" data-category="repuestos" data-id="kit-corte-posprocesado" data-name="Kit de Corte para Posprocesado de Impresiones 3D" data-price="9500" data-spec="5 herramientas · estuche incluido">
+          <div class="prod-cat-label">Herramienta</div>
+          <a href="producto.html?id=kit-corte-posprocesado">
+            <div class="prod-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6l12 12M18 6L6 18"/><circle cx="6" cy="6" r="2"/><circle cx="6" cy="18" r="2"/></svg></div>
+            <h3>Kit de Corte para Posprocesado de Impresiones 3D</h3>
+          </a>
+          <p class="prod-spec">5 herramientas · estuche incluido</p>
+          <div class="prod-foot">
+            <div class="prod-price">₡9,500<span>+ IVA</span></div>
+            <button class="mini-btn add-cart">Agregar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+          </div>
+        </div>
+
+        <div class="prod-card reveal in" data-category="repuestos" data-id="kit-limpieza-boquillas" data-name="Kit de Limpieza de Boquillas para Impresora 3D" data-price="4500" data-spec="Agujas 0.2mm – 0.6mm">
+          <div class="prod-cat-label">Herramienta</div>
+          <a href="producto.html?id=kit-limpieza-boquillas">
+            <div class="prod-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3v18M12 3v18M18 3v18" stroke-dasharray="1 3"/></svg></div>
+            <h3>Kit de Limpieza de Boquillas para Impresora 3D</h3>
+          </a>
+          <p class="prod-spec">Agujas 0.2mm – 0.6mm</p>
+          <div class="prod-foot">
+            <div class="prod-price">₡4,500<span>+ IVA</span></div>
+            <button class="mini-btn add-cart">Agregar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+          </div>
+        </div>
+
+        <div class="prod-card reveal in" data-category="repuestos" data-id="grasa-termica-creality" data-name="Creality Grasa Térmica para Impresora 3D" data-price="5500" data-spec="5g · no conductiva">
+          <div class="prod-cat-label">Insumo</div>
+          <a href="producto.html?id=grasa-termica-creality">
+            <div class="prod-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="8" y="3" width="8" height="6" rx="1"/><path d="M9 9l-2 12h10L15 9"/></svg></div>
+            <h3>Creality Grasa Térmica para Impresora 3D</h3>
+          </a>
+          <p class="prod-spec">5g · no conductiva</p>
+          <div class="prod-foot">
+            <div class="prod-price">₡5,500<span>+ IVA</span></div>
+            <button class="mini-btn add-cart">Agregar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="empty-state" id="emptyState" style="display:none;">No hay productos en esta categoría todavía.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <a href="index.html" class="foot-brand"><img src="assets/img/logo-footer.png" alt="LunarLab"><span>LunarLab</span></a>
+    <ul class="foot-links">
+      <li><a href="tienda.html">Tienda</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="index.html#contacto">Contacto</a></li>
+      <li><a href="https://instagram.com/lunarlab3d" target="_blank" rel="noopener">Instagram</a></li>
+    </ul>
+    <p class="foot-copy">© LunarLab · Costa Rica · Tienda de impresión 3D</p>
+  </div>
+</footer>
+
+<a class="float-wa" href="https://wa.me/50688019404?text=Hola%20LunarLab%2C%20quisiera%20hacer%20una%20consulta" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2 22l5.41-1.42a9.9 9.9 0 004.63 1.18h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.03c-.24.68-1.4 1.3-1.93 1.36-.5.06-1.02.28-3.42-.72-2.88-1.2-4.74-4.1-4.88-4.29-.14-.19-1.16-1.55-1.16-2.96 0-1.4.74-2.09 1-2.38.26-.28.57-.35.76-.35.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.58.81 2 .88 2.14.07.14.12.31.02.5-.1.19-.15.31-.29.48-.14.17-.3.37-.43.5-.14.14-.29.29-.12.57.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.6-.07.16-.19.68-.79.86-1.06.19-.28.38-.23.63-.14.26.1 1.64.77 1.92.91.28.14.47.21.53.33.07.12.07.68-.17 1.36z"/></svg>
+</a>
+
+<!-- CART DRAWER -->
+<div class="cart-backdrop" id="cartBackdrop"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Carrito de compras">
+  <div class="cart-head">
+    <h2>Tu carrito</h2>
+    <button class="cart-close" id="cartClose" aria-label="Cerrar carrito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-foot" id="cartFoot">
+    <div class="cart-subtotal"><span>Subtotal</span><strong id="cartSubtotalValue">₡0</strong></div>
+    <p class="cart-note">Impuestos calculados al confirmar el pedido.</p>
+    <button class="btn btn-primary" id="checkoutBtn" disabled>Finalizar compra</button>
+  </div>
+</aside>
+
+<!-- CHECKOUT PANEL -->
+<div class="cart-backdrop" id="checkoutBackdrop"></div>
+<aside class="cart-drawer checkout-panel" id="checkoutPanel" aria-label="Finalizar compra">
+  <div class="cart-head">
+    <button class="back-link" id="checkoutBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg> Volver al carrito</button>
+    <button class="cart-close" id="checkoutClose" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div style="padding:18px 24px 0;">
+    <h2 style="font-size:19px;margin-bottom:14px;">Datos del pedido</h2>
+    <div class="order-summary" id="orderSummary"></div>
+  </div>
+  <form class="checkout-form" id="checkoutForm">
+    <div class="field">
+      <label for="custName">Nombre completo</label>
+      <input type="text" id="custName" name="custName" required placeholder="Tu nombre">
+    </div>
+    <div class="field">
+      <label for="custPhone">Teléfono</label>
+      <input type="tel" id="custPhone" name="custPhone" required placeholder="8888-8888">
+    </div>
+    <div class="field">
+      <label for="custAddress">Dirección de envío o notas</label>
+      <textarea id="custAddress" name="custAddress" rows="2" placeholder="Provincia, cantón, señas... (opcional)"></textarea>
+    </div>
+    <div class="field">
+      <label>Método de pago</label>
+      <div class="pay-options">
+        <label class="pay-option selected">
+          <input type="radio" name="payMethod" value="sinpe" checked>
+          <span><span class="pt">SINPE Móvil</span><br><span class="ps">Te confirmamos el número al recibir tu pedido.</span></span>
+        </label>
+        <label class="pay-option">
+          <input type="radio" name="payMethod" value="tarjeta">
+          <span><span class="pt">Tarjeta (enlace de pago seguro)</span><br><span class="ps">Te enviamos un enlace de pago por WhatsApp para pagar con Visa o Mastercard.</span></span>
+        </label>
+        <label class="pay-option">
+          <input type="radio" name="payMethod" value="coordinar">
+          <span><span class="pt">Coordinar por WhatsApp</span><br><span class="ps">Prefiero conversar antes de decidir el método de pago.</span></span>
+        </label>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-lilac">Enviar pedido por WhatsApp</button>
+  </form>
+</aside>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span>Mensaje</span></div>
+
+<script src="assets/main.js"></script>
+</body>
+</html>
