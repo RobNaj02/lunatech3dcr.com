@@ -1,5 +1,5 @@
 /* =========================================================
-   PRODUCTS DATA — catálogo completo de LunarLab
+   PRODUCTS DATA — catálogo completo de LUNATECH3D
    Cada producto puede tener variantes (color o tamaño).
    Para agregar un producto nuevo, copiá un bloque y ajustá
    los campos. Si no tiene variantes, simplemente omití
@@ -159,11 +159,16 @@ const PRODUCTS = {
     categoryLabel: 'Herramienta',
     category: 'repuestos',
     price: 4000,
-    spec: '0.4mm · acero inoxidable',
-    description: 'Herramienta delgada de acero para destapar boquillas obstruidas sin necesidad de desarmar el hotend. Rápida, reutilizable y del tamaño justo para no dañar el orificio.',
+    spec: '29cm · acero inoxidable',
+    description: 'Herramienta delgada de acero para destapar boquillas obstruidas sin necesidad de desarmar el hotend. Rápida, reutilizable y con mango ergonómico para mayor control.',
+    images: [
+      'assets/img/products/clog-poke/principal.jpg',
+      'assets/img/products/clog-poke/detalle.jpg'
+    ],
     specs: [
-      ['Diámetro', '0.4mm'],
+      ['Longitud', '29cm'],
       ['Material', 'Acero inoxidable'],
+      ['Mango', 'Ergonómico antideslizante'],
       ['Marca', 'Creality']
     ]
   },
@@ -174,11 +179,16 @@ const PRODUCTS = {
     categoryLabel: 'Accesorio',
     category: 'repuestos',
     price: 8000,
-    spec: 'Pack de 5 · NTAG213',
+    spec: '1.1 × 2.1cm · NTAG213',
     description: 'Etiquetas NFC en blanco que podés programar con información del filamento, notas de impresión o enlaces — perfectas para identificar rollos, piezas o kits.',
+    images: [
+      'assets/img/products/nfc/principal.jpg',
+      'assets/img/products/nfc/dimensiones.jpg'
+    ],
     specs: [
       ['Cantidad', 'Pack de 5'],
       ['Chip', 'NTAG213'],
+      ['Tamaño', '1.1 × 2.1cm'],
       ['Compatibilidad', 'Android e iPhone con NFC']
     ]
   },
@@ -191,6 +201,10 @@ const PRODUCTS = {
     price: 7000,
     spec: 'Neodimio N35 · pack de 20',
     description: 'Imanes de neodimio de alta potencia para insertar en piezas impresas: cierres magnéticos, soportes desmontables o conexiones rápidas. Elegí el tamaño según tu proyecto.',
+    images: [
+      'assets/img/products/imanes/principal.jpg',
+      'assets/img/products/imanes/tamanos.jpg'
+    ],
     specs: [
       ['Material', 'Neodimio N35'],
       ['Cantidad', '20 unidades por pack'],
@@ -199,9 +213,15 @@ const PRODUCTS = {
     variantLabel: 'Tamaño',
     variantType: 'size',
     variants: [
-      { name: '3×2mm', available: true },
-      { name: '4×2mm', available: true },
-      { name: '5×2mm', available: true }
+      { name: '3×1mm',  available: true },
+      { name: '3×2mm',  available: true },
+      { name: '4×2mm',  available: true },
+      { name: '5×1mm',  available: true },
+      { name: '5×2mm',  available: true },
+      { name: '8×1mm',  available: true },
+      { name: '10×1mm', available: true },
+      { name: '12×1mm', available: true },
+      { name: '15×1mm', available: true }
     ]
   },
 
@@ -211,10 +231,16 @@ const PRODUCTS = {
     categoryLabel: 'Accesorio',
     category: 'repuestos',
     price: 9000,
-    spec: 'Tipo clicky · pack de 10',
+    spec: '1.8 × 1.5cm · tipo clicky',
     description: 'Switches mecánicos tipo clicky, populares para quienes arman sus propios teclados con carcasas impresas en 3D. Tacto firme y sonido característico en cada pulsación.',
+    images: [
+      'assets/img/products/switches/principal.jpg',
+      'assets/img/products/switches/detalle.jpg'
+    ],
     specs: [
       ['Tipo', 'Clicky'],
+      ['Alto', '1.8cm'],
+      ['Ancho', '1.5cm'],
       ['Cantidad', 'Pack de 10'],
       ['Uso recomendado', 'Teclados mecánicos personalizados']
     ]
@@ -226,12 +252,18 @@ const PRODUCTS = {
     categoryLabel: 'Accesorio',
     category: 'repuestos',
     price: 6000,
-    spec: 'USB · brazo flexible',
-    description: 'Lámpara flexible con conexión USB, ideal para iluminar la cama de impresión o el área de trabajo al hacer ajustes finos o revisar la primera capa.',
+    spec: 'Ø60mm · USB · ultra-delgada',
+    description: 'Lámpara circular ultra-delgada de aleación de aluminio con conexión USB, ideal para iluminar la cama de impresión o el área de trabajo al hacer ajustes finos o revisar la primera capa. Incluye interruptor en el cable.',
+    images: [
+      'assets/img/products/lampara-led/principal.jpg',
+      'assets/img/products/lampara-led/detalle.jpg'
+    ],
     specs: [
-      ['Conexión', 'USB'],
-      ['Brillo', 'Ajustable'],
-      ['Brazo', 'Flexible, se adapta a la impresora']
+      ['Material', 'Aleación de aluminio + máscara de PC'],
+      ['Diámetro', '60mm'],
+      ['Espesor', '6mm'],
+      ['Conexión', 'USB, con interruptor'],
+      ['Potencia', '2V']
     ]
   },
 
@@ -243,9 +275,16 @@ const PRODUCTS = {
     price: 5000,
     spec: 'M3 · pack de 50',
     description: 'Insertos de latón que se instalan con calor en piezas impresas para crear roscas resistentes y reutilizables — mucho más duraderas que roscar directo en el plástico.',
+    images: [
+      'assets/img/products/roscas-laton/principal.jpg',
+      'assets/img/products/roscas-laton/especificaciones.jpg'
+    ],
     specs: [
       ['Material', 'Latón'],
-      ['Rosca', 'M3'],
+      ['Rosca interna', 'M3 × 0.5mm'],
+      ['Diámetro exterior', '5.0mm'],
+      ['Diámetro rosca', '2.5mm'],
+      ['Altura total', '4.0mm'],
       ['Cantidad', 'Pack de 50'],
       ['Instalación', 'Con soldador o herramienta de calor']
     ]
@@ -257,11 +296,16 @@ const PRODUCTS = {
     categoryLabel: 'Herramienta',
     category: 'repuestos',
     price: 9500,
-    spec: '5 herramientas · estuche incluido',
-    description: 'Set de herramientas para retirar soportes, lijar y afinar el acabado de tus piezas después de imprimir. Todo lo necesario para pasar de "recién impreso" a "terminado".',
+    spec: 'Desbarbador 5 cuchillas + alicate',
+    description: 'Set para dejar tus piezas con un acabado limpio: una herramienta de desbarbado con 5 cuchillas intercambiables para quitar rebabas y líneas de las capas, más un alicate de corte para retirar soportes. Todo lo necesario para pasar de "recién impreso" a "terminado".',
+    images: [
+      'assets/img/products/kit-corte/principal.jpg',
+      'assets/img/products/kit-corte/dimensiones.jpg'
+    ],
     specs: [
-      ['Piezas incluidas', '5 herramientas'],
-      ['Estuche', 'Incluido'],
+      ['Contenido', 'Desbarbador + 5 cuchillas + alicate de corte'],
+      ['Desbarbador', '14.7cm'],
+      ['Alicate', '13cm'],
       ['Uso', 'Posprocesado y acabado']
     ]
   },
@@ -272,12 +316,16 @@ const PRODUCTS = {
     categoryLabel: 'Herramienta',
     category: 'repuestos',
     price: 4500,
-    spec: 'Agujas 0.2mm – 0.6mm',
-    description: 'Agujas de distintos calibres y accesorios para mantener las boquillas libres de residuos y asegurar un flujo de filamento constante.',
+    spec: '2 tubos · agujas finas',
+    description: 'Agujas finas de limpieza para mantener las boquillas libres de residuos y asegurar un flujo de filamento constante. Vienen organizadas en tubos plásticos fáciles de guardar junto a la impresora.',
+    images: [
+      'assets/img/products/kit-limpieza/principal.jpg'
+    ],
     specs: [
-      ['Calibres incluidos', '0.2mm – 0.6mm'],
-      ['Material', 'Acero endurecido'],
-      ['Compatibilidad', 'Boquillas estándar MK8']
+      ['Contenido', '2 tubos con agujas de limpieza'],
+      ['Tubo', '10.8 × 1.2cm'],
+      ['Aguja', '8cm de largo'],
+      ['Material', 'Acero endurecido']
     ]
   },
 
@@ -287,13 +335,40 @@ const PRODUCTS = {
     categoryLabel: 'Insumo',
     category: 'repuestos',
     price: 5500,
-    spec: '5g · no conductiva',
-    description: 'Grasa térmica para mejorar la transferencia de calor en el hotend o el disipador, ayudando a mantener temperaturas estables durante la impresión.',
+    spec: '10g · 1.2W/m·K',
+    description: 'Grasa térmica de Creality para mejorar la transferencia de calor entre el bloque calefactor y el disipador, ayudando a mantener temperaturas estables durante la impresión.',
+    images: [
+      'assets/img/products/grasa-termica/principal.jpg',
+      'assets/img/products/grasa-termica/detalle.jpg'
+    ],
     specs: [
-      ['Contenido', '5g'],
-      ['Tipo', 'Térmica, no conductiva'],
+      ['Contenido', '10g'],
+      ['Conductividad térmica', '1.2W/m·K'],
+      ['Tamaño de empaque', '98 × 30 × 19mm'],
       ['Marca', 'Creality']
+    ]
+  },
+
+  'calcetin-silicona-a1': {
+    id: 'calcetin-silicona-a1',
+    name: 'Funda de Silicona para Hotend – Bambu Lab A1 / A1 mini',
+    categoryLabel: 'Repuesto',
+    category: 'repuestos',
+    price: 4500,
+    spec: 'Silicona · Bambu Lab A1 / A1 mini',
+    description: 'Funda térmica de silicona que cubre el hotend y ayuda a mantener el calor, además de proteger el bloque calefactor del polvo y del filamento derretido que pudiera gotear. Diseño específico para Bambu Lab A1 y A1 mini.',
+    images: [
+      'assets/img/products/calcetin-silicona/principal.jpg',
+      'assets/img/products/calcetin-silicona/dimensiones.jpg'
+    ],
+    specs: [
+      ['Compatibilidad', 'Bambu Lab A1 y A1 mini'],
+      ['Material', 'Silicona resistente al calor'],
+      ['Alto', '25mm'],
+      ['Ancho', '18–23mm'],
+      ['Base', '15mm']
     ]
   }
 
 };
+

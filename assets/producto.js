@@ -12,7 +12,7 @@
     return;
   }
 
-  document.title = product.name + ' · LunarLab';
+  document.title = product.name + ' · LUNATECH3D';
 
   const categoryNames = { filamentos: 'Filamentos', resinas: 'Resinas', repuestos: 'Repuestos y accesorios' };
   document.getElementById('crumbCategory').textContent = categoryNames[product.category] || product.categoryLabel;
@@ -113,8 +113,13 @@
 
     goToSlide(0, false);
 
-    // expose a helper so the color-swatch handler can jump to the right slide
-    goToSlide.forVariant = (variantIdx) => goToSlide(variantIdx + offset, false);
+    // Only expose the color/size → slide jump when the slider actually has
+    // one slide per variant. Otherwise (plain photo gallery, e.g. a product
+    // with a fixed set of reference photos) there's nothing to sync to, and
+    // calling it with an out-of-range index broke the slider (blank frame).
+    if (variantsHavePhotos){
+      goToSlide.forVariant = (variantIdx) => goToSlide(variantIdx + offset, false);
+    }
   }
 
   /* ---------- Variant selector (color or size) ---------- */
@@ -171,10 +176,11 @@
     const variantSuffix = selectedVariant ? '-' + selectedVariant.name.toLowerCase().replace(/\s+/g,'-') : '';
     const itemId = product.id + variantSuffix;
     const itemName = selectedVariant ? `${product.name} — ${selectedVariant.name}` : product.name;
+    const itemImage = (selectedVariant && selectedVariant.image) || product.mainImage || (product.images && product.images[0]) || null;
 
     const existing = cart.find(i => i.id === itemId);
     if (existing) existing.qty += qty;
-    else cart.push({ id: itemId, name: itemName, price: product.price, spec: product.spec, category: product.category, qty });
+    else cart.push({ id: itemId, name: itemName, price: product.price, spec: product.spec, category: product.category, image: itemImage, qty });
 
     renderCart();
     showToast(`${qty} × ${itemName} agregado al carrito`);

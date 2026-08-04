@@ -25,13 +25,30 @@ if ('IntersectionObserver' in window) {
 
 /* =========================================================
    CART MODULE
-   Cart lives only in memory for this page session (no
-   localStorage — see project note on artifact restrictions).
+   Cart is persisted in localStorage so it survives navigating
+   between pages (index → tienda → producto) and reopening the
+   site later. Falls back gracefully if storage is unavailable.
    ========================================================= */
 const WHATSAPP_NUMBER = '50688019404';
 const CURRENCY = '₡';
+const CART_STORAGE_KEY = 'lunarlab_cart_v1';
 
-let cart = []; // {id, name, price, spec, category, qty}
+function loadCart(){
+  try {
+    const raw = localStorage.getItem(CART_STORAGE_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveCart(){
+  try { localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart)); }
+  catch (e) { /* storage unavailable — cart just won't persist */ }
+}
+
+let cart = loadCart(); // {id, name, price, spec, category, image, qty}
 
 const cartBtn = document.getElementById('cartBtn');
 const cartBadge = document.getElementById('cartBadge');
@@ -72,7 +89,15 @@ function updateBadge(){
   cartBadge.style.display = count > 0 ? 'flex' : 'none';
 }
 
+function cartItemThumb(item){
+  if (item.image){
+    return `<img src="${item.image}" alt="${item.name}">`;
+  }
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/></svg>`;
+}
+
 function renderCart(){
+  saveCart();
   if (!cartItemsEl) return;
   updateBadge();
   if (cart.length === 0){
@@ -84,7 +109,7 @@ function renderCart(){
   if (checkoutBtn) checkoutBtn.disabled = false;
   cartItemsEl.innerHTML = cart.map(item => `
     <div class="cart-item" data-id="${item.id}">
-      <div class="cart-item-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/></svg></div>
+      <div class="cart-item-thumb">${cartItemThumb(item)}</div>
       <div class="cart-item-info">
         <h4>${item.name}</h4>
         <div class="spec">${item.spec}</div>
@@ -124,7 +149,8 @@ document.querySelectorAll('.add-cart').forEach(btn => {
       name: card.dataset.name,
       price: parseInt(card.dataset.price, 10),
       spec: card.dataset.spec || '',
-      category: card.dataset.category || ''
+      category: card.dataset.category || '',
+      image: card.dataset.photo || null
     }, btn);
   });
 });
@@ -204,7 +230,7 @@ if (checkoutForm){
 
     const payLabel = payMethod ? payMethod.parentElement.querySelector('.pt').textContent : 'A coordinar';
 
-    let msg = `Hola LunarLab! Quiero hacer este pedido:\n\n`;
+    let msg = `Hola LUNATECH3D! Quiero hacer este pedido:\n\n`;
     cart.forEach(i => { msg += `• ${i.qty} × ${i.name} — ${money(i.qty * i.price)}\n`; });
     msg += `\nTotal: ${money(cartSubtotal())}`;
     msg += `\n\nNombre: ${name}`;
