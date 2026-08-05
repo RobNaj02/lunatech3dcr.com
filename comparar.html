@@ -3,23 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Producto · LUNATECH3D</title>
-<meta name="description" id="metaDescription" content="Elegí tu color y cantidad para este producto de LUNATECH3D.">
-<link rel="canonical" id="canonicalLink" href="https://lunatech3d.cr/producto.html">
-<meta name="robots" content="index, follow">
-
-<meta property="og:type" content="product">
-<meta property="og:site_name" content="LUNATECH3D">
-<meta property="og:locale" content="es_CR">
-<meta property="og:url" id="ogUrl" content="https://lunatech3d.cr/producto.html">
-<meta property="og:title" id="ogTitle" content="Producto · LUNATECH3D">
-<meta property="og:description" id="ogDescription" content="Elegí tu color y cantidad para este producto de LUNATECH3D.">
-<meta property="og:image" id="ogImage" content="https://lunatech3d.cr/assets/img/products/shared/principal-filamento.jpg">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" id="twitterTitle" content="Producto · LUNATECH3D">
-<meta name="twitter:description" id="twitterDescription" content="Elegí tu color y cantidad para este producto de LUNATECH3D.">
-<meta name="twitter:image" id="twitterImage" content="https://lunatech3d.cr/assets/img/products/shared/principal-filamento.jpg">
-
+<title>Comparar productos · LUNATECH3D</title>
+<meta name="description" content="Compará especificaciones y precios de filamentos, resinas, herramientas y accesorios de LUNATECH3D lado a lado.">
+<link rel="canonical" href="https://lunatech3d.cr/comparar.html">
+<meta name="robots" content="noindex, follow">
 <link rel="icon" type="image/svg+xml" href="assets/img/icon-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -72,86 +59,22 @@
 </header>
 
 <main id="main">
-
-  <nav class="breadcrumb wrap" aria-label="Breadcrumb">
-    <a href="index.html">Inicio</a><span class="sep">/</span>
-    <a href="tienda.html">Tienda</a><span class="sep">/</span>
-    <a href="tienda.html" id="crumbCategory">Categoría</a><span class="sep">/</span>
-    <span id="crumbProduct">Producto</span>
-  </nav>
-
-  <section class="product-detail">
-    <div class="wrap" id="productDetail">
-      <div class="product-gallery starfield-mist reveal in" id="productGallery">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16" stroke-dasharray="2 2"/></svg>
-      </div>
-      <div class="product-info reveal in">
-        <div class="prod-cat-label" id="pCatLabel">Filamento</div>
-        <h1 id="pName">Nombre del producto</h1>
-        <p class="p-spec" id="pSpec">specs</p>
-        <p class="p-price" id="pPrice">₡0</p>
-        <p class="p-desc" id="pDesc">Descripción del producto.</p>
-
-        <div class="color-section" id="colorSection">
-          <p class="cs-label"><span id="variantLabel">Color</span> <span class="picked" id="pickedLabel">— elegí una opción</span></p>
-          <div class="swatches" id="swatches"></div>
-        </div>
-
-        <div class="qty-selector">
-          <span style="font-size:14px;font-weight:600;">Cantidad</span>
-          <button class="qty-btn" id="qtyDec" type="button" aria-label="Restar cantidad">−</button>
-          <span class="qty-val" id="productQtyVal">1</span>
-          <button class="qty-btn" id="qtyInc" type="button" aria-label="Sumar cantidad">+</button>
-        </div>
-
-        <div class="add-row">
-          <button class="btn btn-primary" id="productAddBtn" disabled>Agregar al carrito</button>
-          <span class="add-note" id="addNote">Elegí una opción disponible para continuar</span>
-        </div>
-
-        <div class="product-secondary-actions">
-          <button class="secondary-action" id="productWishBtn" type="button" aria-pressed="false">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.35-9.5-8.5C.9 8.7 2.6 5 6.2 5c2 0 3.5 1.15 5.8 3.3C14.3 6.15 15.8 5 17.8 5c3.6 0 5.3 3.7 3.7 7.5C19 16.65 12 21 12 21z"/></svg>
-            <span id="productWishLabel">Guardar en favoritos</span>
-          </button>
-          <label class="secondary-action secondary-check">
-            <input type="checkbox" id="productCompareCheck">
-            <span>Agregar a comparar</span>
-          </label>
-          <div class="share-row">
-            <span class="share-label">Compartir</span>
-            <button class="share-btn" id="shareNative" type="button" aria-label="Compartir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg></button>
-            <a class="share-btn" id="shareWhatsapp" href="#" target="_blank" rel="noopener" aria-label="Compartir por WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2 22l5.41-1.42a9.9 9.9 0 004.63 1.18h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.03c-.24.68-1.4 1.3-1.93 1.36-.5.06-1.02.28-3.42-.72-2.88-1.2-4.74-4.1-4.88-4.29-.14-.19-1.16-1.55-1.16-2.96 0-1.4.74-2.09 1-2.38.26-.28.57-.35.76-.35.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.58.81 2 .88 2.14.07.14.12.31.02.5-.1.19-.15.31-.29.48-.14.17-.3.37-.43.5-.14.14-.29.29-.12.57.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.6-.07.16-.19.68-.79.86-1.06.19-.28.38-.23.63-.14.26.1 1.64.77 1.92.91.28.14.47.21.53.33.07.12.07.68-.17 1.36z"/></svg></a>
-            <button class="share-btn" id="shareCopy" type="button" aria-label="Copiar enlace"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg></button>
-          </div>
-        </div>
-
-        <h3 class="spec-heading">Ficha técnica</h3>
-        <div class="spec-list" id="pSpecList"></div>
-      </div>
-    </div>
-
-    <div class="not-found wrap" id="notFound" style="display:none;">
-      <h1>No encontramos ese producto</h1>
-      <p>Puede que el enlace esté incompleto. Volvé al catálogo para seguir viendo productos.</p>
-      <a class="btn btn-primary" href="tienda.html">Ver catálogo</a>
+  <section class="page-hero">
+    <div class="wrap reveal in">
+      <p class="eyebrow">Comparar</p>
+      <h1>Comparador de productos</h1>
+      <p>Hasta 4 productos lado a lado, con precio y ficha técnica completa.</p>
     </div>
   </section>
 
-  <section class="shelf-section" id="relatedSection" style="display:none;">
+  <section class="compare-section">
     <div class="wrap">
-      <h2 class="shelf-title">También te puede interesar</h2>
-      <div class="prod-grid shelf-grid" id="relatedGrid"></div>
+      <div id="compareEmpty" class="empty-state" style="display:none;">
+        No agregaste productos a comparar todavía. Marcá la casilla "Comparar" en cualquier tarjeta de la <a href="tienda.html">tienda</a>.
+      </div>
+      <div class="compare-table-wrap" id="compareTableWrap"></div>
     </div>
   </section>
-
-  <section class="shelf-section" id="recentSection" style="display:none;">
-    <div class="wrap">
-      <h2 class="shelf-title">Visto recientemente</h2>
-      <div class="prod-grid shelf-grid" id="recentGrid"></div>
-    </div>
-  </section>
-
 </main>
 
 <footer>
@@ -279,6 +202,6 @@
 <script src="assets/products.js"></script>
 <script src="assets/main.js"></script>
 <script src="assets/store.js"></script>
-<script src="assets/producto.js"></script>
+<script src="assets/comparar.js"></script>
 </body>
 </html>

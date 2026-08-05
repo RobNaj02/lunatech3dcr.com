@@ -140,19 +140,21 @@ function addToCart(product, btnEl){
   }
 }
 
-document.querySelectorAll('.add-cart').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const card = btn.closest('[data-id]');
-    if (!card) return;
-    addToCart({
-      id: card.dataset.id,
-      name: card.dataset.name,
-      price: parseInt(card.dataset.price, 10),
-      spec: card.dataset.spec || '',
-      category: card.dataset.category || '',
-      image: card.dataset.photo || null
-    }, btn);
-  });
+/* Delegado en document: las tarjetas de producto pueden renderizarse
+   dinámicamente (store.js) después de que este script ya corrió. */
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.add-cart');
+  if (!btn) return;
+  const card = btn.closest('[data-id]');
+  if (!card) return;
+  addToCart({
+    id: card.dataset.id,
+    name: card.dataset.name,
+    price: parseInt(card.dataset.price, 10),
+    spec: card.dataset.spec || '',
+    category: card.dataset.category || '',
+    image: card.dataset.photo || null
+  }, btn);
 });
 
 if (cartItemsEl){
@@ -175,11 +177,13 @@ function openCart(){
   renderCart();
   cartDrawer.classList.add('open');
   cartBackdrop.classList.add('open');
+  cartDrawer.setAttribute('aria-hidden', 'false');
 }
 function closeCart(){
   if (!cartDrawer) return;
   cartDrawer.classList.remove('open');
   cartBackdrop.classList.remove('open');
+  cartDrawer.setAttribute('aria-hidden', 'true');
 }
 if (cartBtn) cartBtn.addEventListener('click', openCart);
 if (cartClose) cartClose.addEventListener('click', closeCart);
@@ -196,11 +200,13 @@ function openCheckout(){
   closeCart();
   checkoutPanel.classList.add('open');
   checkoutBackdrop.classList.add('open');
+  checkoutPanel.setAttribute('aria-hidden', 'false');
 }
 function closeCheckout(){
   if (!checkoutPanel) return;
   checkoutPanel.classList.remove('open');
   checkoutBackdrop.classList.remove('open');
+  checkoutPanel.setAttribute('aria-hidden', 'true');
 }
 if (checkoutBtn) checkoutBtn.addEventListener('click', openCheckout);
 if (checkoutClose) checkoutClose.addEventListener('click', closeCheckout);
@@ -249,30 +255,26 @@ if (checkoutForm){
   });
 }
 
-/* ---------- Store filters (tienda.html) ---------- */
-const filterBtns = document.querySelectorAll('.filter-btn');
-const storeCards = document.querySelectorAll('.store-grid [data-category]');
-const emptyState = document.getElementById('emptyState');
-function applyFilter(cat){
-  filterBtns.forEach(b => b.classList.toggle('active', b.dataset.filter === cat));
-  let visible = 0;
-  storeCards.forEach(card => {
-    const match = cat === 'todos' || card.dataset.category === cat;
-    card.style.display = match ? '' : 'none';
-    if (match) visible++;
+/* Los filtros de la tienda (categorías, marca, precio, disponibilidad,
+   búsqueda) ahora los maneja assets/store.js sobre datos de PRODUCTS. */
+
+/* ---------- Newsletter (footer) ----------
+   No hay un servicio de email marketing conectado todavía, así que
+   en vez de simular una "suscripción" que no llega a ningún lado,
+   el aviso de novedades se coordina por WhatsApp con el correo que
+   dejó la persona. */
+document.querySelectorAll('[data-newsletter-form]').forEach(form => {
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const emailInput = form.querySelector('input[type="email"]');
+    const email = emailInput ? emailInput.value.trim() : '';
+    if (!email) return;
+    const msg = `Hola LUNATECH3D! Quiero enterarme de promociones y productos nuevos. Mi correo: ${email}`;
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+    form.reset();
+    showToast('Te vamos a escribir por WhatsApp');
   });
-  if (emptyState) emptyState.style.display = visible === 0 ? 'block' : 'none';
-}
-if (filterBtns.length){
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
-  });
-  const params = new URLSearchParams(window.location.search);
-  const catParam = params.get('cat');
-  if (catParam && [...filterBtns].some(b => b.dataset.filter === catParam)) {
-    applyFilter(catParam);
-  }
-}
+});
 
 /* init */
 renderCart();

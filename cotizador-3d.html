@@ -3,23 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Producto · LUNATECH3D</title>
-<meta name="description" id="metaDescription" content="Elegí tu color y cantidad para este producto de LUNATECH3D.">
-<link rel="canonical" id="canonicalLink" href="https://lunatech3d.cr/producto.html">
+<title>Calculadora de costos de impresión 3D · LUNATECH3D</title>
+<meta name="description" content="Calculá cuánto cuesta y cuánto cobrar por tus propias impresiones 3D: material, electricidad, desgaste de impresora, mano de obra, fallos y margen de ganancia. En dólares y colones.">
+<link rel="canonical" href="https://lunatech3d.cr/cotizador-3d.html">
 <meta name="robots" content="index, follow">
-
-<meta property="og:type" content="product">
+<meta property="og:type" content="website">
 <meta property="og:site_name" content="LUNATECH3D">
 <meta property="og:locale" content="es_CR">
-<meta property="og:url" id="ogUrl" content="https://lunatech3d.cr/producto.html">
-<meta property="og:title" id="ogTitle" content="Producto · LUNATECH3D">
-<meta property="og:description" id="ogDescription" content="Elegí tu color y cantidad para este producto de LUNATECH3D.">
-<meta property="og:image" id="ogImage" content="https://lunatech3d.cr/assets/img/products/shared/principal-filamento.jpg">
+<meta property="og:url" content="https://lunatech3d.cr/cotizador-3d.html">
+<meta property="og:title" content="Calculadora de costos de impresión 3D · LUNATECH3D">
+<meta property="og:description" content="Calculá el costo real y el precio de venta sugerido de tus propias impresiones 3D, en dólares y colones.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" id="twitterTitle" content="Producto · LUNATECH3D">
-<meta name="twitter:description" id="twitterDescription" content="Elegí tu color y cantidad para este producto de LUNATECH3D.">
-<meta name="twitter:image" id="twitterImage" content="https://lunatech3d.cr/assets/img/products/shared/principal-filamento.jpg">
-
 <link rel="icon" type="image/svg+xml" href="assets/img/icon-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -73,82 +67,188 @@
 
 <main id="main">
 
-  <nav class="breadcrumb wrap" aria-label="Breadcrumb">
-    <a href="index.html">Inicio</a><span class="sep">/</span>
-    <a href="tienda.html">Tienda</a><span class="sep">/</span>
-    <a href="tienda.html" id="crumbCategory">Categoría</a><span class="sep">/</span>
-    <span id="crumbProduct">Producto</span>
-  </nav>
+  <section class="page-hero starfield">
+    <div class="wrap reveal in">
+      <p class="eyebrow">Herramienta gratuita para makers</p>
+      <h1>Calculadora de costos de impresión 3D</h1>
+      <p>Ingresá los datos de tu propia impresora y tu pieza para saber cuánto te cuesta imprimirla y cuánto cobrar por ella. En dólares o en colones — vos elegís.</p>
+    </div>
+  </section>
 
-  <section class="product-detail">
-    <div class="wrap" id="productDetail">
-      <div class="product-gallery starfield-mist reveal in" id="productGallery">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16" stroke-dasharray="2 2"/></svg>
-      </div>
-      <div class="product-info reveal in">
-        <div class="prod-cat-label" id="pCatLabel">Filamento</div>
-        <h1 id="pName">Nombre del producto</h1>
-        <p class="p-spec" id="pSpec">specs</p>
-        <p class="p-price" id="pPrice">₡0</p>
-        <p class="p-desc" id="pDesc">Descripción del producto.</p>
+  <section class="calc-section">
+    <div class="wrap calc-grid">
 
-        <div class="color-section" id="colorSection">
-          <p class="cs-label"><span id="variantLabel">Color</span> <span class="picked" id="pickedLabel">— elegí una opción</span></p>
-          <div class="swatches" id="swatches"></div>
-        </div>
+      <form class="calc-form reveal in" id="calcForm">
 
-        <div class="qty-selector">
-          <span style="font-size:14px;font-weight:600;">Cantidad</span>
-          <button class="qty-btn" id="qtyDec" type="button" aria-label="Restar cantidad">−</button>
-          <span class="qty-val" id="productQtyVal">1</span>
-          <button class="qty-btn" id="qtyInc" type="button" aria-label="Sumar cantidad">+</button>
-        </div>
-
-        <div class="add-row">
-          <button class="btn btn-primary" id="productAddBtn" disabled>Agregar al carrito</button>
-          <span class="add-note" id="addNote">Elegí una opción disponible para continuar</span>
-        </div>
-
-        <div class="product-secondary-actions">
-          <button class="secondary-action" id="productWishBtn" type="button" aria-pressed="false">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.35-9.5-8.5C.9 8.7 2.6 5 6.2 5c2 0 3.5 1.15 5.8 3.3C14.3 6.15 15.8 5 17.8 5c3.6 0 5.3 3.7 3.7 7.5C19 16.65 12 21 12 21z"/></svg>
-            <span id="productWishLabel">Guardar en favoritos</span>
-          </button>
-          <label class="secondary-action secondary-check">
-            <input type="checkbox" id="productCompareCheck">
-            <span>Agregar a comparar</span>
-          </label>
-          <div class="share-row">
-            <span class="share-label">Compartir</span>
-            <button class="share-btn" id="shareNative" type="button" aria-label="Compartir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg></button>
-            <a class="share-btn" id="shareWhatsapp" href="#" target="_blank" rel="noopener" aria-label="Compartir por WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2 22l5.41-1.42a9.9 9.9 0 004.63 1.18h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.03c-.24.68-1.4 1.3-1.93 1.36-.5.06-1.02.28-3.42-.72-2.88-1.2-4.74-4.1-4.88-4.29-.14-.19-1.16-1.55-1.16-2.96 0-1.4.74-2.09 1-2.38.26-.28.57-.35.76-.35.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.58.81 2 .88 2.14.07.14.12.31.02.5-.1.19-.15.31-.29.48-.14.17-.3.37-.43.5-.14.14-.29.29-.12.57.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.6-.07.16-.19.68-.79.86-1.06.19-.28.38-.23.63-.14.26.1 1.64.77 1.92.91.28.14.47.21.53.33.07.12.07.68-.17 1.36z"/></svg></a>
-            <button class="share-btn" id="shareCopy" type="button" aria-label="Copiar enlace"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg></button>
+        <div class="calc-currency-bar">
+          <div class="calc-currency-toggle" role="group" aria-label="Moneda">
+            <button type="button" class="calc-currency-btn is-active" id="calcBtnCRC" data-currency="CRC" aria-pressed="true">₡ Colones</button>
+            <button type="button" class="calc-currency-btn" id="calcBtnUSD" data-currency="USD" aria-pressed="false">$ Dólares</button>
+          </div>
+          <div class="field calc-exchange-field">
+            <label for="calcExchangeRate">Tipo de cambio (₡ por US$1)</label>
+            <input type="number" id="calcExchangeRate" min="1" step="0.01" value="505">
           </div>
         </div>
 
-        <h3 class="spec-heading">Ficha técnica</h3>
-        <div class="spec-list" id="pSpecList"></div>
-      </div>
-    </div>
+        <fieldset class="calc-group">
+          <legend>Material</legend>
+          <div class="field-row">
+            <div class="field">
+              <label for="calcFilamentPrice">Precio del filamento/resina (por kg)</label>
+              <input type="number" id="calcFilamentPrice" class="calc-money" data-base="9500" min="0" step="1" value="9500">
+            </div>
+            <div class="field">
+              <label for="calcWeight">Peso de la pieza (g)</label>
+              <input type="number" id="calcWeight" min="0" step="1" value="50">
+            </div>
+          </div>
+        </fieldset>
 
-    <div class="not-found wrap" id="notFound" style="display:none;">
-      <h1>No encontramos ese producto</h1>
-      <p>Puede que el enlace esté incompleto. Volvé al catálogo para seguir viendo productos.</p>
-      <a class="btn btn-primary" href="tienda.html">Ver catálogo</a>
-    </div>
-  </section>
+        <fieldset class="calc-group">
+          <legend>Impresora y electricidad</legend>
+          <div class="field">
+            <label for="calcPrinterModel">Modelo de impresora</label>
+            <select id="calcPrinterModel">
+              <option value="custom" selected>Otro / Personalizado</option>
+              <optgroup label="Bambu Lab">
+                <option value="95">Bambu Lab A1 (95 W)</option>
+                <option value="45">Bambu Lab A1 Mini (45 W)</option>
+                <option value="80">Bambu Lab P1P (80 W)</option>
+                <option value="100">Bambu Lab P1S (100 W)</option>
+                <option value="120">Bambu Lab X1 Carbon (120 W)</option>
+                <option value="130">Bambu Lab P2S (130 W)</option>
+                <option value="210">Bambu Lab H2S (210 W)</option>
+                <option value="210">Bambu Lab H2D (210 W)</option>
+                <option value="210">Bambu Lab H2C (210 W)</option>
+              </optgroup>
+              <optgroup label="Prusa">
+                <option value="80">Prusa MK3S+ (80 W)</option>
+                <option value="100">Prusa MK4 (100 W)</option>
+              </optgroup>
+              <optgroup label="Creality">
+                <option value="110">Creality Ender 3 V2 (110 W)</option>
+                <option value="120">Creality Ender 3 S1 (120 W)</option>
+                <option value="100">Creality K1 (100 W)</option>
+                <option value="100">Creality K1C (100 W)</option>
+                <option value="200">Creality K1 Max (200 W)</option>
+              </optgroup>
+              <optgroup label="Anycubic">
+                <option value="75">Anycubic Kobra 2 (75 W)</option>
+                <option value="80">Anycubic Vyper (80 W)</option>
+              </optgroup>
+              <optgroup label="SnapMaker">
+                <option value="130">SnapMaker U1 (130 W)</option>
+              </optgroup>
+              <optgroup label="Resina">
+                <option value="75">Elegoo Saturn 3 (resina) (75 W)</option>
+                <option value="75">Elegoo Saturn 4 (resina) (75 W)</option>
+              </optgroup>
+              <optgroup label="DIY">
+                <option value="225">Voron 2.4 (350mm DIY) (225 W)</option>
+              </optgroup>
+            </select>
+            <p class="calc-hint">Autocompleta el consumo (W) según el modelo. Si el tuyo no está en la lista o consume distinto, elegí "Otro / Personalizado" e ingresalo a mano.</p>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="calcHours">Tiempo de impresión (horas)</label>
+              <input type="number" id="calcHours" min="0" step="0.1" value="3">
+            </div>
+            <div class="field">
+              <label for="calcWatts">Consumo de la impresora (W)</label>
+              <input type="number" id="calcWatts" min="0" step="1" value="150">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="calcKwhRate">Tarifa eléctrica (por kWh)</label>
+              <input type="number" id="calcKwhRate" class="calc-money" data-base="100" min="0" step="0.01" value="100">
+            </div>
+            <div class="field">
+              <label for="calcPrinterCost">Costo de la impresora</label>
+              <input type="number" id="calcPrinterCost" class="calc-money" data-base="350000" min="0" step="1" value="350000">
+            </div>
+          </div>
+          <div class="field">
+            <label for="calcLifespan">Vida útil estimada de la impresora (horas)</label>
+            <input type="number" id="calcLifespan" min="1" step="1" value="2000">
+            <p class="calc-hint">Se usa para calcular el desgaste/depreciación por hora de uso. Típico en FDM: 2000–5000 horas.</p>
+          </div>
+        </fieldset>
 
-  <section class="shelf-section" id="relatedSection" style="display:none;">
-    <div class="wrap">
-      <h2 class="shelf-title">También te puede interesar</h2>
-      <div class="prod-grid shelf-grid" id="relatedGrid"></div>
-    </div>
-  </section>
+        <fieldset class="calc-group">
+          <legend>Mano de obra y extras</legend>
+          <div class="field-row">
+            <div class="field">
+              <label for="calcLaborHours">Tiempo de mano de obra (horas)</label>
+              <input type="number" id="calcLaborHours" min="0" step="0.05" value="0.25">
+            </div>
+            <div class="field">
+              <label for="calcLaborRate">Tarifa por hora de mano de obra</label>
+              <input type="number" id="calcLaborRate" class="calc-money" data-base="3000" min="0" step="1" value="3000">
+            </div>
+          </div>
+          <div class="field">
+            <label for="calcExtras">Costos extra (post-procesado, empaque, accesorios)</label>
+            <input type="number" id="calcExtras" class="calc-money" data-base="0" min="0" step="1" value="0">
+          </div>
+        </fieldset>
 
-  <section class="shelf-section" id="recentSection" style="display:none;">
-    <div class="wrap">
-      <h2 class="shelf-title">Visto recientemente</h2>
-      <div class="prod-grid shelf-grid" id="recentGrid"></div>
+        <fieldset class="calc-group">
+          <legend>Fallos y margen</legend>
+          <div class="field-row">
+            <div class="field">
+              <label for="calcFail">Fallos / desperdicio (%)</label>
+              <input type="number" id="calcFail" min="0" max="100" step="1" value="5">
+            </div>
+            <div class="field">
+              <label for="calcMargin">Margen de ganancia (%)</label>
+              <input type="number" id="calcMargin" min="0" step="1" value="40">
+            </div>
+          </div>
+          <div class="field">
+            <label for="calcQty">Cantidad de piezas</label>
+            <input type="number" id="calcQty" min="1" step="1" value="1">
+          </div>
+        </fieldset>
+
+        <button type="button" class="calc-reset" id="calcReset">Restablecer valores</button>
+      </form>
+
+      <aside class="calc-results reveal in" id="calcResults" aria-live="polite">
+        <div class="calc-price-box">
+          <p class="calc-price-label">Precio de venta sugerido <span id="calcResultQtyLabel">(1 pieza)</span></p>
+          <strong class="calc-price-main" id="calcPriceMain">—</strong>
+          <span class="calc-price-secondary" id="calcPriceSecondary">—</span>
+        </div>
+
+        <div class="calc-breakdown">
+          <p class="calc-breakdown-label">Desglose por pieza</p>
+          <div class="calc-row"><span>Material</span><strong id="calcRowMaterial">—</strong></div>
+          <div class="calc-row"><span>Electricidad</span><strong id="calcRowElectricity">—</strong></div>
+          <div class="calc-row"><span>Desgaste de impresora</span><strong id="calcRowDepreciation">—</strong></div>
+          <div class="calc-row"><span>Mano de obra</span><strong id="calcRowLabor">—</strong></div>
+          <div class="calc-row"><span>Extras</span><strong id="calcRowExtras">—</strong></div>
+          <div class="calc-row calc-row-sub"><span>Subtotal</span><strong id="calcRowSubtotal">—</strong></div>
+          <div class="calc-row"><span>+ Fallos/desperdicio</span><strong id="calcRowFail">—</strong></div>
+          <div class="calc-row calc-row-sub"><span>Costo de producción</span><strong id="calcRowCost">—</strong></div>
+          <div class="calc-row"><span>+ Margen de ganancia</span><strong id="calcRowMargin">—</strong></div>
+        </div>
+
+        <div class="calc-total-box">
+          <div class="calc-row"><span>Total (<span id="calcRowQty">1</span> pieza)</span><strong id="calcRowTotal">—</strong></div>
+          <div class="calc-row"><span>Ganancia estimada</span><strong id="calcRowProfit">—</strong></div>
+        </div>
+
+        <p class="calc-note">Cálculo orientativo para ayudarte a fijar tu propio precio. No es una cotización de LUNATECH3D.</p>
+
+        <div class="calc-contact-cta">
+          <p>¿Preferís que la imprimamos nosotros?</p>
+          <a class="btn btn-ghost" href="contacto.html">Escribinos</a>
+        </div>
+      </aside>
+
     </div>
   </section>
 
@@ -161,7 +261,6 @@
       <li><a href="tienda.html">Tienda</a></li>
       <li><a href="about.html">Nosotros</a></li>
       <li><a href="contacto.html">Contacto</a></li>
-      <li><a href="cotizador-3d.html">Calculadora 3D</a></li>
       <li><a href="blog.html">Blog</a></li>
       <li><a href="faq.html">Preguntas frecuentes</a></li>
       <li><a href="https://instagram.com/lunarlab3d" target="_blank" rel="noopener">Instagram</a></li>
@@ -279,6 +378,6 @@
 <script src="assets/products.js"></script>
 <script src="assets/main.js"></script>
 <script src="assets/store.js"></script>
-<script src="assets/producto.js"></script>
+<script src="assets/cotizador.js"></script>
 </body>
 </html>

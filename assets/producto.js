@@ -14,8 +14,97 @@
 
   document.title = product.name + ' · LUNATECH3D';
 
-  const categoryNames = { filamentos: 'Filamentos', resinas: 'Resinas', repuestos: 'Repuestos y accesorios' };
-  document.getElementById('crumbCategory').textContent = categoryNames[product.category] || product.categoryLabel;
+  const pageUrl = 'https://lunatech3d.cr/producto.html?id=' + encodeURIComponent(product.id);
+  const shareDescription = (product.description || '').slice(0, 155).trim();
+  const shareImage = 'https://lunatech3d.cr/' + (product.mainImage || (product.images && product.images[0]) || 'assets/img/icon-mark.svg');
+  const setMeta = (id, attr, value) => { const el = document.getElementById(id); if (el) el.setAttribute(attr, value); };
+  setMeta('metaDescription', 'content', shareDescription);
+  setMeta('canonicalLink', 'href', pageUrl);
+  setMeta('ogUrl', 'content', pageUrl);
+  setMeta('ogTitle', 'content', product.name + ' · LUNATECH3D');
+  setMeta('ogDescription', 'content', shareDescription);
+  setMeta('ogImage', 'content', shareImage);
+  setMeta('twitterTitle', 'content', product.name + ' · LUNATECH3D');
+  setMeta('twitterDescription', 'content', shareDescription);
+  setMeta('twitterImage', 'content', shareImage);
+
+  const productLd = document.createElement('script');
+  productLd.type = 'application/ld+json';
+  productLd.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: shareDescription,
+    image: shareImage,
+    sku: product.id,
+    category: product.categoryLabel,
+    offers: {
+      '@type': 'Offer',
+      url: pageUrl,
+      priceCurrency: 'CRC',
+      price: product.price,
+      availability: 'https://schema.org/InStock'
+    }
+  });
+  document.head.appendChild(productLd);
+
+  const breadcrumbLd = document.createElement('script');
+  breadcrumbLd.type = 'application/ld+json';
+  breadcrumbLd.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://lunatech3d.cr/' },
+      { '@type': 'ListItem', position: 2, name: 'Tienda', item: 'https://lunatech3d.cr/tienda.html' },
+      { '@type': 'ListItem', position: 3, name: product.name, item: pageUrl }
+    ]
+  });
+  document.head.appendChild(breadcrumbLd);
+
+  /* ---------- Favoritos / comparar / compartir ---------- */
+  const wishBtn = document.getElementById('productWishBtn');
+  const wishLabel = document.getElementById('productWishLabel');
+  function syncWishBtn(){
+    const saved = typeof isInWishlist === 'function' && isInWishlist(product.id);
+    if (wishBtn) wishBtn.classList.toggle('active', saved);
+    if (wishBtn) wishBtn.setAttribute('aria-pressed', String(saved));
+    if (wishLabel) wishLabel.textContent = saved ? 'Guardado en favoritos' : 'Guardar en favoritos';
+  }
+  if (wishBtn){
+    syncWishBtn();
+    wishBtn.addEventListener('click', () => { toggleWishlist(product.id); syncWishBtn(); });
+  }
+
+  const compareCheck = document.getElementById('productCompareCheck');
+  if (compareCheck){
+    compareCheck.checked = typeof isInCompare === 'function' && isInCompare(product.id);
+    compareCheck.addEventListener('change', () => { compareCheck.checked = toggleCompare(product.id); });
+  }
+
+  const shareText = product.name + ' · LUNATECH3D';
+  const shareNative = document.getElementById('shareNative');
+  const shareWhatsapp = document.getElementById('shareWhatsapp');
+  const shareCopy = document.getElementById('shareCopy');
+  if (shareWhatsapp) shareWhatsapp.href = 'https://wa.me/?text=' + encodeURIComponent(shareText + ' ' + pageUrl);
+  if (shareNative){
+    if (navigator.share){
+      shareNative.addEventListener('click', () => { navigator.share({ title: shareText, url: pageUrl }).catch(() => {}); });
+    } else {
+      shareNative.style.display = 'none';
+    }
+  }
+  if (shareCopy){
+    shareCopy.addEventListener('click', () => {
+      navigator.clipboard.writeText(pageUrl).then(() => {
+        if (typeof showToast === 'function') showToast('Enlace copiado');
+      }).catch(() => {
+        if (typeof showToast === 'function') showToast('No se pudo copiar el enlace');
+      });
+    });
+  }
+
+  const catMeta = (typeof CATEGORIES !== 'undefined') ? CATEGORIES.find(c => c.id === product.category) : null;
+  document.getElementById('crumbCategory').textContent = catMeta ? catMeta.label : product.categoryLabel;
   document.getElementById('crumbCategory').href = 'tienda.html?cat=' + product.category;
   document.getElementById('crumbProduct').textContent = product.name;
 
@@ -132,7 +221,7 @@
       const unavailable = v.available === false;
       if (isColor){
         return `
-          <button type="button" class="swatch ${unavailable ? 'unavailable' : ''}" style="background:${v.hex}" data-idx="${idx}" ${unavailable ? 'disabled' : ''}>
+          <button type="button" class="swatch ${unavailable ? 'unavailable' : ''}" style="background:${v.hex}" data-idx="${idx}" aria-label="${v.name}${unavailable ? ' · Agotado' : ''}" ${unavailable ? 'disabled' : ''}>
             <span class="swatch-tooltip">${v.name}${unavailable ? ' · Agotado' : ''}</span>
           </button>`;
       }
