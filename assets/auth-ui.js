@@ -36,7 +36,7 @@
     btn.type = 'button';
     btn.className = 'nav-auth-link';
     btn.textContent = 'Mi cuenta';
-    btn.addEventListener('click', () => window.Clerk.openUserProfile());
+    btn.addEventListener('click', () => { window.location.href = 'mi-cuenta.html'; });
     return btn;
   }
 
@@ -48,7 +48,7 @@
     function paint(){
       if (iconSlot){
         iconSlot.innerHTML = '';
-        if (Clerk.user) Clerk.mountUserButton(iconSlot);
+        if (Clerk.user) Clerk.mountUserButton(iconSlot, { userProfileMode: 'navigation', userProfileUrl: 'mi-cuenta.html' });
         else iconSlot.appendChild(signInIcon());
       }
       if (mobileSlot){

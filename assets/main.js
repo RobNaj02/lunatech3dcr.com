@@ -78,6 +78,9 @@ const checkoutClose = document.getElementById('checkoutClose');
 const checkoutBack = document.getElementById('checkoutBack');
 const checkoutForm = document.getElementById('checkoutForm');
 const orderSummaryEl = document.getElementById('orderSummary');
+const savedAddressField = document.getElementById('savedAddressField');
+const savedAddressSelect = document.getElementById('savedAddressSelect');
+const custAddressEl = document.getElementById('custAddress');
 
 const toastEl = document.getElementById('toast');
 
@@ -202,6 +205,21 @@ if (cartClose) cartClose.addEventListener('click', closeCart);
 if (cartBackdrop) cartBackdrop.addEventListener('click', closeCart);
 
 /* ---------- Checkout ---------- */
+function populateSavedAddresses(){
+  if (!savedAddressField || !savedAddressSelect || !window.LunarAddresses) return;
+  const list = window.LunarAddresses.getAddresses();
+  savedAddressSelect.innerHTML = '<option value="">Elegí una dirección…</option>' +
+    list.map(a => `<option value="${a.id}">${a.label}</option>`).join('');
+  savedAddressField.style.display = list.length ? 'flex' : 'none';
+}
+if (savedAddressSelect){
+  savedAddressSelect.addEventListener('change', () => {
+    const list = window.LunarAddresses ? window.LunarAddresses.getAddresses() : [];
+    const found = list.find(a => a.id === savedAddressSelect.value);
+    if (found && custAddressEl) custAddressEl.value = found.text;
+  });
+}
+
 function openCheckout(){
   if (!checkoutPanel) return;
   if (orderSummaryEl){
@@ -209,6 +227,7 @@ function openCheckout(){
       <div class="row"><span>${i.qty} × ${i.name}</span><span>${money(i.qty * i.price)}</span></div>
     `).join('') + `<div class="row total"><span>Total</span><span>${money(cartSubtotal())}</span></div>`;
   }
+  populateSavedAddresses();
   closeCart();
   checkoutPanel.classList.add('open');
   checkoutBackdrop.classList.add('open');
