@@ -159,7 +159,7 @@
     galleryEl.innerHTML = `
       <div class="gallery-slider">
         <div class="gallery-track" id="galleryTrack">
-          ${slides.map(s => `<div class="gallery-slide"><img src="${s.image}" alt="${s.alt}" loading="lazy"></div>`).join('')}
+          ${slides.map((s, i) => `<div class="gallery-slide"><img src="${s.image}" alt="${s.alt}" loading="${i === 0 ? 'eager' : 'lazy'}" decoding="async" data-lightbox data-lightbox-group="product-gallery"></div>`).join('')}
         </div>
         ${slides.length > 1 ? `
         <button type="button" class="gallery-arrow prev" id="galleryPrev" aria-label="Imagen anterior">

@@ -12,6 +12,18 @@ if (menuToggle && navLinks) {
   }));
 }
 
+/* ---------- Value cards: tap-to-expand on touch, keyboard toggle ---------- */
+document.querySelectorAll('.value-card').forEach(card => {
+  function toggle(){
+    const open = card.classList.toggle('is-open');
+    card.setAttribute('aria-expanded', open);
+  }
+  card.addEventListener('click', toggle);
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }
+  });
+});
+
 /* ---------- Scroll reveal ---------- */
 const revealEls = document.querySelectorAll('.reveal');
 if ('IntersectionObserver' in window) {
@@ -208,7 +220,20 @@ function closeCheckout(){
   checkoutBackdrop.classList.remove('open');
   checkoutPanel.setAttribute('aria-hidden', 'true');
 }
-if (checkoutBtn) checkoutBtn.addEventListener('click', openCheckout);
+/* ---------- Auth gate: hay que estar logeado para comprar ----------
+   Navegar, agregar al carrito y usar favoritos/comparador queda libre.
+   El login (Clerk) solo se exige al confirmar la compra. window.clerkReady
+   lo define assets/clerk-init.js (carga compartida, una sola vez). */
+async function requireSignInThenCheckout(){
+  const Clerk = await window.clerkReady;
+  if (Clerk.user){ openCheckout(); return; }
+  const unsubscribe = Clerk.addListener(({ user }) => {
+    if (user){ unsubscribe(); openCheckout(); }
+  });
+  Clerk.openSignIn();
+}
+
+if (checkoutBtn) checkoutBtn.addEventListener('click', requireSignInThenCheckout);
 if (checkoutClose) checkoutClose.addEventListener('click', closeCheckout);
 if (checkoutBackdrop) checkoutBackdrop.addEventListener('click', closeCheckout);
 if (checkoutBack) checkoutBack.addEventListener('click', () => { closeCheckout(); openCart(); });

@@ -23,7 +23,7 @@
         ${items.map(p => `
           <th>
             <button class="compare-remove" data-remove="${p.id}" aria-label="Quitar de comparar">✕</button>
-            <img src="${p.mainImage || (p.images && p.images[0]) || 'assets/img/icon-mark.svg'}" alt="${p.name}">
+            <img src="${p.mainImage || (p.images && p.images[0]) || 'assets/img/icon-mark.svg'}" alt="${p.name}" loading="lazy" decoding="async">
             <a href="producto.html?id=${p.id}">${p.name}</a>
           </th>`).join('')}
       </tr>`;

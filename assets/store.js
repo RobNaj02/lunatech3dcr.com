@@ -48,7 +48,7 @@
       <div class="prod-card reveal in" data-category="${p.category}" data-brand="${p.brand || ''}" data-price="${p.price}" data-id="${p.id}" data-name="${p.name}" data-spec="${p.spec || ''}" data-photo="${img}">
         ${catLabel}
         <div class="prod-thumb-wrap">
-          <a href="producto.html?id=${p.id}"><div class="prod-thumb has-photo"><img src="${img}" alt="${p.name}" loading="lazy"></div></a>
+          <a href="producto.html?id=${p.id}"><div class="prod-thumb has-photo"><img src="${img}" alt="${p.name}" loading="lazy" decoding="async"></div></a>
           <button class="card-fav${isWished ? ' active' : ''}" data-wish="${p.id}" aria-label="Guardar en favoritos" aria-pressed="${isWished}">
             <svg viewBox="0 0 24 24" fill="${isWished ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.35-9.5-8.5C.9 8.7 2.6 5 6.2 5c2 0 3.5 1.15 5.8 3.3C14.3 6.15 15.8 5 17.8 5c3.6 0 5.3 3.7 3.7 7.5C19 16.65 12 21 12 21z"/></svg>
           </button>
