@@ -205,11 +205,16 @@ if (cartClose) cartClose.addEventListener('click', closeCart);
 if (cartBackdrop) cartBackdrop.addEventListener('click', closeCart);
 
 /* ---------- Checkout ---------- */
+function escapeHtml(s){
+  return (s || '').toString().replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
 function populateSavedAddresses(){
   if (!savedAddressField || !savedAddressSelect || !window.LunarAddresses) return;
   const list = window.LunarAddresses.getAddresses();
   savedAddressSelect.innerHTML = '<option value="">Elegí una dirección…</option>' +
-    list.map(a => `<option value="${a.id}">${a.label}</option>`).join('');
+    list.map(a => `<option value="${a.id}">${escapeHtml(a.label)}</option>`).join('');
   savedAddressField.style.display = list.length ? 'flex' : 'none';
 }
 if (savedAddressSelect){

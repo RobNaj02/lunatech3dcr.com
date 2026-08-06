@@ -21,6 +21,12 @@
     return (s || '').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
   }
 
+  function escapeHtml(s){
+    return (s || '').toString().replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+
   function categoryMeta(catId){
     return (typeof CATEGORIES !== 'undefined') ? CATEGORIES.find(c => c.id === catId) : null;
   }
@@ -313,7 +319,7 @@
       }
       const matches = allProducts.filter(p => normalize([p.name, p.categoryLabel, p.brand, p.material].filter(Boolean).join(' ')).includes(q)).slice(0, 6);
       if (!matches.length){
-        searchResults.innerHTML = `<p class="search-empty">Sin resultados para "${raw}". <a href="tienda.html?q=${encodeURIComponent(raw)}">Ver en la tienda</a></p>`;
+        searchResults.innerHTML = `<p class="search-empty">Sin resultados para "${escapeHtml(raw)}". <a href="tienda.html?q=${encodeURIComponent(raw)}">Ver en la tienda</a></p>`;
         return;
       }
       searchResults.innerHTML = `
@@ -325,7 +331,7 @@
               <span class="sr-txt"><strong>${p.name}</strong><small>${p.categoryLabel} · ${money(p.price)}</small></span>
             </a>`).join('')}
         </div>
-        <a class="search-viewall" href="tienda.html?q=${encodeURIComponent(raw)}">Ver todos los resultados para "${raw}"</a>
+        <a class="search-viewall" href="tienda.html?q=${encodeURIComponent(raw)}">Ver todos los resultados para "${escapeHtml(raw)}"</a>
       `;
     }
 

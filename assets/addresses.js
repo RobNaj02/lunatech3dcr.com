@@ -9,6 +9,12 @@
 (function(){
   const KEY_PREFIX = 'lunarlab_addresses_';
 
+  function escapeHtml(s){
+    return (s || '').toString().replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+
   function storageKey(){
     const uid = window.Clerk && window.Clerk.user ? window.Clerk.user.id : null;
     return uid ? KEY_PREFIX + uid : null;
@@ -70,7 +76,7 @@
               ? '<p class="addr-empty">Todavía no guardaste ninguna dirección.</p>'
               : list.map(a => `
                 <div class="addr-item">
-                  <div><strong>${a.label}</strong><p>${a.text}</p></div>
+                  <div><strong>${escapeHtml(a.label)}</strong><p>${escapeHtml(a.text)}</p></div>
                   <button type="button" class="addr-remove" data-id="${a.id}" aria-label="Eliminar dirección">✕</button>
                 </div>`).join('')}
           </div>
