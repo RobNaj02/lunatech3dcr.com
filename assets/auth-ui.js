@@ -48,7 +48,17 @@
     function paint(){
       if (iconSlot){
         iconSlot.innerHTML = '';
-        if (Clerk.user) Clerk.mountUserButton(iconSlot, { userProfileMode: 'navigation', userProfileUrl: 'mi-cuenta.html' });
+        if (Clerk.user){
+          /* Popover normal de Clerk (no 'navigation': el sitio es
+             multi-página estática, no un SPA con router — con
+             userProfileMode:'navigation' el click en "Manage account"
+             solo empuja un hash a la URL y no navega a ningún lado.
+             La página dedicada (mi-cuenta.html) sigue existiendo,
+             solo que se llega ahí por el link, no desde acá. */
+          Clerk.mountUserButton(iconSlot, {
+            userProfileProps: { customPages: [window.LunarAddresses.addressesCustomPage()] },
+          });
+        }
         else iconSlot.appendChild(signInIcon());
       }
       if (mobileSlot){
