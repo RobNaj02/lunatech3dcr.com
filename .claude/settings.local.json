@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:onvopay.com)",
+      "WebFetch(domain:stripe.com)"
+    ]
+  }
+}
