@@ -18,7 +18,7 @@
     btn.id = 'authSignInBtn';
     btn.setAttribute('aria-label', 'Iniciar sesión o crear cuenta');
     btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 21a8 8 0 10-16 0"/><circle cx="12" cy="8" r="4"/></svg>`;
-    btn.addEventListener('click', () => window.Clerk.openSignIn());
+    btn.addEventListener('click', () => window.Clerk.openSignIn({ redirectUrl: window.location.href }));
     return btn;
   }
 
@@ -27,7 +27,7 @@
     btn.type = 'button';
     btn.className = 'nav-auth-link';
     btn.textContent = 'Iniciar sesión / Registrarme';
-    btn.addEventListener('click', () => window.Clerk.openSignIn());
+    btn.addEventListener('click', () => window.Clerk.openSignIn({ redirectUrl: window.location.href }));
     return btn;
   }
 

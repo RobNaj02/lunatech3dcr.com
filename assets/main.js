@@ -249,7 +249,7 @@ async function requireSignInThenCheckout(){
   const unsubscribe = Clerk.addListener(({ user }) => {
     if (user){ unsubscribe(); openCheckout(); }
   });
-  Clerk.openSignIn();
+  Clerk.openSignIn({ redirectUrl: window.location.href });
 }
 
 if (checkoutBtn) checkoutBtn.addEventListener('click', requireSignInThenCheckout);

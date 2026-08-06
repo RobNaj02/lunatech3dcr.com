@@ -17,7 +17,7 @@
         <p>Necesitás una cuenta para gestionar tus datos y ver tu perfil.</p>
         <button type="button" class="btn btn-primary" id="accountSignInBtn">Iniciar sesión / Registrarme</button>
       </div>`;
-    document.getElementById('accountSignInBtn').addEventListener('click', () => window.Clerk.openSignIn());
+    document.getElementById('accountSignInBtn').addEventListener('click', () => window.Clerk.openSignIn({ redirectUrl: window.location.href }));
   }
 
   async function init(){
