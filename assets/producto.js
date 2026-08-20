@@ -211,22 +211,73 @@
     }
   }
 
+  /* ---------- Stock en vivo ----------
+     window.LunarStock (assets/inventory.js) trae la cantidad real
+     desde Supabase y avisa cambios con el evento "stock:updated".
+     Antes de que cargue (o si Supabase no está configurado todavía)
+     .get() devuelve null y esta UI se apoya solo en los flags
+     estáticos de products.js (availability / variant.available). */
+  const stockNoteEl = document.getElementById('stockNote');
+  function currentVariantName(){ return selectedVariant ? selectedVariant.name : ''; }
+
+  function updateStockUI(){
+    const needsSelection = hasVariants && !selectedVariant;
+    if (needsSelection){
+      addBtn.disabled = true;
+      if (stockNoteEl) stockNoteEl.textContent = '';
+      return;
+    }
+    const staticUnavailable = hasVariants
+      ? selectedVariant.available === false
+      : product.availability === false;
+    if (staticUnavailable){
+      addBtn.disabled = true;
+      if (stockNoteEl){ stockNoteEl.textContent = 'Agotado'; stockNoteEl.className = 'stock-note out'; }
+      return;
+    }
+    addBtn.disabled = false;
+    if (!window.LunarStock){ if (stockNoteEl) stockNoteEl.textContent = ''; return; }
+    const q = window.LunarStock.get(product.id, currentVariantName());
+    if (q === null){ if (stockNoteEl) stockNoteEl.textContent = ''; return; } // aún cargando
+    if (q <= 0){
+      addBtn.disabled = true;
+      if (stockNoteEl){ stockNoteEl.textContent = 'Agotado'; stockNoteEl.className = 'stock-note out'; }
+      return;
+    }
+    if (stockNoteEl){
+      if (q <= 5){ stockNoteEl.textContent = `¡Últimas ${q} unidades!`; stockNoteEl.className = 'stock-note low'; }
+      else { stockNoteEl.textContent = `${q} unidades disponibles`; stockNoteEl.className = 'stock-note in-stock'; }
+    }
+    if (qty > q){ qty = q; qtyValEl.textContent = qty; }
+  }
+
   /* ---------- Variant selector (color or size) ---------- */
-  if (hasVariants){
+  function renderVariantSelector(){
     variantLabelEl.textContent = product.variantLabel || 'Opción';
     const isColor = product.variantType === 'color';
     swatchesEl.className = isColor ? 'swatches' : 'variant-chips';
 
+    // Si la opción elegida se quedó sin stock, soltala para que el
+    // comprador tenga que elegir otra en vez de dejarla "seleccionada"
+    // mintiendo disponibilidad.
+    if (selectedVariant && window.LunarStock && window.LunarStock.isOutOfStock(product.id, selectedVariant.name)){
+      selectedVariant = null;
+      pickedLabel.textContent = '— elegí una opción';
+      addNote.style.display = '';
+    }
+
     swatchesEl.innerHTML = product.variants.map((v, idx) => {
-      const unavailable = v.available === false;
+      const outOfStock = window.LunarStock && window.LunarStock.isOutOfStock(product.id, v.name);
+      const unavailable = v.available === false || outOfStock;
+      const isSelected = selectedVariant === v;
       if (isColor){
         return `
-          <button type="button" class="swatch ${unavailable ? 'unavailable' : ''}" style="background:${v.hex}" data-idx="${idx}" aria-label="${v.name}${unavailable ? ' · Agotado' : ''}" ${unavailable ? 'disabled' : ''}>
+          <button type="button" class="swatch${unavailable ? ' unavailable' : ''}${isSelected ? ' selected' : ''}" style="background:${v.hex}" data-idx="${idx}" aria-label="${v.name}${unavailable ? ' · Agotado' : ''}" ${unavailable ? 'disabled' : ''}>
             <span class="swatch-tooltip">${v.name}${unavailable ? ' · Agotado' : ''}</span>
           </button>`;
       }
       return `
-        <button type="button" class="variant-chip ${unavailable ? 'unavailable' : ''}" data-idx="${idx}" ${unavailable ? 'disabled' : ''}>
+        <button type="button" class="variant-chip${unavailable ? ' unavailable' : ''}${isSelected ? ' selected' : ''}" data-idx="${idx}" ${unavailable ? 'disabled' : ''}>
           ${v.name}${unavailable ? ' · Agotado' : ''}
         </button>`;
     }).join('');
@@ -240,36 +291,67 @@
         const idx = parseInt(el.dataset.idx, 10);
         selectedVariant = product.variants[idx];
         pickedLabel.textContent = selectedVariant.name;
-        addBtn.disabled = false;
         addNote.style.display = 'none';
+        qty = 1;
+        qtyValEl.textContent = qty;
         if (goToSlide && goToSlide.forVariant) goToSlide.forVariant(idx);
+        updateStockUI();
       });
     });
+
+    updateStockUI();
+  }
+
+  if (hasVariants){
+    renderVariantSelector();
   } else {
     colorSectionEl.style.display = 'none';
-    addBtn.disabled = false;
     addNote.style.display = 'none';
+    updateStockUI();
   }
+
+  document.addEventListener('stock:updated', () => {
+    if (hasVariants) renderVariantSelector();
+    else updateStockUI();
+  });
 
   document.getElementById('qtyDec').addEventListener('click', () => {
     if (qty > 1) qty--;
     qtyValEl.textContent = qty;
   });
   document.getElementById('qtyInc').addEventListener('click', () => {
+    const available = window.LunarStock ? window.LunarStock.get(product.id, currentVariantName()) : null;
+    if (available !== null && qty + 1 > available){
+      showToast(`Solo quedan ${available} unidades disponibles`);
+      return;
+    }
     qty++;
     qtyValEl.textContent = qty;
   });
 
   addBtn.addEventListener('click', () => {
     if (hasVariants && !selectedVariant) return;
+    const variantName = currentVariantName();
+    if (window.LunarStock && window.LunarStock.isOutOfStock(product.id, variantName)){
+      showToast('Este producto está agotado');
+      updateStockUI();
+      return;
+    }
     const variantSuffix = selectedVariant ? '-' + selectedVariant.name.toLowerCase().replace(/\s+/g,'-') : '';
     const itemId = product.id + variantSuffix;
     const itemName = selectedVariant ? `${product.name} — ${selectedVariant.name}` : product.name;
     const itemImage = (selectedVariant && selectedVariant.image) || product.mainImage || (product.images && product.images[0]) || null;
 
     const existing = cart.find(i => i.id === itemId);
+    const nextQty = (existing ? existing.qty : 0) + qty;
+    const available = window.LunarStock ? window.LunarStock.get(product.id, variantName) : null;
+    if (available !== null && nextQty > available){
+      showToast(`Solo quedan ${available} unidades disponibles`);
+      return;
+    }
+
     if (existing) existing.qty += qty;
-    else cart.push({ id: itemId, name: itemName, price: product.price, spec: product.spec, category: product.category, image: itemImage, qty });
+    else cart.push({ id: itemId, name: itemName, price: product.price, spec: product.spec, category: product.category, image: itemImage, qty, productId: product.id, variantName });
 
     renderCart();
     showToast(`${qty} × ${itemName} agregado al carrito`);

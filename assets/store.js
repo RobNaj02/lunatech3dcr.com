@@ -31,6 +31,40 @@
     return (typeof CATEGORIES !== 'undefined') ? CATEGORIES.find(c => c.id === catId) : null;
   }
 
+  /* ---------- STOCK EN VIVO ----------
+     LunarStock.get() devuelve null mientras Supabase todavía no
+     cargó — en ese caso no mostramos nada de stock y confiamos
+     en el "availability" estático de products.js hasta que llegue
+     el dato real (evita parpadeos de "Agotado" en el primer render). */
+  function getProductStockInfo(p){
+    if (!window.LunarStock) return { known: false, outOfStock: false, low: false, total: null };
+    const hasVariants = p.variants && p.variants.length > 0;
+    if (!hasVariants){
+      const q = window.LunarStock.get(p.id, '');
+      if (q === null) return { known: false, outOfStock: false, low: false, total: null };
+      return { known: true, outOfStock: q <= 0, low: q > 0 && q <= 5, total: q };
+    }
+    let sawKnown = false, total = 0;
+    p.variants.forEach(v => {
+      const q = window.LunarStock.get(p.id, v.name);
+      if (q !== null){ sawKnown = true; total += Math.max(q, 0); }
+    });
+    if (!sawKnown) return { known: false, outOfStock: false, low: false, total: null };
+    return { known: true, outOfStock: total <= 0, low: total > 0 && total <= 5, total };
+  }
+  function isProductOutOfStock(p){
+    const info = getProductStockInfo(p);
+    return info.outOfStock || p.availability === false;
+  }
+  window.getProductStockInfo = getProductStockInfo;
+  window.isProductOutOfStock = isProductOutOfStock;
+
+  /* Grids que dependen de PRODUCTS + stock y deben refrescarse
+     cada vez que llega un evento "stock:updated" (carga inicial
+     de Supabase o un cambio en tiempo real). Cada bloque de abajo
+     empuja su propia función de render acá. */
+  const stockRefreshers = [];
+
   /* ---------- CARD RENDERING (compartido tienda + destacados) ---------- */
   function renderProductCard(p, opts){
     opts = opts || {};
@@ -44,14 +78,20 @@
         rest > 0 ? `<span class="more">+${rest} colores</span>` : (p.variants.length > 1 ? `<span class="more">${p.variants.length} colores</span>` : '')
       }</div>`;
     }
+    const stockInfo = getProductStockInfo(p);
+    const outOfStock = stockInfo.outOfStock || p.availability === false;
     const footBtn = hasVariants
       ? `<a class="mini-btn" href="producto.html?id=${p.id}">Ver ${p.variantType === 'color' ? 'colores' : 'opciones'} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>`
-      : `<button class="mini-btn add-cart">Agregar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>`;
+      : `<button class="mini-btn add-cart"${outOfStock ? ' disabled' : ''}>${outOfStock ? 'Agotado' : 'Agregar'} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>`;
+    const stockBadge = outOfStock
+      ? '<span class="stock-badge">Agotado</span>'
+      : (stockInfo.known && stockInfo.low ? `<span class="stock-badge low">¡Últimas ${stockInfo.total}!</span>` : '');
     const catLabel = opts.showCategoryLabel ? `<div class="prod-cat-label">${p.categoryLabel}</div>` : '';
     const isWished = typeof isInWishlist === 'function' && isInWishlist(p.id);
     const isCompared = typeof isInCompare === 'function' && isInCompare(p.id);
     return `
-      <div class="prod-card reveal in" data-category="${p.category}" data-brand="${p.brand || ''}" data-price="${p.price}" data-id="${p.id}" data-name="${p.name}" data-spec="${p.spec || ''}" data-photo="${img}">
+      <div class="prod-card reveal in${outOfStock ? ' out-of-stock' : ''}" data-category="${p.category}" data-brand="${p.brand || ''}" data-price="${p.price}" data-id="${p.id}" data-name="${p.name}" data-spec="${p.spec || ''}" data-photo="${img}">
+        ${stockBadge}
         ${catLabel}
         <div class="prod-thumb-wrap">
           <a href="producto.html?id=${p.id}"><div class="prod-thumb has-photo"><img src="${img}" alt="${p.name}" loading="lazy" decoding="async"></div></a>
@@ -75,7 +115,9 @@
   const featuredGrid = document.getElementById('featuredGrid');
   if (featuredGrid && typeof PRODUCTS !== 'undefined'){
     const featured = Object.values(PRODUCTS).filter(p => p.featured);
-    featuredGrid.innerHTML = featured.map(p => renderProductCard(p)).join('');
+    const renderFeatured = () => { featuredGrid.innerHTML = featured.map(p => renderProductCard(p)).join(''); };
+    renderFeatured();
+    stockRefreshers.push(renderFeatured);
   }
 
   /* ---------- HOMEPAGE — stats ----------
@@ -189,7 +231,7 @@
       }
       if (state.cat !== 'todos' && p.category !== state.cat) return false;
       if (state.brand !== 'todas' && p.brand !== state.brand) return false;
-      if (state.onlyAvailable && !p.availability) return false;
+      if (state.onlyAvailable && (isProductOutOfStock(p) || !p.availability)) return false;
       if (state.priceMin != null && p.price < state.priceMin) return false;
       if (state.priceMax != null && p.price > state.priceMax) return false;
       if (state.q){
@@ -243,6 +285,7 @@
     renderGroupTabs();
     renderSubFilters();
     render();
+    stockRefreshers.push(render);
 
     if (groupTabsEl) groupTabsEl.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-group]');
@@ -494,8 +537,10 @@
     if (current && relatedGrid){
       const related = Object.values(PRODUCTS).filter(p => p.id !== current.id && p.category === current.category).slice(0, 4);
       if (related.length){
-        relatedGrid.innerHTML = related.map(p => renderProductCard(p)).join('');
+        const renderRelated = () => { relatedGrid.innerHTML = related.map(p => renderProductCard(p)).join(''); };
+        renderRelated();
         document.getElementById('relatedSection').style.display = 'block';
+        stockRefreshers.push(renderRelated);
       }
     }
 
@@ -503,12 +548,16 @@
       const recentIds = readList(RECENT_KEY).filter(id => id !== currentId);
       const recent = recentIds.map(id => PRODUCTS[id]).filter(Boolean).slice(0, 4);
       if (recent.length){
-        recentGrid.innerHTML = recent.map(p => renderProductCard(p)).join('');
+        const renderRecent = () => { recentGrid.innerHTML = recent.map(p => renderProductCard(p)).join(''); };
+        renderRecent();
         document.getElementById('recentSection').style.display = 'block';
+        stockRefreshers.push(renderRecent);
       }
     }
 
     if (current) addRecentlyViewed(current.id);
   }
+
+  document.addEventListener('stock:updated', () => { stockRefreshers.forEach(fn => fn()); });
 
 })();

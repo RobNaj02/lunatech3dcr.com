@@ -122,7 +122,12 @@ function renderCart(){
     return;
   }
   if (checkoutBtn) checkoutBtn.disabled = false;
-  cartItemsEl.innerHTML = cart.map(item => `
+  cartItemsEl.innerHTML = cart.map(item => {
+    const available = window.LunarStock ? window.LunarStock.get(item.productId || item.id, item.variantName || '') : null;
+    const oosNote = available !== null && available < item.qty
+      ? `<span class="cart-item-oos">${available > 0 ? `Solo quedan ${available} disponibles` : 'Agotado'} — ajustá la cantidad</span>`
+      : '';
+    return `
     <div class="cart-item" data-id="${item.id}">
       <div class="cart-item-thumb">${cartItemThumb(item)}</div>
       <div class="cart-item-info">
@@ -134,10 +139,12 @@ function renderCart(){
           <button class="qty-btn" data-action="inc" aria-label="Agregar una unidad">+</button>
         </div>
         <button class="remove-item" data-action="remove">Eliminar</button>
+        ${oosNote}
       </div>
       <div class="cart-item-price">${money(item.qty * item.price)}</div>
     </div>
-  `).join('');
+  `;
+  }).join('');
   if (cartSubtotalEl) cartSubtotalEl.textContent = money(cartSubtotal());
 }
 
@@ -159,16 +166,29 @@ function addToCart(product, btnEl){
    dinámicamente (store.js) después de que este script ya corrió. */
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('.add-cart');
-  if (!btn) return;
+  if (!btn || btn.disabled) return;
   const card = btn.closest('[data-id]');
   if (!card) return;
+  const productId = card.dataset.id;
+  if (window.LunarStock && window.LunarStock.isOutOfStock(productId, '')){
+    showToast('Este producto está agotado');
+    return;
+  }
+  const existing = cart.find(i => i.id === productId);
+  const available = window.LunarStock ? window.LunarStock.get(productId, '') : null;
+  if (available !== null && (existing ? existing.qty : 0) + 1 > available){
+    showToast(`Solo quedan ${available} unidades disponibles`);
+    return;
+  }
   addToCart({
-    id: card.dataset.id,
+    id: productId,
     name: card.dataset.name,
     price: parseInt(card.dataset.price, 10),
     spec: card.dataset.spec || '',
     category: card.dataset.category || '',
-    image: card.dataset.photo || null
+    image: card.dataset.photo || null,
+    productId,
+    variantName: ''
   }, btn);
 });
 
@@ -180,12 +200,24 @@ if (cartItemsEl){
     const id = row.dataset.id;
     const item = cart.find(i => i.id === id);
     if (!item) return;
-    if (btn.dataset.action === 'inc') item.qty += 1;
+    if (btn.dataset.action === 'inc'){
+      const available = window.LunarStock ? window.LunarStock.get(item.productId || item.id, item.variantName || '') : null;
+      if (available !== null && item.qty + 1 > available){
+        showToast(available > 0 ? `Solo quedan ${available} unidades disponibles` : 'Este producto está agotado');
+      } else {
+        item.qty += 1;
+      }
+    }
     if (btn.dataset.action === 'dec') { item.qty -= 1; if (item.qty <= 0) cart = cart.filter(i => i.id !== id); }
     if (btn.dataset.action === 'remove') cart = cart.filter(i => i.id !== id);
     renderCart();
   });
 }
+
+document.addEventListener('stock:updated', () => {
+  renderCart();
+  if (checkoutPanel && checkoutPanel.classList.contains('open')) renderOrderSummary();
+});
 
 function openCart(){
   if (!cartDrawer) return;
@@ -225,13 +257,20 @@ if (savedAddressSelect){
   });
 }
 
+function renderOrderSummary(){
+  if (!orderSummaryEl) return;
+  orderSummaryEl.innerHTML = cart.map(i => {
+    const available = window.LunarStock ? window.LunarStock.get(i.productId || i.id, i.variantName || '') : null;
+    const warn = available !== null && available < i.qty
+      ? `<span class="cart-item-oos">${available > 0 ? `Solo quedan ${available}` : 'Agotado'}</span>`
+      : '';
+    return `<div class="row"><span>${i.qty} × ${i.name}${warn}</span><span>${money(i.qty * i.price)}</span></div>`;
+  }).join('') + `<div class="row total"><span>Total</span><span>${money(cartSubtotal())}</span></div>`;
+}
+
 function openCheckout(){
   if (!checkoutPanel) return;
-  if (orderSummaryEl){
-    orderSummaryEl.innerHTML = cart.map(i => `
-      <div class="row"><span>${i.qty} × ${i.name}</span><span>${money(i.qty * i.price)}</span></div>
-    `).join('') + `<div class="row total"><span>Total</span><span>${money(cartSubtotal())}</span></div>`;
-  }
+  renderOrderSummary();
   populateSavedAddresses();
   closeCart();
   checkoutPanel.classList.add('open');
@@ -271,7 +310,7 @@ document.querySelectorAll('.pay-option').forEach(opt => {
 });
 
 if (checkoutForm){
-  checkoutForm.addEventListener('submit', (e) => {
+  checkoutForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = document.getElementById('custName').value.trim();
     const phone = document.getElementById('custPhone').value.trim();
@@ -281,6 +320,33 @@ if (checkoutForm){
     if (!name || !phone || cart.length === 0){
       showToast('Completá tus datos antes de continuar');
       return;
+    }
+
+    const submitBtn = checkoutForm.querySelector('button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
+
+    /* Última validación, justo antes de "vender": resta el stock de
+       todo el carrito en una sola transacción en Supabase. Si algo
+       ya no alcanza (otro comprador se lo llevó primero, por ejemplo),
+       no se resta nada y se avisa qué ítems hay que ajustar — así
+       nadie termina pidiendo por WhatsApp algo que ya no hay. */
+    if (window.LunarStock && window.LunarStock.client){
+      const items = cart.map(i => ({ productId: i.productId || i.id, variantName: i.variantName || '', qty: i.qty }));
+      const result = await window.LunarStock.checkout(items);
+      if (!result || result.ok === false){
+        if (submitBtn) submitBtn.disabled = false;
+        if (result && result.failed && result.failed.length){
+          const names = result.failed.map(f => {
+            const match = cart.find(i => (i.productId || i.id) === f.product_id && (i.variantName || '') === f.variant_name);
+            return match ? match.name : f.product_id;
+          }).join(', ');
+          showToast(`Sin stock suficiente para: ${names}. Ajustá el carrito.`);
+        } else {
+          showToast('No se pudo confirmar el stock. Intentá de nuevo.');
+        }
+        renderCart();
+        return;
+      }
     }
 
     const payLabel = payMethod ? payMethod.parentElement.querySelector('.pt').textContent : 'A coordinar';
@@ -301,6 +367,7 @@ if (checkoutForm){
     closeCheckout();
     showToast('Pedido enviado por WhatsApp ✓');
     checkoutForm.reset();
+    if (submitBtn) submitBtn.disabled = false;
   });
 }
 
