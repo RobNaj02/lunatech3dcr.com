@@ -891,6 +891,8 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 .not-found{padding:100px 0;text-align:center;}
 .not-found h1{font-size:26px;margin-bottom:12px;}
 .not-found p{color:var(--ink-soft);margin-bottom:22px;}
+.not-found .error-code{font-family:'Instrument Serif',serif;font-size:clamp(90px,14vw,160px);line-height:1;color:var(--lilac-deep);margin:6px 0 4px;}
+.not-found-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
 
 /* ---------- WISHLIST HEART + COMPARE ON CARDS ---------- */
 .prod-thumb-wrap{position:relative;margin-bottom:16px;}
