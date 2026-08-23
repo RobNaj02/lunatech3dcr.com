@@ -10,7 +10,9 @@
    - instagramHandle / instagramUrl: sigue siendo @lunarlab3d.
      Si ya existe una cuenta @lunatech3d, actualizá este único
      valor (no lo cambiamos nosotros sin confirmación tuya).
-   - whatsappNumber / email: son los que ya estaban en uso.
+   - whatsappNumber: es el que ya estaba en uso.
+   - email: info@lunatech3dcr.com (actualizado — antes era un Gmail
+     personal usado como placeholder).
    - domain: se asume que lunatech3dcr.com es el dominio de
      producción real porque ya se usaba como canonical/sitemap
      en todo el proyecto. Si todavía no está activo, avisá para
@@ -20,7 +22,7 @@ window.SITE_CONFIG = {
   brandName: 'LUNATECH3D',
   whatsappNumber: '50688019404',        // formato wa.me, sin '+' ni espacios
   whatsappDisplay: '+506 8801-9404',
-  email: 'robi.bilps@gmail.com',
+  email: 'info@lunatech3dcr.com',
   instagramHandle: '@lunarlab3d',       // TODO(dueño): actualizar si cambia la cuenta
   instagramUrl: 'https://instagram.com/lunarlab3d',
   domain: 'https://lunatech3dcr.com'
