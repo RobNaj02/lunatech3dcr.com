@@ -31,6 +31,18 @@
     return (typeof CATEGORIES !== 'undefined') ? CATEGORIES.find(c => c.id === catId) : null;
   }
 
+  /* Algunos productos (PLA, PETG) tienen precio distinto por color:
+     price queda en cada variante y product.price guarda el mínimo.
+     Esto calcula el rango real para mostrar "Desde ₡X" cuando aplica. */
+  function productPriceInfo(p){
+    const variantPrices = (p.variants || []).map(v => v.price).filter(v => v != null);
+    if (!variantPrices.length) return { price: p.price, isRange: false };
+    const min = Math.min(...variantPrices);
+    const max = Math.max(...variantPrices);
+    return { price: min, isRange: min !== max };
+  }
+  window.productPriceInfo = productPriceInfo;
+
   /* ---------- STOCK EN VIVO ----------
      LunarStock.get() devuelve null mientras Supabase todavía no
      cargó — en ese caso no mostramos nada de stock y confiamos
@@ -89,8 +101,9 @@
     const catLabel = opts.showCategoryLabel ? `<div class="prod-cat-label">${p.categoryLabel}</div>` : '';
     const isWished = typeof isInWishlist === 'function' && isInWishlist(p.id);
     const isCompared = typeof isInCompare === 'function' && isInCompare(p.id);
+    const priceInfo = productPriceInfo(p);
     return `
-      <div class="prod-card reveal in${outOfStock ? ' out-of-stock' : ''}" data-category="${p.category}" data-brand="${p.brand || ''}" data-price="${p.price}" data-id="${p.id}" data-name="${p.name}" data-spec="${p.spec || ''}" data-photo="${img}">
+      <div class="prod-card reveal in${outOfStock ? ' out-of-stock' : ''}" data-category="${p.category}" data-brand="${p.brand || ''}" data-price="${priceInfo.price}" data-id="${p.id}" data-name="${p.name}" data-spec="${p.spec || ''}" data-photo="${img}">
         ${stockBadge}
         ${catLabel}
         <div class="prod-thumb-wrap">
@@ -104,7 +117,7 @@
         ${colorDots}
         <label class="card-compare"><input type="checkbox" data-compare="${p.id}"${isCompared ? ' checked' : ''}> Comparar</label>
         <div class="prod-foot">
-          <div class="prod-price">${money(p.price)}<span>+ IVA</span></div>
+          <div class="prod-price">${priceInfo.isRange ? 'Desde ' : ''}${money(priceInfo.price)}<span>+ IVA</span></div>
           ${footBtn}
         </div>
       </div>`;
@@ -232,8 +245,9 @@
       if (state.cat !== 'todos' && p.category !== state.cat) return false;
       if (state.brand !== 'todas' && p.brand !== state.brand) return false;
       if (state.onlyAvailable && (isProductOutOfStock(p) || !p.availability)) return false;
-      if (state.priceMin != null && p.price < state.priceMin) return false;
-      if (state.priceMax != null && p.price > state.priceMax) return false;
+      const priceForFilter = productPriceInfo(p).price;
+      if (state.priceMin != null && priceForFilter < state.priceMin) return false;
+      if (state.priceMax != null && priceForFilter > state.priceMax) return false;
       if (state.q){
         const q = normalize(state.q);
         const hay = normalize([p.name, p.categoryLabel, p.brand, p.material, p.spec].filter(Boolean).join(' '));
@@ -371,7 +385,7 @@
           ${matches.map(p => `
             <a class="search-result" href="producto.html?id=${p.id}">
               <span class="sr-thumb"><img src="${p.mainImage || (p.images && p.images[0]) || 'assets/img/icon-mark.svg'}" alt=""></span>
-              <span class="sr-txt"><strong>${p.name}</strong><small>${p.categoryLabel} · ${money(p.price)}</small></span>
+              <span class="sr-txt"><strong>${p.name}</strong><small>${p.categoryLabel} · ${productPriceInfo(p).isRange ? 'Desde ' : ''}${money(productPriceInfo(p).price)}</small></span>
             </a>`).join('')}
         </div>
         <a class="search-viewall" href="tienda.html?q=${encodeURIComponent(raw)}">Ver todos los resultados para "${escapeHtml(raw)}"</a>
@@ -459,7 +473,7 @@
           <a class="cart-item-thumb" href="producto.html?id=${p.id}"><img src="${productThumb(p)}" alt="${p.name}"></a>
           <div class="cart-item-info">
             <a href="producto.html?id=${p.id}"><h4>${p.name}</h4></a>
-            <span class="spec">${money(p.price)}</span>
+            <span class="spec">${productPriceInfo(p).isRange ? 'Desde ' : ''}${money(productPriceInfo(p).price)}</span>
             <button class="remove-item" data-remove-wish="${p.id}" type="button">Quitar</button>
           </div>
         </div>`;

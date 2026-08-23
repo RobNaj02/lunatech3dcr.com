@@ -111,7 +111,15 @@
   document.getElementById('pCatLabel').textContent = product.categoryLabel;
   document.getElementById('pName').textContent = product.name;
   document.getElementById('pSpec').textContent = product.spec;
-  document.getElementById('pPrice').innerHTML = '₡' + product.price.toLocaleString('es-CR') + ' <span>+ IVA</span>';
+  const pPriceEl = document.getElementById('pPrice');
+  function renderPrice(){
+    if (selectedVariant && selectedVariant.price != null){
+      pPriceEl.innerHTML = '₡' + selectedVariant.price.toLocaleString('es-CR') + ' <span>+ IVA</span>';
+      return;
+    }
+    const priceInfo = typeof productPriceInfo === 'function' ? productPriceInfo(product) : { price: product.price, isRange: false };
+    pPriceEl.innerHTML = (priceInfo.isRange ? 'Desde ' : '') + '₡' + priceInfo.price.toLocaleString('es-CR') + ' <span>+ IVA</span>';
+  }
   document.getElementById('pDesc').textContent = product.description;
 
   const specList = document.getElementById('pSpecList');
@@ -121,6 +129,7 @@
 
   let selectedVariant = null;
   let qty = 1;
+  renderPrice();
 
   const colorSectionEl = document.getElementById('colorSection');
   const variantLabelEl = document.getElementById('variantLabel');
@@ -264,6 +273,7 @@
       selectedVariant = null;
       pickedLabel.textContent = '— elegí una opción';
       addNote.style.display = '';
+      renderPrice();
     }
 
     swatchesEl.innerHTML = product.variants.map((v, idx) => {
@@ -294,6 +304,7 @@
         addNote.style.display = 'none';
         qty = 1;
         qtyValEl.textContent = qty;
+        renderPrice();
         if (goToSlide && goToSlide.forVariant) goToSlide.forVariant(idx);
         updateStockUI();
       });
@@ -350,8 +361,9 @@
       return;
     }
 
+    const itemPrice = (selectedVariant && selectedVariant.price != null) ? selectedVariant.price : product.price;
     if (existing) existing.qty += qty;
-    else cart.push({ id: itemId, name: itemName, price: product.price, spec: product.spec, category: product.category, image: itemImage, qty, productId: product.id, variantName });
+    else cart.push({ id: itemId, name: itemName, price: itemPrice, spec: product.spec, category: product.category, image: itemImage, qty, productId: product.id, variantName });
 
     renderCart();
     showToast(`${qty} × ${itemName} agregado al carrito`);

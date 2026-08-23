@@ -51,7 +51,7 @@ const PRODUCTS = {
     weightG: 1000,
     availability: true,
     featured: true,
-    price: 9000,
+    price: 10500,
     spec: '1.75mm · 1kg',
     description: 'El PLA de SUNLU está pensado para el uso diario: fácil de imprimir, con alta compatibilidad y resultados consistentes desde el primer rollo. Es de origen vegetal y biodegradable, con un encogimiento muy bajo (0.3–0.5%), así que no se agrieta ni se deforma durante la impresión. Al ser tan estable, es una excelente opción si estás iniciando en la impresión 3D y querés buenos resultados sin ajustes complicados.',
     specs: [
@@ -68,14 +68,14 @@ const PRODUCTS = {
     variantType: 'color',
     mainImage: 'assets/img/products/shared/principal-filamento.jpg',
     variants: [
-      { name: 'Blanco',          hex: '#F5F5F5', available: true, image: 'assets/img/products/pla/blanco.jpg' },
-      { name: 'Negro',           hex: '#1A1A1A', available: true, image: 'assets/img/products/pla/negro.jpg' },
-      { name: 'Azul',            hex: '#2E6FDB', available: true, image: 'assets/img/products/pla/azul.jpg' },
-      { name: 'Amarillo',        hex: '#FFC300', available: true, image: 'assets/img/products/pla/amarillo.jpg' },
-      { name: 'Naranja Intenso', hex: '#E85D04', available: true, image: 'assets/img/products/pla/naranja-intenso.jpg' },
-      { name: 'Azul Cielo',      hex: '#6EC1E4', available: true, image: 'assets/img/products/pla/azul-cielo.jpg' },
-      { name: 'Verde Oliva',     hex: '#6B8E23', available: true, image: 'assets/img/products/pla/verde-oliva.jpg' },
-      { name: 'Rojo Cereza',     hex: '#9E1B32', available: true, image: 'assets/img/products/pla/rojo-cereza.jpg' }
+      { name: 'Blanco',          hex: '#F5F5F5', available: true, price: 10500, image: 'assets/img/products/pla/blanco.jpg' },
+      { name: 'Negro',           hex: '#1A1A1A', available: true, price: 10500, image: 'assets/img/products/pla/negro.jpg' },
+      { name: 'Azul',            hex: '#2E6FDB', available: true, price: 11500, image: 'assets/img/products/pla/azul.jpg' },
+      { name: 'Amarillo',        hex: '#FFC300', available: true, price: 11500, image: 'assets/img/products/pla/amarillo.jpg' },
+      { name: 'Naranja Intenso', hex: '#E85D04', available: true, price: 11500, image: 'assets/img/products/pla/naranja-intenso.jpg' },
+      { name: 'Azul Cielo',      hex: '#6EC1E4', available: true, price: 11500, image: 'assets/img/products/pla/azul-cielo.jpg' },
+      { name: 'Verde Oliva',     hex: '#6B8E23', available: true, price: 12000, image: 'assets/img/products/pla/verde-oliva.jpg' },
+      { name: 'Rojo Cereza',     hex: '#9E1B32', available: true, price: 12000, image: 'assets/img/products/pla/rojo-cereza.jpg' }
     ]
   },
 
@@ -91,7 +91,7 @@ const PRODUCTS = {
     weightG: 1000,
     availability: true,
     featured: true,
-    price: 9800,
+    price: 10500,
     spec: '1.75mm · 1kg',
     description: 'El PETG de SUNLU se destaca por su excelente adhesión entre capas, lo que reduce el riesgo de deformación y da como resultado piezas sólidas y estructuralmente resistentes. Es un material de alta tenacidad, resistente a impactos y a ácidos y álcalis, con colores intensos y buena transparencia para piezas que además de funcionales, se ven bien.',
     specs: [
@@ -108,8 +108,8 @@ const PRODUCTS = {
     variantType: 'color',
     mainImage: 'assets/img/products/shared/principal-filamento.jpg',
     variants: [
-      { name: 'Blanco',         hex: '#F5F5F5', available: true, image: 'assets/img/products/petg/blanco.jpg' },
-      { name: 'Marrón Castaño', hex: '#6B4226', available: true, image: 'assets/img/products/petg/marron-castano.jpg' }
+      { name: 'Blanco',         hex: '#F5F5F5', available: true, price: 10500, image: 'assets/img/products/petg/blanco.jpg' },
+      { name: 'Marrón Castaño', hex: '#6B4226', available: true, price: 11500, image: 'assets/img/products/petg/marron-castano.jpg' }
     ]
   },
 
@@ -125,7 +125,7 @@ const PRODUCTS = {
     weightG: 1000,
     availability: true,
     featured: true,
-    price: 13500,
+    price: 16000,
     spec: '405nm · lavable en agua',
     description: 'La resina estándar de SUNLU se lava con agua corriente en vez de alcohol isopropílico (IPA), así que te ahorrás esa compra y el proceso de limpieza es más simple. Cura rápido y fluye muy bien durante la impresión, con alta precisión y bajo encogimiento para piezas con buen nivel de detalle.',
     specs: [
@@ -158,7 +158,7 @@ const PRODUCTS = {
     sku: 'LT-HER-001',
     availability: true,
     featured: true,
-    price: 5500,
+    price: 2000,
     spec: 'Corte diagonal · uso general',
     description: 'Corte limpio y preciso de soportes, rebabas y filamento sobrante sin dañar la pieza. Mango ergonómico antideslizante, ideal para tener siempre junto a la impresora.',
     images: [
@@ -183,7 +183,7 @@ const PRODUCTS = {
     brand: 'Genérico',
     sku: 'LT-REP-001',
     availability: true,
-    price: 6500,
+    price: 11000,
     spec: '26 piezas · 11 bolsas + bomba + clips + desecante',
     description: 'Kit completo para guardar tus rollos de filamento al vacío y protegerlos de la humedad ambiental. Incluye bolsas grandes y medianas, una bomba manual para extraer el aire, clips selladores y paquetes de gel de sílice para mantener todo bien seco.',
     images: [
@@ -208,7 +208,7 @@ const PRODUCTS = {
     brand: 'Genérico',
     sku: 'LT-REP-002',
     availability: true,
-    price: 15000,
+    price: 6000,
     spec: '42×46×43cm · tela oxford',
     description: 'Cubre tu impresora cuando no está en uso, evitando que el polvo se acumule en rieles, boquilla y placa. Tela resistente y fácil de quitar para imprimir en cualquier momento.',
     images: [
@@ -234,7 +234,7 @@ const PRODUCTS = {
     brand: 'Creality',
     sku: 'LT-HER-002',
     availability: true,
-    price: 4000,
+    price: 8000,
     spec: '29cm · acero inoxidable',
     description: 'Herramienta delgada de acero para destapar boquillas obstruidas sin necesidad de desarmar el hotend. Rápida, reutilizable y con mango ergonómico para mayor control.',
     images: [
@@ -258,7 +258,7 @@ const PRODUCTS = {
     brand: 'Genérico',
     sku: 'LT-ELE-001',
     availability: true,
-    price: 8000,
+    price: 1000,
     spec: '1.1 × 2.1cm · NTAG213',
     description: 'Etiquetas NFC en blanco que podés programar con información del filamento, notas de impresión o enlaces — perfectas para identificar rollos, piezas o kits.',
     images: [
@@ -268,7 +268,7 @@ const PRODUCTS = {
     specs: [
       ['Marca', 'Genérico'],
       ['SKU', 'LT-ELE-001'],
-      ['Cantidad', 'Pack de 5'],
+      ['Cantidad', 'Pack de 10'],
       ['Chip', 'NTAG213'],
       ['Tamaño', '1.1 × 2.1cm'],
       ['Compatibilidad', 'Android e iPhone con NFC']
@@ -277,15 +277,15 @@ const PRODUCTS = {
 
   'imanes-neodimio': {
     id: 'imanes-neodimio',
-    name: 'Imanes de Neodimio (Pack de 20)',
+    name: 'Imanes de Neodimio (Pack de 10)',
     categoryLabel: 'Accesorio',
     category: 'imanes',
     brand: 'Genérico',
     sku: 'LT-IMA-001',
     availability: true,
     featured: true,
-    price: 7000,
-    spec: 'Neodimio N35 · pack de 20',
+    price: 500,
+    spec: 'Neodimio N35 · pack de 10',
     description: 'Imanes de neodimio de alta potencia para insertar en piezas impresas: cierres magnéticos, soportes desmontables o conexiones rápidas. Elegí el tamaño según tu proyecto.',
     images: [
       'assets/img/products/imanes/principal.jpg',
@@ -295,7 +295,7 @@ const PRODUCTS = {
       ['Marca', 'Genérico'],
       ['SKU', 'LT-IMA-001'],
       ['Material', 'Neodimio N35'],
-      ['Cantidad', '20 unidades por pack'],
+      ['Cantidad', '10 unidades por pack'],
       ['Forma', 'Cilíndricos']
     ],
     variantLabel: 'Tamaño',
@@ -321,7 +321,7 @@ const PRODUCTS = {
     brand: 'Genérico',
     sku: 'LT-ELE-002',
     availability: true,
-    price: 9000,
+    price: 1000,
     spec: '1.8 × 1.5cm · tipo clicky',
     description: 'Switches mecánicos tipo clicky, populares para quienes arman sus propios teclados con carcasas impresas en 3D. Tacto firme y sonido característico en cada pulsación.',
     images: [
@@ -347,7 +347,7 @@ const PRODUCTS = {
     brand: 'Genérico',
     sku: 'LT-ELE-003',
     availability: true,
-    price: 6000,
+    price: 5500,
     spec: 'Ø60mm · USB · ultra-delgada',
     description: 'Lámpara circular ultra-delgada de aleación de aluminio con conexión USB, ideal para iluminar la cama de impresión o el área de trabajo al hacer ajustes finos o revisar la primera capa. Incluye interruptor en el cable.',
     images: [
@@ -373,8 +373,8 @@ const PRODUCTS = {
     brand: 'Genérico',
     sku: 'LT-INS-001',
     availability: true,
-    price: 5000,
-    spec: 'M3 · pack de 50',
+    price: 1000,
+    spec: 'M3 · pack de 20',
     description: 'Insertos de latón que se instalan con calor en piezas impresas para crear roscas resistentes y reutilizables — mucho más duraderas que roscar directo en el plástico.',
     images: [
       'assets/img/products/roscas-laton/principal.jpg',
@@ -388,7 +388,7 @@ const PRODUCTS = {
       ['Diámetro exterior', '5.0mm'],
       ['Diámetro rosca', '2.5mm'],
       ['Altura total', '4.0mm'],
-      ['Cantidad', 'Pack de 50'],
+      ['Cantidad', 'Pack de 20'],
       ['Instalación', 'Con soldador o herramienta de calor']
     ]
   },
@@ -401,7 +401,7 @@ const PRODUCTS = {
     brand: 'Genérico',
     sku: 'LT-HER-003',
     availability: true,
-    price: 9500,
+    price: 5500,
     spec: 'Desbarbador 5 cuchillas + alicate',
     description: 'Set para dejar tus piezas con un acabado limpio: una herramienta de desbarbado con 5 cuchillas intercambiables para quitar rebabas y líneas de las capas, más un alicate de corte para retirar soportes. Todo lo necesario para pasar de "recién impreso" a "terminado".',
     images: [
@@ -427,7 +427,7 @@ const PRODUCTS = {
     sku: 'LT-HER-004',
     availability: true,
     featured: true,
-    price: 4500,
+    price: 1500,
     spec: '2 tubos · agujas finas',
     description: 'Agujas finas de limpieza para mantener las boquillas libres de residuos y asegurar un flujo de filamento constante. Vienen organizadas en tubos plásticos fáciles de guardar junto a la impresora.',
     images: [
@@ -451,7 +451,7 @@ const PRODUCTS = {
     brand: 'Creality',
     sku: 'LT-REP-003',
     availability: true,
-    price: 5500,
+    price: 4000,
     spec: '10g · 1.2W/m·K',
     description: 'Grasa térmica de Creality para mejorar la transferencia de calor entre el bloque calefactor y el disipador, ayudando a mantener temperaturas estables durante la impresión.',
     images: [
@@ -475,7 +475,7 @@ const PRODUCTS = {
     brand: 'Genérico',
     sku: 'LT-REP-004',
     availability: true,
-    price: 4500,
+    price: 1000,
     spec: 'Silicona · Bambu Lab A1 / A1 mini',
     description: 'Funda térmica de silicona que cubre el hotend y ayuda a mantener el calor, además de proteger el bloque calefactor del polvo y del filamento derretido que pudiera gotear. Diseño específico para Bambu Lab A1 y A1 mini.',
     images: [
