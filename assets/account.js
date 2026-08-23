@@ -20,9 +20,20 @@
     document.getElementById('accountSignInBtn').addEventListener('click', () => window.Clerk.openSignIn({ redirectUrl: window.location.href }));
   }
 
+  function renderUnavailable(){
+    mount.innerHTML = `
+      <div class="account-signed-out">
+        <h2>No pudimos cargar tu cuenta ahora mismo</h2>
+        <p>El inicio de sesión no está disponible en este momento. Podés seguir comprando sin cuenta — el checkout no la necesita — o intentar de nuevo en un rato.</p>
+        <a class="btn btn-ghost" href="tienda.html">Ir a la tienda</a>
+      </div>`;
+  }
+
   async function init(){
     mount.innerHTML = '<p class="account-loading">Cargando…</p>';
     const Clerk = await window.clerkReady;
+
+    if (!Clerk){ renderUnavailable(); return; }
 
     function paint(){
       mount.innerHTML = '';
@@ -30,7 +41,7 @@
         const el = document.createElement('div');
         el.className = 'account-mount';
         mount.appendChild(el);
-        Clerk.mountUserProfile(el, { customPages: [window.LunarAddresses.addressesCustomPage()] });
+        Clerk.mountUserProfile(el, { customPages: [window.LunatechAddresses.addressesCustomPage()] });
       } else {
         renderSignedOut();
       }

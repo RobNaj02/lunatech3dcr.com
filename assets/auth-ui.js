@@ -45,6 +45,16 @@
     const iconSlot = document.getElementById('authSlot');
     const mobileSlot = document.getElementById('authSlotMobile');
 
+    if (!Clerk){
+      /* Clerk no cargó (ver assets/clerk-init.js) — no hay cuentas
+         disponibles por ahora, pero eso no debe bloquear el resto
+         del sitio. Dejamos los slots vacíos en vez de un botón que
+         fallaría al hacer clic. */
+      if (iconSlot) iconSlot.innerHTML = '';
+      if (mobileSlot) mobileSlot.innerHTML = '';
+      return;
+    }
+
     function paint(){
       if (iconSlot){
         iconSlot.innerHTML = '';
@@ -56,7 +66,7 @@
              La página dedicada (mi-cuenta.html) sigue existiendo,
              solo que se llega ahí por el link, no desde acá. */
           Clerk.mountUserButton(iconSlot, {
-            userProfileProps: { customPages: [window.LunarAddresses.addressesCustomPage()] },
+            userProfileProps: { customPages: [window.LunatechAddresses.addressesCustomPage()] },
           });
         }
         else iconSlot.appendChild(signInIcon());

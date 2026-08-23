@@ -41,9 +41,9 @@ if ('IntersectionObserver' in window) {
    between pages (index → tienda → producto) and reopening the
    site later. Falls back gracefully if storage is unavailable.
    ========================================================= */
-const WHATSAPP_NUMBER = '50688019404';
+const WHATSAPP_NUMBER = (window.SITE_CONFIG && window.SITE_CONFIG.whatsappNumber) || '50688019404';
 const CURRENCY = '₡';
-const CART_STORAGE_KEY = 'lunarlab_cart_v1';
+const CART_STORAGE_KEY = 'lunatech3d_cart_v1';
 
 function loadCart(){
   try {
@@ -123,7 +123,7 @@ function renderCart(){
   }
   if (checkoutBtn) checkoutBtn.disabled = false;
   cartItemsEl.innerHTML = cart.map(item => {
-    const available = window.LunarStock ? window.LunarStock.get(item.productId || item.id, item.variantName || '') : null;
+    const available = window.LunatechStock ? window.LunatechStock.get(item.productId || item.id, item.variantName || '') : null;
     const oosNote = available !== null && available < item.qty
       ? `<span class="cart-item-oos">${available > 0 ? `Solo quedan ${available} disponibles` : 'Agotado'} — ajustá la cantidad</span>`
       : '';
@@ -170,12 +170,12 @@ document.addEventListener('click', (e) => {
   const card = btn.closest('[data-id]');
   if (!card) return;
   const productId = card.dataset.id;
-  if (window.LunarStock && window.LunarStock.isOutOfStock(productId, '')){
+  if (window.LunatechStock && window.LunatechStock.isOutOfStock(productId, '')){
     showToast('Este producto está agotado');
     return;
   }
   const existing = cart.find(i => i.id === productId);
-  const available = window.LunarStock ? window.LunarStock.get(productId, '') : null;
+  const available = window.LunatechStock ? window.LunatechStock.get(productId, '') : null;
   if (available !== null && (existing ? existing.qty : 0) + 1 > available){
     showToast(`Solo quedan ${available} unidades disponibles`);
     return;
@@ -201,7 +201,7 @@ if (cartItemsEl){
     const item = cart.find(i => i.id === id);
     if (!item) return;
     if (btn.dataset.action === 'inc'){
-      const available = window.LunarStock ? window.LunarStock.get(item.productId || item.id, item.variantName || '') : null;
+      const available = window.LunatechStock ? window.LunatechStock.get(item.productId || item.id, item.variantName || '') : null;
       if (available !== null && item.qty + 1 > available){
         showToast(available > 0 ? `Solo quedan ${available} unidades disponibles` : 'Este producto está agotado');
       } else {
@@ -219,18 +219,45 @@ document.addEventListener('stock:updated', () => {
   if (checkoutPanel && checkoutPanel.classList.contains('open')) renderOrderSummary();
 });
 
+/* ---------- Foco al abrir/cerrar paneles (carrito, checkout, favoritos) ----------
+   Guarda qué elemento tenía el foco antes de abrir el primer panel
+   para devolvérselo recién cuando se cierra el último (contador de
+   overlays abiertos, no un simple on/off): carrito → checkout es una
+   transición entre paneles, no un cierre real, así que el foco no
+   debe "volver" a la página en el medio de ese paso. Expuesto en
+   window para que store.js pueda usarlo también con el drawer de
+   favoritos, sin duplicar esta lógica. */
+let lastFocusedEl = null;
+let openOverlayCount = 0;
+function trapFocusOpen(closeBtnEl){
+  if (openOverlayCount === 0) lastFocusedEl = document.activeElement;
+  openOverlayCount++;
+  if (closeBtnEl) setTimeout(() => closeBtnEl.focus(), 10);
+}
+function trapFocusClose(){
+  openOverlayCount = Math.max(0, openOverlayCount - 1);
+  if (openOverlayCount === 0 && lastFocusedEl && typeof lastFocusedEl.focus === 'function'){
+    lastFocusedEl.focus();
+    lastFocusedEl = null;
+  }
+}
+window.trapFocusOpen = trapFocusOpen;
+window.trapFocusClose = trapFocusClose;
+
 function openCart(){
   if (!cartDrawer) return;
   renderCart();
   cartDrawer.classList.add('open');
   cartBackdrop.classList.add('open');
   cartDrawer.setAttribute('aria-hidden', 'false');
+  trapFocusOpen(cartClose);
 }
 function closeCart(){
   if (!cartDrawer) return;
   cartDrawer.classList.remove('open');
   cartBackdrop.classList.remove('open');
   cartDrawer.setAttribute('aria-hidden', 'true');
+  trapFocusClose();
 }
 if (cartBtn) cartBtn.addEventListener('click', openCart);
 if (cartClose) cartClose.addEventListener('click', closeCart);
@@ -243,15 +270,15 @@ function escapeHtml(s){
   }[c]));
 }
 function populateSavedAddresses(){
-  if (!savedAddressField || !savedAddressSelect || !window.LunarAddresses) return;
-  const list = window.LunarAddresses.getAddresses();
+  if (!savedAddressField || !savedAddressSelect || !window.LunatechAddresses) return;
+  const list = window.LunatechAddresses.getAddresses();
   savedAddressSelect.innerHTML = '<option value="">Elegí una dirección…</option>' +
     list.map(a => `<option value="${a.id}">${escapeHtml(a.label)}</option>`).join('');
   savedAddressField.style.display = list.length ? 'flex' : 'none';
 }
 if (savedAddressSelect){
   savedAddressSelect.addEventListener('change', () => {
-    const list = window.LunarAddresses ? window.LunarAddresses.getAddresses() : [];
+    const list = window.LunatechAddresses ? window.LunatechAddresses.getAddresses() : [];
     const found = list.find(a => a.id === savedAddressSelect.value);
     if (found && custAddressEl) custAddressEl.value = found.text;
   });
@@ -260,7 +287,7 @@ if (savedAddressSelect){
 function renderOrderSummary(){
   if (!orderSummaryEl) return;
   orderSummaryEl.innerHTML = cart.map(i => {
-    const available = window.LunarStock ? window.LunarStock.get(i.productId || i.id, i.variantName || '') : null;
+    const available = window.LunatechStock ? window.LunatechStock.get(i.productId || i.id, i.variantName || '') : null;
     const warn = available !== null && available < i.qty
       ? `<span class="cart-item-oos">${available > 0 ? `Solo quedan ${available}` : 'Agotado'}</span>`
       : '';
@@ -276,30 +303,40 @@ function openCheckout(){
   checkoutPanel.classList.add('open');
   checkoutBackdrop.classList.add('open');
   checkoutPanel.setAttribute('aria-hidden', 'false');
+  trapFocusOpen(document.getElementById('custName'));
 }
 function closeCheckout(){
   if (!checkoutPanel) return;
   checkoutPanel.classList.remove('open');
   checkoutBackdrop.classList.remove('open');
   checkoutPanel.setAttribute('aria-hidden', 'true');
+  trapFocusClose();
 }
-/* ---------- Auth gate: hay que estar logeado para comprar ----------
-   Navegar, agregar al carrito y usar favoritos/comparador queda libre.
-   El login (Clerk) solo se exige al confirmar la compra. window.clerkReady
-   lo define assets/clerk-init.js (carga compartida, una sola vez). */
-async function requireSignInThenCheckout(){
-  const Clerk = await window.clerkReady;
-  if (Clerk.user){ openCheckout(); return; }
-  const unsubscribe = Clerk.addListener(({ user }) => {
-    if (user){ unsubscribe(); openCheckout(); }
-  });
-  Clerk.openSignIn({ redirectUrl: window.location.href });
-}
-
-if (checkoutBtn) checkoutBtn.addEventListener('click', requireSignInThenCheckout);
+/* ---------- Checkout como invitado ----------
+   La compra NO requiere cuenta: cualquiera puede agregar productos,
+   abrir el carrito y completar el checkout con nombre/teléfono/
+   dirección, sin iniciar sesión. Clerk (mi-cuenta.html) es solo una
+   forma opcional de guardar direcciones entre visitas — si Clerk
+   no está disponible, el checkout igual funciona con normalidad. */
+if (checkoutBtn) checkoutBtn.addEventListener('click', openCheckout);
 if (checkoutClose) checkoutClose.addEventListener('click', closeCheckout);
 if (checkoutBackdrop) checkoutBackdrop.addEventListener('click', closeCheckout);
 if (checkoutBack) checkoutBack.addEventListener('click', () => { closeCheckout(); openCart(); });
+
+/* ---------- Escape cierra el panel que esté abierto ----------
+   Orden de prioridad: checkout (el que está "más arriba") primero,
+   después el carrito, y por último favoritos (drawer manejado en
+   store.js, que expone closeWishlistDrawer para esto). El buscador
+   ya maneja su propio Escape en store.js. */
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  if (checkoutPanel && checkoutPanel.classList.contains('open')) { closeCheckout(); return; }
+  if (cartDrawer && cartDrawer.classList.contains('open')) { closeCart(); return; }
+  const wishlistDrawerEl = document.getElementById('wishlistDrawer');
+  if (wishlistDrawerEl && wishlistDrawerEl.classList.contains('open') && typeof window.closeWishlistDrawer === 'function'){
+    window.closeWishlistDrawer();
+  }
+});
 
 document.querySelectorAll('.pay-option').forEach(opt => {
   opt.addEventListener('click', () => {
@@ -329,10 +366,15 @@ if (checkoutForm){
        todo el carrito en una sola transacción en Supabase. Si algo
        ya no alcanza (otro comprador se lo llevó primero, por ejemplo),
        no se resta nada y se avisa qué ítems hay que ajustar — así
-       nadie termina pidiendo por WhatsApp algo que ya no hay. */
-    if (window.LunarStock && window.LunarStock.client){
+       nadie termina pidiendo por WhatsApp algo que ya no hay.
+       Se llama siempre que exista window.LunatechStock (sin condicionar
+       a ".client"): así, si Supabase está configurado pero su
+       librería no cargó, checkout() decide de forma segura en vez de
+       que este código asuma silenciosamente que no hay nada que
+       validar y deje pasar la venta. */
+    if (window.LunatechStock){
       const items = cart.map(i => ({ productId: i.productId || i.id, variantName: i.variantName || '', qty: i.qty }));
-      const result = await window.LunarStock.checkout(items);
+      const result = await window.LunatechStock.checkout(items);
       if (!result || result.ok === false){
         if (submitBtn) submitBtn.disabled = false;
         if (result && result.failed && result.failed.length){
@@ -341,6 +383,8 @@ if (checkoutForm){
             return match ? match.name : f.product_id;
           }).join(', ');
           showToast(`Sin stock suficiente para: ${names}. Ajustá el carrito.`);
+        } else if (result && result.unavailable){
+          showToast('No pudimos verificar el stock en este momento. Probá de nuevo en unos segundos.');
         } else {
           showToast('No se pudo confirmar el stock. Intentá de nuevo.');
         }
@@ -360,14 +404,35 @@ if (checkoutForm){
     msg += `\nMétodo de pago preferido: ${payLabel}`;
 
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-    window.open(url, '_blank', 'noopener');
+    let waWindow = null;
+    try { waWindow = window.open(url, '_blank', 'noopener'); }
+    catch (err) { console.error('[checkout] window.open falló', err); }
 
+    if (submitBtn) submitBtn.disabled = false;
+
+    if (!waWindow){
+      /* El navegador bloqueó el popup (o window.open falló). No
+         tenemos ninguna confirmación de que el pedido salió, así que
+         el carrito se queda intacto: la persona puede reintentar con
+         este mismo link en vez de perder lo que tenía armado. */
+      showToast('Tu navegador bloqueó la ventana de WhatsApp. Permití popups para este sitio y volvé a intentar.');
+      if (orderSummaryEl) {
+        const existing = orderSummaryEl.querySelector('[data-manual-wa-link]');
+        if (existing) existing.href = url;
+        else orderSummaryEl.insertAdjacentHTML('beforeend',
+          `<a class="btn btn-primary" data-manual-wa-link style="width:100%;justify-content:center;margin-top:12px" href="${url}" target="_blank" rel="noopener">Abrir WhatsApp manualmente</a>`);
+      }
+      return;
+    }
+
+    /* window.open devolvió una ventana: es la confirmación razonable
+       de que el pedido salió para WhatsApp. Recién acá se limpia el
+       carrito — nunca antes de este punto. */
     cart = [];
     renderCart();
     closeCheckout();
     showToast('Pedido enviado por WhatsApp ✓');
     checkoutForm.reset();
-    if (submitBtn) submitBtn.disabled = false;
   });
 }
 
