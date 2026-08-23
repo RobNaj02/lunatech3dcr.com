@@ -53,7 +53,7 @@ const PRODUCTS = {
     featured: true,
     price: 10500,
     spec: '1.75mm · 1kg',
-    description: 'El PLA de SUNLU está pensado para el uso diario: fácil de imprimir, con alta compatibilidad y resultados consistentes desde el primer rollo. Es de origen vegetal y biodegradable, con un encogimiento muy bajo (0.3–0.5%), así que no se agrieta ni se deforma durante la impresión. Al ser tan estable, es una excelente opción si estás iniciando en la impresión 3D y querés buenos resultados sin ajustes complicados.',
+    description: 'El PLA de SUNLU está pensado para el uso diario: fácil de imprimir, con alta compatibilidad y resultados consistentes desde el primer rollo. Es de origen vegetal y biodegradable, con un encogimiento bajo (0.3–0.5% según ficha del fabricante), lo que reduce el riesgo de que se agriete o deforme durante la impresión frente a otros plásticos. Al ser un material estable, es una buena opción si estás iniciando en la impresión 3D y querés buenos resultados sin ajustes complicados.',
     specs: [
       ['Marca', 'SUNLU'],
       ['SKU', 'LT-FIL-PLA-01'],

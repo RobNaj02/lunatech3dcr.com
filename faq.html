@@ -51,7 +51,7 @@
       <button class="search-toggle" id="searchToggle" aria-label="Buscar productos" aria-expanded="false" aria-controls="searchPanel">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
       </button>
-      <a class="btn btn-primary btn-primary-desktop" href="https://wa.me/50688019404?text=Hola%20LUNATECH3D%2C%20quisiera%20hacer%20una%20consulta" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+      <a class="btn btn-primary btn-primary-desktop" href="https://wa.me/50688019404?text=Hola%20LUNATECH3D%2C%20quisiera%20hacer%20una%20consulta" data-wa-link data-wa-text="Hola LUNATECH3D, quisiera hacer una consulta" target="_blank" rel="noopener">Escribir por WhatsApp</a>
       <button class="cart-btn" id="wishlistBtn" aria-label="Ver favoritos">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-4.35-9.5-8.5C.9 8.7 2.6 5 6.2 5c2 0 3.5 1.15 5.8 3.3C14.3 6.15 15.8 5 17.8 5c3.6 0 5.3 3.7 3.7 7.5C19 16.65 12 21 12 21z"/></svg>
         <span class="cart-badge" id="wishlistBadge" style="display:none;">0</span>
@@ -70,7 +70,7 @@
     <div class="search-panel-inner">
       <form class="search-form">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-        <input type="search" id="searchInput" placeholder="Buscar filamentos, resinas, herramientas..." autocomplete="off">
+        <input type="search" id="searchInput" placeholder="Buscar filamentos, resinas, herramientas..." autocomplete="off" aria-label="Buscar productos">
         <button type="button" class="search-close" id="searchClose" aria-label="Cerrar búsqueda"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       </form>
       <div class="search-results" id="searchResults"></div>
@@ -152,7 +152,7 @@
           <h2>Escribinos directamente</h2>
           <p>Te respondemos por WhatsApp — normalmente el mismo día.</p>
           <div class="contact-box-cta">
-            <a class="btn btn-lilac" href="https://wa.me/50688019404?text=Hola%20LUNATECH3D%2C%20tengo%20una%20consulta%20que%20no%20encontr%C3%A9%20en%20las%20FAQ" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+            <a class="btn btn-lilac" href="https://wa.me/50688019404?text=Hola%20LUNATECH3D%2C%20tengo%20una%20consulta%20que%20no%20encontr%C3%A9%20en%20las%20FAQ" data-wa-link data-wa-text="Hola LUNATECH3D, tengo una consulta que no encontré en las FAQ" target="_blank" rel="noopener">Escribir por WhatsApp</a>
           </div>
         </div>
       </div>
@@ -170,16 +170,16 @@
       <li><a href="contacto.html">Contacto</a></li>
       <li><a href="cotizador-3d.html">Calculadora 3D</a></li>
       <li><a href="blog.html">Blog</a></li>
-      <li><a href="https://instagram.com/lunarlab3d" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://instagram.com/lunarlab3d" data-ig-link target="_blank" rel="noopener">Instagram</a></li>
     </ul>
     <div class="foot-newsletter">
       <div class="foot-newsletter-copy">
         <strong>¿Querés enterarte de promociones y productos nuevos?</strong>
-        <p>Dejanos tu correo y te escribimos por WhatsApp cuando tengamos novedades.</p>
+        <p>Dejanos tu correo: al enviarlo se abre WhatsApp para coordinar avisos de promociones y productos nuevos.</p>
       </div>
       <form class="foot-newsletter-form" data-newsletter-form>
         <input type="email" placeholder="tu@correo.com" required aria-label="Correo electrónico">
-        <button type="submit" class="btn btn-primary">Avisenme</button>
+        <button type="submit" class="btn btn-primary">Avísenme</button>
       </form>
     </div>
     <ul class="foot-links foot-links-legal">
@@ -194,13 +194,13 @@
   </div>
 </footer>
 
-<a class="float-wa" href="https://wa.me/50688019404?text=Hola%20LUNATECH3D%2C%20quisiera%20hacer%20una%20consulta" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+<a class="float-wa" href="https://wa.me/50688019404?text=Hola%20LUNATECH3D%2C%20quisiera%20hacer%20una%20consulta" data-wa-link data-wa-text="Hola LUNATECH3D, quisiera hacer una consulta" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2 22l5.41-1.42a9.9 9.9 0 004.63 1.18h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.03c-.24.68-1.4 1.3-1.93 1.36-.5.06-1.02.28-3.42-.72-2.88-1.2-4.74-4.1-4.88-4.29-.14-.19-1.16-1.55-1.16-2.96 0-1.4.74-2.09 1-2.38.26-.28.57-.35.76-.35.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.58.81 2 .88 2.14.07.14.12.31.02.5-.1.19-.15.31-.29.48-.14.17-.3.37-.43.5-.14.14-.29.29-.12.57.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.6-.07.16-.19.68-.79.86-1.06.19-.28.38-.23.63-.14.26.1 1.64.77 1.92.91.28.14.47.21.53.33.07.12.07.68-.17 1.36z"/></svg>
 </a>
 
 <!-- WISHLIST DRAWER -->
 <div class="cart-backdrop" id="wishlistBackdrop"></div>
-<aside class="cart-drawer" id="wishlistDrawer" aria-label="Favoritos" aria-hidden="true">
+<aside class="cart-drawer" id="wishlistDrawer" role="dialog" aria-modal="true" aria-label="Favoritos" aria-hidden="true">
   <div class="cart-head">
     <h2>Tus favoritos</h2>
     <button class="cart-close" id="wishlistClose" aria-label="Cerrar favoritos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
@@ -221,7 +221,7 @@
 
 <!-- CART DRAWER -->
 <div class="cart-backdrop" id="cartBackdrop"></div>
-<aside class="cart-drawer" id="cartDrawer" aria-label="Carrito de compras" aria-hidden="true">
+<aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Carrito de compras" aria-hidden="true">
   <div class="cart-head">
     <h2>Tu carrito</h2>
     <button class="cart-close" id="cartClose" aria-label="Cerrar carrito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
@@ -236,7 +236,7 @@
 
 <!-- CHECKOUT PANEL -->
 <div class="cart-backdrop" id="checkoutBackdrop"></div>
-<aside class="cart-drawer checkout-panel" id="checkoutPanel" aria-label="Finalizar compra" aria-hidden="true">
+<aside class="cart-drawer checkout-panel" id="checkoutPanel" role="dialog" aria-modal="true" aria-label="Finalizar compra" aria-hidden="true">
   <div class="cart-head">
     <button class="back-link" id="checkoutBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg> Volver al carrito</button>
     <button class="cart-close" id="checkoutClose" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
@@ -262,8 +262,8 @@
       <label for="custAddress">Dirección de envío o notas</label>
       <textarea id="custAddress" name="custAddress" rows="2" placeholder="Provincia, cantón, señas... (opcional)"></textarea>
     </div>
-    <div class="field">
-      <label>Método de pago</label>
+    <fieldset class="field">
+      <legend>Método de pago</legend>
       <div class="pay-options">
         <label class="pay-option selected">
           <input type="radio" name="payMethod" value="sinpe" checked>
@@ -278,7 +278,7 @@
           <span><span class="pt">Coordinar por WhatsApp</span><br><span class="ps">Prefiero conversar antes de decidir el método de pago.</span></span>
         </label>
       </div>
-    </div>
+    </fieldset>
     <button type="submit" class="btn btn-lilac">Enviar pedido por WhatsApp</button>
   </form>
 </aside>
@@ -286,6 +286,7 @@
 <!-- TOAST -->
 <div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span>Mensaje</span></div>
 
+<script src="assets/site-config.js"></script>
 <script src="assets/products.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="assets/supabase-config.js"></script>
