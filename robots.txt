@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://lunatech3d.cr/sitemap.xml
+Sitemap: https://lunatech3dcr.com/sitemap.xml

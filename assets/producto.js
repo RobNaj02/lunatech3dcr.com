@@ -14,9 +14,9 @@
 
   document.title = product.name + ' · LUNATECH3D';
 
-  const pageUrl = 'https://lunatech3d.cr/producto.html?id=' + encodeURIComponent(product.id);
+  const pageUrl = 'https://lunatech3dcr.com/producto.html?id=' + encodeURIComponent(product.id);
   const shareDescription = (product.description || '').slice(0, 155).trim();
-  const shareImage = 'https://lunatech3d.cr/' + (product.mainImage || (product.images && product.images[0]) || 'assets/img/icon-mark.svg');
+  const shareImage = 'https://lunatech3dcr.com/' + (product.mainImage || (product.images && product.images[0]) || 'assets/img/icon-mark.svg');
   const setMeta = (id, attr, value) => { const el = document.getElementById(id); if (el) el.setAttribute(attr, value); };
   setMeta('metaDescription', 'content', shareDescription);
   setMeta('canonicalLink', 'href', pageUrl);
@@ -58,8 +58,8 @@
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://lunatech3d.cr/' },
-      { '@type': 'ListItem', position: 2, name: 'Tienda', item: 'https://lunatech3d.cr/tienda.html' },
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://lunatech3dcr.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Tienda', item: 'https://lunatech3dcr.com/tienda.html' },
       { '@type': 'ListItem', position: 3, name: product.name, item: pageUrl }
     ]
   });

@@ -11,7 +11,7 @@
      Si ya existe una cuenta @lunatech3d, actualizá este único
      valor (no lo cambiamos nosotros sin confirmación tuya).
    - whatsappNumber / email: son los que ya estaban en uso.
-   - domain: se asume que lunatech3d.cr es el dominio de
+   - domain: se asume que lunatech3dcr.com es el dominio de
      producción real porque ya se usaba como canonical/sitemap
      en todo el proyecto. Si todavía no está activo, avisá para
      ajustar el SEO a la URL que sí esté publicada.
@@ -23,7 +23,7 @@ window.SITE_CONFIG = {
   email: 'robi.bilps@gmail.com',
   instagramHandle: '@lunarlab3d',       // TODO(dueño): actualizar si cambia la cuenta
   instagramUrl: 'https://instagram.com/lunarlab3d',
-  domain: 'https://lunatech3d.cr'
+  domain: 'https://lunatech3dcr.com'
 };
 
 /* ---------- Criterio de precios / IVA ----------
