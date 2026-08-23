@@ -62,16 +62,29 @@ function toBase(displayValue, curr){
 function fmtMoney(baseCRC, curr){
   const val = toDisplay(baseCRC, curr);
   if (curr === 'USD') return '$' + val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  return '₡' + Math.round(val).toLocaleString('es-CR');
+  return typeof formatCRC === 'function' ? formatCRC(val) : '₡' + Math.round(val).toLocaleString('es-CR');
 }
 function fmtDual(baseCRC, primaryCurr){
   const secondaryCurr = primaryCurr === 'USD' ? 'CRC' : 'USD';
   return { primary: fmtMoney(baseCRC, primaryCurr), secondary: fmtMoney(baseCRC, secondaryCurr) };
 }
 
+/* Todos los inputs numéricos de la calculadora ya declaran min/max
+   en el HTML, pero eso solo limita las flechitas del input — un
+   valor negativo o fuera de rango tecleado a mano no se bloquea
+   solo. Este helper aplica ese mismo min/max al leer el valor, para
+   que un peso o porcentaje negativo (o un 500% de fallos) no
+   produzca un precio absurdo o negativo. */
+function clampToRange(el, value){
+  if (!el) return value;
+  if (el.min !== ''){ const min = parseFloat(el.min); if (!isNaN(min)) value = Math.max(value, min); }
+  if (el.max !== ''){ const max = parseFloat(el.max); if (!isNaN(max)) value = Math.min(value, max); }
+  return value;
+}
 function num(id){
   const el = document.getElementById(id);
-  return el ? (parseFloat(el.value) || 0) : 0;
+  if (!el) return 0;
+  return clampToRange(el, parseFloat(el.value) || 0);
 }
 function baseOf(id){
   const el = document.getElementById(id);
@@ -101,7 +114,7 @@ btnCRC.addEventListener('click', () => setCurrency('CRC'));
 btnUSD.addEventListener('click', () => setCurrency('USD'));
 
 exchangeRateInput.addEventListener('input', () => {
-  exchangeRate = parseFloat(exchangeRateInput.value) || 1;
+  exchangeRate = clampToRange(exchangeRateInput, parseFloat(exchangeRateInput.value) || 1) || 1;
   refreshMoneyFieldsDisplay();
   calculate();
 });
@@ -110,7 +123,7 @@ MONEY_FIELD_IDS.forEach(id => {
   const el = document.getElementById(id);
   if (!el) return;
   el.addEventListener('input', () => {
-    el.dataset.base = toBase(parseFloat(el.value) || 0, currency);
+    el.dataset.base = toBase(clampToRange(el, parseFloat(el.value) || 0), currency);
     calculate();
   });
 });

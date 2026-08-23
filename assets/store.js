@@ -17,8 +17,11 @@
   const COMPARE_MAX = 4;
   const RECENT_MAX = 8;
 
+  /* Minúsculas + sin tildes + espacios repetidos/al borde colapsados,
+     para que "  PLA  " o "pla   blanco" encuentren lo mismo que
+     "pla blanco" en vez de fallar por espacios de más. */
   function normalize(s){
-    return (s || '').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    return (s || '').toString().trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ');
   }
 
   function escapeHtml(s){
@@ -275,11 +278,13 @@
       if (emptyStateEl){
         if (list.length === 0){
           emptyStateEl.style.display = 'block';
-          emptyStateEl.textContent = activeCategoryComingSoon()
+          const message = activeCategoryComingSoon()
             ? 'Esta categoría llega pronto a LUNATECH3D — escribinos por WhatsApp si la necesitás antes.'
-            : (state.q ? `No encontramos productos para "${state.q}".` : 'No hay productos que coincidan con estos filtros.');
+            : (state.q ? `No encontramos productos para "${escapeHtml(state.q)}".` : 'No hay productos que coincidan con estos filtros.');
+          emptyStateEl.innerHTML = `<p>${message}</p><button type="button" class="btn btn-ghost" data-reset-filters>Ver todo el catálogo</button>`;
         } else {
           emptyStateEl.style.display = 'none';
+          emptyStateEl.innerHTML = '';
         }
       }
       renderGroupTabs();
@@ -320,6 +325,18 @@
     if (priceMaxEl) priceMaxEl.addEventListener('input', () => { state.priceMax = priceMaxEl.value ? Number(priceMaxEl.value) : null; render(); });
     if (activeQueryEl) activeQueryEl.addEventListener('click', () => {
       state.q = '';
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) searchInput.value = '';
+      syncURL(); render();
+    });
+    if (emptyStateEl) emptyStateEl.addEventListener('click', (e) => {
+      if (!e.target.closest('[data-reset-filters]')) return;
+      state.group = 'todos'; state.cat = 'todos'; state.q = '';
+      state.brand = 'todas'; state.onlyAvailable = false; state.priceMin = null; state.priceMax = null;
+      if (brandSelectEl) brandSelectEl.value = 'todas';
+      if (availabilityEl) availabilityEl.checked = false;
+      if (priceMinEl) priceMinEl.value = '';
+      if (priceMaxEl) priceMaxEl.value = '';
       const searchInput = document.getElementById('searchInput');
       if (searchInput) searchInput.value = '';
       syncURL(); render();
@@ -409,8 +426,28 @@
      Todo persistido en localStorage — no requiere cuenta ni backend.
      ========================================================= */
 
+  /* Migración desde las claves viejas 'lunarlab_*' (antes de renombrar
+     el proyecto internamente a LUNATECH3D): si ya existía una lista
+     guardada con el nombre viejo, se copia una sola vez a la clave
+     nueva en vez de dejarla "perdida". */
+  const LEGACY_KEYS = {
+    [WISHLIST_KEY]: 'lunarlab_wishlist_v1',
+    [COMPARE_KEY]: 'lunarlab_compare_v1',
+    [RECENT_KEY]: 'lunarlab_recent_v1'
+  };
   function readList(key){
-    try { const raw = localStorage.getItem(key); const parsed = raw ? JSON.parse(raw) : []; return Array.isArray(parsed) ? parsed : []; }
+    try {
+      let raw = localStorage.getItem(key);
+      if (raw === null && LEGACY_KEYS[key]){
+        const legacy = localStorage.getItem(LEGACY_KEYS[key]);
+        if (legacy !== null){
+          raw = legacy;
+          try { localStorage.setItem(key, legacy); localStorage.removeItem(LEGACY_KEYS[key]); } catch (e) { /* storage unavailable */ }
+        }
+      }
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    }
     catch (e) { return []; }
   }
   function writeList(key, list){ try { localStorage.setItem(key, JSON.stringify(list)); } catch (e) {} }
@@ -464,7 +501,7 @@
     const ids = readList(WISHLIST_KEY);
     if (badge){ badge.textContent = ids.length; badge.style.display = ids.length ? 'flex' : 'none'; }
     if (!itemsEl) return;
-    if (!ids.length){ itemsEl.innerHTML = '<p class="cart-empty">Todavía no guardaste productos. Tocá el corazón en cualquier producto para guardarlo acá.</p>'; return; }
+    if (!ids.length){ itemsEl.innerHTML = '<p class="cart-empty">Todavía no guardaste productos. Tocá el corazón en cualquier producto para guardarlo acá.</p><a class="btn btn-ghost" style="width:100%;justify-content:center" href="tienda.html">Ver catálogo</a>'; return; }
     itemsEl.innerHTML = ids.map(id => {
       const p = PRODUCTS[id];
       if (!p) return '';

@@ -8,6 +8,7 @@
    ========================================================= */
 (function(){
   const KEY_PREFIX = 'lunatech3d_addresses_';
+  const LEGACY_KEY_PREFIX = 'lunarlab_addresses_';
 
   function escapeHtml(s){
     return (s || '').toString().replace(/[&<>"']/g, (c) => ({
@@ -24,7 +25,18 @@
     const key = storageKey();
     if (!key) return [];
     try {
-      const raw = localStorage.getItem(key);
+      let raw = localStorage.getItem(key);
+      if (raw === null){
+        /* Migración desde 'lunarlab_addresses_<uid>' (nombre viejo de
+           antes del rebranding a LUNATECH3D), para no perder
+           direcciones ya guardadas por cuentas existentes. */
+        const uid = key.slice(KEY_PREFIX.length);
+        const legacy = localStorage.getItem(LEGACY_KEY_PREFIX + uid);
+        if (legacy !== null){
+          raw = legacy;
+          try { localStorage.setItem(key, legacy); localStorage.removeItem(LEGACY_KEY_PREFIX + uid); } catch (e) { /* storage unavailable */ }
+        }
+      }
       const parsed = raw ? JSON.parse(raw) : [];
       return Array.isArray(parsed) ? parsed : [];
     } catch (e) { return []; }

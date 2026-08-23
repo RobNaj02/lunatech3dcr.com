@@ -448,6 +448,7 @@ section .head p{color:var(--ink-soft);margin-top:14px;font-size:16px;line-height
 .store-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
 .store-grid .prod-card{position:relative;}
 .empty-state{text-align:center;padding:60px 20px;color:var(--ink-faint);font-size:14.5px;}
+.empty-state p{margin-bottom:18px;}
 
 /* store toolbar: group tabs + result count + active query */
 .store-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px;}
@@ -567,7 +568,8 @@ section .head p{color:var(--ink-soft);margin-top:14px;font-size:16px;line-height
 .contact-box-centered{grid-template-columns:1fr;text-align:center;}
 .contact-box-centered .contact-copy{max-width:520px;margin:0 auto;}
 .contact-box-centered .contact-copy p{margin:0 auto;}
-.contact-box-cta{margin-top:20px;}
+.contact-box-cta{margin-top:20px;display:flex;gap:14px;flex-wrap:wrap;}
+.contact-box-centered .contact-box-cta{justify-content:center;}
 .btn-ghost-dark{border-color:rgba(255,255,255,.28);color:#fff;}
 .btn-ghost-dark:hover{border-color:#fff;background:rgba(255,255,255,0.08);}
 .process-head{margin-bottom:44px;}

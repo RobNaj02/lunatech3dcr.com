@@ -52,6 +52,24 @@ function priceSuffix(){
 }
 window.priceSuffix = priceSuffix;
 
+/* ---------- Formato de colones ----------
+   No usamos `n.toLocaleString('es-CR')` para mostrar precios: el
+   separador de miles que produce esa configuración regional varía
+   según el navegador/motor (Node en este mismo proyecto lo muestra
+   con un espacio, no con punto), así que dos personas podían ver
+   "₡10 500" y "₡10,500" en vez del mismo número. Este formateador
+   fijo siempre usa punto como separador de miles (la convención
+   usada en Costa Rica: ₡10.000), sin depender de esa configuración
+   regional del navegador. Es el único lugar del proyecto que arma
+   el símbolo ₡ + monto — todo lo demás llama a esto. */
+function formatCRC(amount){
+  const rounded = Math.round(amount) || 0;
+  const sign = rounded < 0 ? '-' : '';
+  const digits = Math.abs(rounded).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  return sign + '₡' + digits;
+}
+window.formatCRC = formatCRC;
+
 /* ---------- Helper de enlace de WhatsApp ----------
    Arma la URL de wa.me con el número centralizado de arriba,
    para no repetir '50688019404' en cada script. */

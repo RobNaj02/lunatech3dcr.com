@@ -45,9 +45,21 @@ const WHATSAPP_NUMBER = (window.SITE_CONFIG && window.SITE_CONFIG.whatsappNumber
 const CURRENCY = '₡';
 const CART_STORAGE_KEY = 'lunatech3d_cart_v1';
 
+/* Migración desde la clave vieja 'lunarlab_cart_v1' (usada antes de
+   renombrar internamente el proyecto a LUNATECH3D): si alguien ya
+   tenía productos guardados con esa clave, se copian una sola vez a
+   la nueva y se borra la vieja — así nadie pierde su carrito por un
+   cambio de nombre interno. */
 function loadCart(){
   try {
-    const raw = localStorage.getItem(CART_STORAGE_KEY);
+    let raw = localStorage.getItem(CART_STORAGE_KEY);
+    if (raw === null){
+      const legacy = localStorage.getItem('lunarlab_cart_v1');
+      if (legacy !== null){
+        raw = legacy;
+        try { localStorage.setItem(CART_STORAGE_KEY, legacy); localStorage.removeItem('lunarlab_cart_v1'); } catch (e) { /* storage unavailable */ }
+      }
+    }
     const parsed = raw ? JSON.parse(raw) : [];
     return Array.isArray(parsed) ? parsed : [];
   } catch (e) {
@@ -84,7 +96,7 @@ const custAddressEl = document.getElementById('custAddress');
 
 const toastEl = document.getElementById('toast');
 
-function money(n){ return CURRENCY + n.toLocaleString('es-CR'); }
+function money(n){ return typeof formatCRC === 'function' ? formatCRC(n) : CURRENCY + Math.round(n).toLocaleString('es-CR'); }
 
 function showToast(msg){
   if (!toastEl) return;
@@ -116,7 +128,7 @@ function renderCart(){
   if (!cartItemsEl) return;
   updateBadge();
   if (cart.length === 0){
-    cartItemsEl.innerHTML = '<p class="cart-empty">Tu carrito está vacío.<br>Agregá productos desde el catálogo.</p>';
+    cartItemsEl.innerHTML = '<p class="cart-empty">Tu carrito está vacío.<br>Agregá productos desde el catálogo.</p><a class="btn btn-ghost" style="width:100%;justify-content:center" href="tienda.html">Ver catálogo</a>';
     if (checkoutBtn) checkoutBtn.disabled = true;
     if (cartSubtotalEl) cartSubtotalEl.textContent = money(0);
     return;
@@ -217,6 +229,22 @@ if (cartItemsEl){
 document.addEventListener('stock:updated', () => {
   renderCart();
   if (checkoutPanel && checkoutPanel.classList.contains('open')) renderOrderSummary();
+});
+
+/* ---------- Sincronizar el carrito entre pestañas ----------
+   El evento "storage" solo se dispara en OTRAS pestañas del mismo
+   navegador cuando cambia localStorage — así, si agregás algo desde
+   la pestaña A, la pestaña B (que tenía su propia copia en memoria)
+   se entera y actualiza el carrito/badge en vez de quedarse
+   desactualizada hasta que la recarguen. La validación de stock real
+   sigue pasando siempre por Supabase al momento de cada checkout, así
+   que esto es solo para que la interfaz no mienta entre pestañas. */
+window.addEventListener('storage', (e) => {
+  if (e.key === CART_STORAGE_KEY){
+    cart = loadCart();
+    renderCart();
+    if (checkoutPanel && checkoutPanel.classList.contains('open')) renderOrderSummary();
+  }
 });
 
 /* ---------- Foco al abrir/cerrar paneles (carrito, checkout, favoritos) ----------
@@ -360,7 +388,13 @@ if (checkoutForm){
     }
 
     const submitBtn = checkoutForm.querySelector('button[type="submit"]');
-    if (submitBtn) submitBtn.disabled = true;
+    const submitBtnOriginalText = submitBtn ? submitBtn.textContent : '';
+    function setSubmitState(disabled, label){
+      if (!submitBtn) return;
+      submitBtn.disabled = disabled;
+      submitBtn.textContent = label || submitBtnOriginalText;
+    }
+    setSubmitState(true, 'Verificando disponibilidad…');
 
     /* Última validación, justo antes de "vender": resta el stock de
        todo el carrito en una sola transacción en Supabase. Si algo
@@ -376,7 +410,7 @@ if (checkoutForm){
       const items = cart.map(i => ({ productId: i.productId || i.id, variantName: i.variantName || '', qty: i.qty }));
       const result = await window.LunatechStock.checkout(items);
       if (!result || result.ok === false){
-        if (submitBtn) submitBtn.disabled = false;
+        setSubmitState(false);
         if (result && result.failed && result.failed.length){
           const names = result.failed.map(f => {
             const match = cart.find(i => (i.productId || i.id) === f.product_id && (i.variantName || '') === f.variant_name);
@@ -393,6 +427,8 @@ if (checkoutForm){
       }
     }
 
+    setSubmitState(true, 'Generando pedido…');
+
     const payLabel = payMethod ? payMethod.parentElement.querySelector('.pt').textContent : 'A coordinar';
 
     let msg = `Hola LUNATECH3D! Quiero hacer este pedido:\n\n`;
@@ -408,7 +444,7 @@ if (checkoutForm){
     try { waWindow = window.open(url, '_blank', 'noopener'); }
     catch (err) { console.error('[checkout] window.open falló', err); }
 
-    if (submitBtn) submitBtn.disabled = false;
+    setSubmitState(false);
 
     if (!waWindow){
       /* El navegador bloqueó el popup (o window.open falló). No

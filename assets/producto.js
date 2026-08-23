@@ -43,7 +43,11 @@
       url: pageUrl,
       priceCurrency: 'CRC',
       price: product.price,
-      availability: 'https://schema.org/InStock'
+      /* Refleja el flag estático de products.js, no el stock en vivo
+         de Supabase (ese llega después, de forma asíncrona, y esta
+         etiqueta se genera en la carga inicial). Antes decía
+         "InStock" siempre, sin importar la disponibilidad real. */
+      availability: product.availability === false ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock'
     }
   });
   document.head.appendChild(productLd);
@@ -113,13 +117,14 @@
   document.getElementById('pSpec').textContent = product.spec;
   const pPriceEl = document.getElementById('pPrice');
   const priceSuffixLabel = typeof priceSuffix === 'function' ? priceSuffix() : '+ IVA';
+  function fmt(n){ return typeof formatCRC === 'function' ? formatCRC(n) : '₡' + n.toLocaleString('es-CR'); }
   function renderPrice(){
     if (selectedVariant && selectedVariant.price != null){
-      pPriceEl.innerHTML = '₡' + selectedVariant.price.toLocaleString('es-CR') + ' <span>' + priceSuffixLabel + '</span>';
+      pPriceEl.innerHTML = fmt(selectedVariant.price) + ' <span>' + priceSuffixLabel + '</span>';
       return;
     }
     const priceInfo = typeof productPriceInfo === 'function' ? productPriceInfo(product) : { price: product.price, isRange: false };
-    pPriceEl.innerHTML = (priceInfo.isRange ? 'Desde ' : '') + '₡' + priceInfo.price.toLocaleString('es-CR') + ' <span>' + priceSuffixLabel + '</span>';
+    pPriceEl.innerHTML = (priceInfo.isRange ? 'Desde ' : '') + fmt(priceInfo.price) + ' <span>' + priceSuffixLabel + '</span>';
   }
   document.getElementById('pDesc').textContent = product.description;
 
