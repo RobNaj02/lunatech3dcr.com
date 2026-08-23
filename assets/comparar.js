@@ -31,7 +31,7 @@
     const priceRow = `
       <tr>
         <td class="compare-row-label">Precio</td>
-        ${items.map(p => { const pi = productPriceInfo(p); return `<td class="compare-price">${pi.isRange ? 'Desde ' : ''}${money(pi.price)}<span>+ IVA</span></td>`; }).join('')}
+        ${items.map(p => { const pi = productPriceInfo(p); return `<td class="compare-price">${pi.isRange ? 'Desde ' : ''}${money(pi.price)}<span>${typeof priceSuffix === "function" ? priceSuffix() : "+ IVA"}</span></td>`; }).join('')}
       </tr>`;
 
     const specRows = labels.map(label => `

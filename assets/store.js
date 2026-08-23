@@ -11,9 +11,9 @@
      bloque de wishlist/comparar. Un "const" definido más abajo pero
      usado antes de ejecutarse revienta con un ReferenceError (temporal
      dead zone) — por eso viven acá arriba, no junto a sus funciones. */
-  const WISHLIST_KEY = 'lunarlab_wishlist_v1';
-  const COMPARE_KEY = 'lunarlab_compare_v1';
-  const RECENT_KEY = 'lunarlab_recent_v1';
+  const WISHLIST_KEY = 'lunatech3d_wishlist_v1';
+  const COMPARE_KEY = 'lunatech3d_compare_v1';
+  const RECENT_KEY = 'lunatech3d_recent_v1';
   const COMPARE_MAX = 4;
   const RECENT_MAX = 8;
 
@@ -44,21 +44,21 @@
   window.productPriceInfo = productPriceInfo;
 
   /* ---------- STOCK EN VIVO ----------
-     LunarStock.get() devuelve null mientras Supabase todavía no
+     LunatechStock.get() devuelve null mientras Supabase todavía no
      cargó — en ese caso no mostramos nada de stock y confiamos
      en el "availability" estático de products.js hasta que llegue
      el dato real (evita parpadeos de "Agotado" en el primer render). */
   function getProductStockInfo(p){
-    if (!window.LunarStock) return { known: false, outOfStock: false, low: false, total: null };
+    if (!window.LunatechStock) return { known: false, outOfStock: false, low: false, total: null };
     const hasVariants = p.variants && p.variants.length > 0;
     if (!hasVariants){
-      const q = window.LunarStock.get(p.id, '');
+      const q = window.LunatechStock.get(p.id, '');
       if (q === null) return { known: false, outOfStock: false, low: false, total: null };
       return { known: true, outOfStock: q <= 0, low: q > 0 && q <= 5, total: q };
     }
     let sawKnown = false, total = 0;
     p.variants.forEach(v => {
-      const q = window.LunarStock.get(p.id, v.name);
+      const q = window.LunatechStock.get(p.id, v.name);
       if (q !== null){ sawKnown = true; total += Math.max(q, 0); }
     });
     if (!sawKnown) return { known: false, outOfStock: false, low: false, total: null };
@@ -117,7 +117,7 @@
         ${colorDots}
         <label class="card-compare"><input type="checkbox" data-compare="${p.id}"${isCompared ? ' checked' : ''}> Comparar</label>
         <div class="prod-foot">
-          <div class="prod-price">${priceInfo.isRange ? 'Desde ' : ''}${money(priceInfo.price)}<span>+ IVA</span></div>
+          <div class="prod-price">${priceInfo.isRange ? 'Desde ' : ''}${money(priceInfo.price)}<span>${typeof priceSuffix === "function" ? priceSuffix() : "+ IVA"}</span></div>
           ${footBtn}
         </div>
       </div>`;
@@ -516,8 +516,20 @@
   const wishlistDrawer = document.getElementById('wishlistDrawer');
   const wishlistBackdrop = document.getElementById('wishlistBackdrop');
   const wishlistClose = document.getElementById('wishlistClose');
-  function openWishlist(){ if (!wishlistDrawer) return; renderWishlistDrawer(); wishlistDrawer.classList.add('open'); wishlistBackdrop.classList.add('open'); wishlistDrawer.setAttribute('aria-hidden', 'false'); }
-  function closeWishlist(){ if (!wishlistDrawer) return; wishlistDrawer.classList.remove('open'); wishlistBackdrop.classList.remove('open'); wishlistDrawer.setAttribute('aria-hidden', 'true'); }
+  function openWishlist(){
+    if (!wishlistDrawer) return;
+    renderWishlistDrawer();
+    wishlistDrawer.classList.add('open'); wishlistBackdrop.classList.add('open');
+    wishlistDrawer.setAttribute('aria-hidden', 'false');
+    if (typeof window.trapFocusOpen === 'function') window.trapFocusOpen(wishlistClose);
+  }
+  function closeWishlist(){
+    if (!wishlistDrawer) return;
+    wishlistDrawer.classList.remove('open'); wishlistBackdrop.classList.remove('open');
+    wishlistDrawer.setAttribute('aria-hidden', 'true');
+    if (typeof window.trapFocusClose === 'function') window.trapFocusClose();
+  }
+  window.closeWishlistDrawer = closeWishlist;
   if (wishlistBtn) wishlistBtn.addEventListener('click', openWishlist);
   if (wishlistClose) wishlistClose.addEventListener('click', closeWishlist);
   if (wishlistBackdrop) wishlistBackdrop.addEventListener('click', closeWishlist);

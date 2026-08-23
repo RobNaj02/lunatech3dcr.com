@@ -112,13 +112,14 @@
   document.getElementById('pName').textContent = product.name;
   document.getElementById('pSpec').textContent = product.spec;
   const pPriceEl = document.getElementById('pPrice');
+  const priceSuffixLabel = typeof priceSuffix === 'function' ? priceSuffix() : '+ IVA';
   function renderPrice(){
     if (selectedVariant && selectedVariant.price != null){
-      pPriceEl.innerHTML = '₡' + selectedVariant.price.toLocaleString('es-CR') + ' <span>+ IVA</span>';
+      pPriceEl.innerHTML = '₡' + selectedVariant.price.toLocaleString('es-CR') + ' <span>' + priceSuffixLabel + '</span>';
       return;
     }
     const priceInfo = typeof productPriceInfo === 'function' ? productPriceInfo(product) : { price: product.price, isRange: false };
-    pPriceEl.innerHTML = (priceInfo.isRange ? 'Desde ' : '') + '₡' + priceInfo.price.toLocaleString('es-CR') + ' <span>+ IVA</span>';
+    pPriceEl.innerHTML = (priceInfo.isRange ? 'Desde ' : '') + '₡' + priceInfo.price.toLocaleString('es-CR') + ' <span>' + priceSuffixLabel + '</span>';
   }
   document.getElementById('pDesc').textContent = product.description;
 
@@ -221,7 +222,7 @@
   }
 
   /* ---------- Stock en vivo ----------
-     window.LunarStock (assets/inventory.js) trae la cantidad real
+     window.LunatechStock (assets/inventory.js) trae la cantidad real
      desde Supabase y avisa cambios con el evento "stock:updated".
      Antes de que cargue (o si Supabase no está configurado todavía)
      .get() devuelve null y esta UI se apoya solo en los flags
@@ -245,8 +246,8 @@
       return;
     }
     addBtn.disabled = false;
-    if (!window.LunarStock){ if (stockNoteEl) stockNoteEl.textContent = ''; return; }
-    const q = window.LunarStock.get(product.id, currentVariantName());
+    if (!window.LunatechStock){ if (stockNoteEl) stockNoteEl.textContent = ''; return; }
+    const q = window.LunatechStock.get(product.id, currentVariantName());
     if (q === null){ if (stockNoteEl) stockNoteEl.textContent = ''; return; } // aún cargando
     if (q <= 0){
       addBtn.disabled = true;
@@ -269,7 +270,7 @@
     // Si la opción elegida se quedó sin stock, soltala para que el
     // comprador tenga que elegir otra en vez de dejarla "seleccionada"
     // mintiendo disponibilidad.
-    if (selectedVariant && window.LunarStock && window.LunarStock.isOutOfStock(product.id, selectedVariant.name)){
+    if (selectedVariant && window.LunatechStock && window.LunatechStock.isOutOfStock(product.id, selectedVariant.name)){
       selectedVariant = null;
       pickedLabel.textContent = '— elegí una opción';
       addNote.style.display = '';
@@ -277,7 +278,7 @@
     }
 
     swatchesEl.innerHTML = product.variants.map((v, idx) => {
-      const outOfStock = window.LunarStock && window.LunarStock.isOutOfStock(product.id, v.name);
+      const outOfStock = window.LunatechStock && window.LunatechStock.isOutOfStock(product.id, v.name);
       const unavailable = v.available === false || outOfStock;
       const isSelected = selectedVariant === v;
       if (isColor){
@@ -331,7 +332,7 @@
     qtyValEl.textContent = qty;
   });
   document.getElementById('qtyInc').addEventListener('click', () => {
-    const available = window.LunarStock ? window.LunarStock.get(product.id, currentVariantName()) : null;
+    const available = window.LunatechStock ? window.LunatechStock.get(product.id, currentVariantName()) : null;
     if (available !== null && qty + 1 > available){
       showToast(`Solo quedan ${available} unidades disponibles`);
       return;
@@ -343,7 +344,7 @@
   addBtn.addEventListener('click', () => {
     if (hasVariants && !selectedVariant) return;
     const variantName = currentVariantName();
-    if (window.LunarStock && window.LunarStock.isOutOfStock(product.id, variantName)){
+    if (window.LunatechStock && window.LunatechStock.isOutOfStock(product.id, variantName)){
       showToast('Este producto está agotado');
       updateStockUI();
       return;
@@ -355,7 +356,7 @@
 
     const existing = cart.find(i => i.id === itemId);
     const nextQty = (existing ? existing.qty : 0) + qty;
-    const available = window.LunarStock ? window.LunarStock.get(product.id, variantName) : null;
+    const available = window.LunatechStock ? window.LunatechStock.get(product.id, variantName) : null;
     if (available !== null && nextQty > available){
       showToast(`Solo quedan ${available} unidades disponibles`);
       return;

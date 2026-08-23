@@ -7,7 +7,7 @@
    (assets/account.js) y el checkout (assets/main.js).
    ========================================================= */
 (function(){
-  const KEY_PREFIX = 'lunarlab_addresses_';
+  const KEY_PREFIX = 'lunatech3d_addresses_';
 
   function escapeHtml(s){
     return (s || '').toString().replace(/[&<>"']/g, (c) => ({
@@ -113,5 +113,5 @@
     };
   }
 
-  window.LunarAddresses = { getAddresses, addAddress, removeAddress, addressesCustomPage };
+  window.LunatechAddresses = { getAddresses, addAddress, removeAddress, addressesCustomPage };
 })();
