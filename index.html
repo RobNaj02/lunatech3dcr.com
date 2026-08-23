@@ -55,6 +55,7 @@
 </head>
 <body>
 <a href="#main" class="skip-link">Saltar al contenido</a>
+<noscript><div class="noscript-banner">Este sitio necesita JavaScript para mostrar el catálogo, el carrito y el checkout. Activalo en tu navegador o escribinos directo por <a href="https://wa.me/50688019404">WhatsApp</a>.</div></noscript>
 
 <header>
   <nav class="nav">
@@ -175,7 +176,7 @@
     <div class="wrap">
       <div class="head reveal">
         <p class="eyebrow">Nuestro catálogo</p>
-        <h2>Todo lo que necesita tu impresora, en un solo lugar</h2>
+        <h2>Materiales y accesorios esenciales para tu impresora</h2>
       </div>
       <div class="cat-grid">
         <a href="tienda.html?group=filamentos" class="cat-card c1 starfield reveal">
@@ -253,7 +254,7 @@
         <p>LUNATECH3D nació de la misma frustración que probablemente conocés: rollos que absorben humedad, resinas que rinden distinto entre lotes, accesorios genéricos que aguantan una sola impresión. Por eso probamos cada producto en nuestras propias impresoras antes de ponerlo en la tienda.</p>
         <ul class="about-list">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Filamentos almacenados en seco, listos para imprimir</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Resinas de lotes verificados, sin sorpresas de curado</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Resinas de lotes que probamos antes de vender</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Soporte real por WhatsApp — respondemos personas, no un bot</li>
         </ul>
       </div>
@@ -389,8 +390,12 @@
       <select id="savedAddressSelect"><option value="">Elegí una dirección…</option></select>
     </div>
     <div class="field">
-      <label for="custAddress">Dirección de envío o notas</label>
-      <textarea id="custAddress" name="custAddress" rows="2" placeholder="Provincia, cantón, señas... (opcional)"></textarea>
+      <label for="custAddress">Dirección de entrega</label>
+      <textarea id="custAddress" name="custAddress" rows="2" required placeholder="Provincia, cantón, señas para encontrar el lugar..."></textarea>
+    </div>
+    <div class="field">
+      <label for="custNotes">Notas adicionales (opcional)</label>
+      <textarea id="custNotes" name="custNotes" rows="2" placeholder="Ej. horario para recibir, referencias, algo que debamos saber..."></textarea>
     </div>
     <fieldset class="field">
       <legend>Método de pago</legend>
@@ -409,7 +414,9 @@
         </label>
       </div>
     </fieldset>
+    <div class="order-summary" id="finalReview" aria-live="polite"></div>
     <button type="submit" class="btn btn-lilac">Enviar pedido por WhatsApp</button>
+    <p class="add-note">Esto abre WhatsApp con tu pedido listo para enviar — todavía no es un pago confirmado. El pago y los últimos detalles se coordinan directamente en esa conversación.</p>
   </form>
 </aside>
 

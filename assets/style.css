@@ -32,6 +32,11 @@ html{scroll-behavior:smooth;}
   transition:top .15s ease;
 }
 .skip-link:focus{top:12px;}
+.noscript-banner{
+  background:var(--warn-mist);color:var(--ink);text-align:center;padding:14px 20px;
+  font-family:'Outfit',sans-serif;font-size:14px;line-height:1.5;border-bottom:1px solid var(--line);
+}
+.noscript-banner a{font-weight:600;text-decoration:underline;color:var(--ink);}
 body{
   margin:0;
   font-family:'Outfit',sans-serif;
@@ -163,6 +168,8 @@ header{
 .nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1.5px;background:var(--lilac-deep);transition:width .2s ease;}
 .nav-links a:hover{color:var(--ink);}
 .nav-links a:hover::after{width:100%;}
+.nav-links a.active{color:var(--ink);font-weight:600;}
+.nav-links a.active::after{width:100%;}
 .nav-actions{display:flex;align-items:center;gap:10px;}
 
 /* ---------- AUTH (Clerk) ---------- */

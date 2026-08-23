@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Tienda · LUNATECH3D</title>
-<meta name="description" content="Catálogo completo de filamentos, resinas, repuestos y accesorios para impresión 3D. Agregá al carrito y coordiná tu pago con LUNATECH3D.">
+<title>Tienda de Impresión 3D en Costa Rica · LUNATECH3D</title>
+<meta name="description" content="Filamento PLA y PETG, resina SUNLU, repuestos y accesorios para impresión 3D en Costa Rica. Agregá al carrito y coordiná tu pedido con LUNATECH3D.">
 <link rel="canonical" href="https://lunatech3d.cr/tienda.html">
 <meta name="robots" content="index, follow">
 
@@ -12,12 +12,12 @@
 <meta property="og:site_name" content="LUNATECH3D">
 <meta property="og:locale" content="es_CR">
 <meta property="og:url" content="https://lunatech3d.cr/tienda.html">
-<meta property="og:title" content="Tienda · LUNATECH3D">
-<meta property="og:description" content="Catálogo completo de filamentos, resinas, repuestos y accesorios para impresión 3D en Costa Rica.">
+<meta property="og:title" content="Tienda de Impresión 3D en Costa Rica · LUNATECH3D">
+<meta property="og:description" content="Filamento PLA y PETG, resina SUNLU, repuestos y accesorios para impresión 3D en Costa Rica.">
 <meta property="og:image" content="https://lunatech3d.cr/assets/img/products/shared/principal-filamento.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Tienda · LUNATECH3D">
-<meta name="twitter:description" content="Catálogo completo de filamentos, resinas, repuestos y accesorios para impresión 3D en Costa Rica.">
+<meta name="twitter:title" content="Tienda de Impresión 3D en Costa Rica · LUNATECH3D">
+<meta name="twitter:description" content="Filamento PLA y PETG, resina SUNLU, repuestos y accesorios para impresión 3D en Costa Rica.">
 <meta name="twitter:image" content="https://lunatech3d.cr/assets/img/products/shared/principal-filamento.jpg">
 
 <link rel="icon" type="image/svg+xml" href="assets/img/icon-mark.svg">
@@ -39,6 +39,7 @@
 </head>
 <body>
 <a href="#main" class="skip-link">Saltar al contenido</a>
+<noscript><div class="noscript-banner">Este sitio necesita JavaScript para mostrar el catálogo, el carrito y el checkout. Activalo en tu navegador o escribinos directo por <a href="https://wa.me/50688019404">WhatsApp</a>.</div></noscript>
 
 <header>
   <nav class="nav">
@@ -223,8 +224,12 @@
       <select id="savedAddressSelect"><option value="">Elegí una dirección…</option></select>
     </div>
     <div class="field">
-      <label for="custAddress">Dirección de envío o notas</label>
-      <textarea id="custAddress" name="custAddress" rows="2" placeholder="Provincia, cantón, señas... (opcional)"></textarea>
+      <label for="custAddress">Dirección de entrega</label>
+      <textarea id="custAddress" name="custAddress" rows="2" required placeholder="Provincia, cantón, señas para encontrar el lugar..."></textarea>
+    </div>
+    <div class="field">
+      <label for="custNotes">Notas adicionales (opcional)</label>
+      <textarea id="custNotes" name="custNotes" rows="2" placeholder="Ej. horario para recibir, referencias, algo que debamos saber..."></textarea>
     </div>
     <fieldset class="field">
       <legend>Método de pago</legend>
@@ -243,7 +248,9 @@
         </label>
       </div>
     </fieldset>
+    <div class="order-summary" id="finalReview" aria-live="polite"></div>
     <button type="submit" class="btn btn-lilac">Enviar pedido por WhatsApp</button>
+    <p class="add-note">Esto abre WhatsApp con tu pedido listo para enviar — todavía no es un pago confirmado. El pago y los últimos detalles se coordinan directamente en esa conversación.</p>
   </form>
 </aside>
 

@@ -1,3 +1,20 @@
+/* ---------- Marcar la sección activa en el menú ----------
+   Compara el archivo actual contra el href de cada link del menú
+   principal (ignorando #anchor y ?query) para que la persona sepa
+   en qué parte del sitio está. Las páginas sin link directo en el
+   nav (blog, FAQ, políticas...) simplemente no marcan nada — viven
+   solo en el footer desde que se movieron ahí. */
+(function highlightActiveNav(){
+  const current = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-links a[href]').forEach(a => {
+    const linkPath = a.getAttribute('href').split('#')[0].split('?')[0];
+    if (linkPath && linkPath === current){
+      a.classList.add('active');
+      a.setAttribute('aria-current', 'page');
+    }
+  });
+})();
+
 /* ---------- Mobile nav ---------- */
 const menuToggle = document.getElementById('menuToggle');
 const navLinks = document.getElementById('navLinks');
@@ -90,9 +107,11 @@ const checkoutClose = document.getElementById('checkoutClose');
 const checkoutBack = document.getElementById('checkoutBack');
 const checkoutForm = document.getElementById('checkoutForm');
 const orderSummaryEl = document.getElementById('orderSummary');
+const finalReviewEl = document.getElementById('finalReview');
 const savedAddressField = document.getElementById('savedAddressField');
 const savedAddressSelect = document.getElementById('savedAddressSelect');
 const custAddressEl = document.getElementById('custAddress');
+const custNotesEl = document.getElementById('custNotes');
 
 const toastEl = document.getElementById('toast');
 
@@ -228,7 +247,7 @@ if (cartItemsEl){
 
 document.addEventListener('stock:updated', () => {
   renderCart();
-  if (checkoutPanel && checkoutPanel.classList.contains('open')) renderOrderSummary();
+  if (checkoutPanel && checkoutPanel.classList.contains('open')) { renderOrderSummary(); renderFinalReview(); }
 });
 
 /* ---------- Sincronizar el carrito entre pestañas ----------
@@ -243,7 +262,7 @@ window.addEventListener('storage', (e) => {
   if (e.key === CART_STORAGE_KEY){
     cart = loadCart();
     renderCart();
-    if (checkoutPanel && checkoutPanel.classList.contains('open')) renderOrderSummary();
+    if (checkoutPanel && checkoutPanel.classList.contains('open')) { renderOrderSummary(); renderFinalReview(); }
   }
 });
 
@@ -297,6 +316,28 @@ function escapeHtml(s){
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   }[c]));
 }
+
+/* Referencia legible para conversar sobre un pedido puntual por
+   WhatsApp — NO es un número de factura/consecutivo contable (eso
+   requeriría un backend con una secuencia real). Se genera de nuevo
+   cada vez que se abre el checkout desde cero. */
+let currentOrderId = null;
+function generateOrderId(){
+  const year = new Date().getFullYear();
+  const rand = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+  return `LT-${year}-${rand}`;
+}
+
+/* Acepta "8888-8888", "88888888" o con el +506/506 pegado adelante;
+   devuelve null si no son 8 dígitos costarricenses, o el número ya
+   normalizado como "8888-8888" para mostrar y mandar por WhatsApp. */
+function normalizeCRPhone(raw){
+  let digits = (raw || '').replace(/\D/g, '');
+  if (digits.length === 11 && digits.startsWith('506')) digits = digits.slice(3);
+  if (digits.length !== 8) return null;
+  return digits.slice(0, 4) + '-' + digits.slice(4);
+}
+
 function populateSavedAddresses(){
   if (!savedAddressField || !savedAddressSelect || !window.LunatechAddresses) return;
   const list = window.LunatechAddresses.getAddresses();
@@ -309,23 +350,57 @@ if (savedAddressSelect){
     const list = window.LunatechAddresses ? window.LunatechAddresses.getAddresses() : [];
     const found = list.find(a => a.id === savedAddressSelect.value);
     if (found && custAddressEl) custAddressEl.value = found.text;
+    renderFinalReview();
   });
 }
 
 function renderOrderSummary(){
   if (!orderSummaryEl) return;
+  const suffix = typeof priceSuffix === 'function' ? priceSuffix() : '+ IVA';
   orderSummaryEl.innerHTML = cart.map(i => {
     const available = window.LunatechStock ? window.LunatechStock.get(i.productId || i.id, i.variantName || '') : null;
     const warn = available !== null && available < i.qty
       ? `<span class="cart-item-oos">${available > 0 ? `Solo quedan ${available}` : 'Agotado'}</span>`
       : '';
-    return `<div class="row"><span>${i.qty} × ${i.name}${warn}</span><span>${money(i.qty * i.price)}</span></div>`;
-  }).join('') + `<div class="row total"><span>Total</span><span>${money(cartSubtotal())}</span></div>`;
+    return `<div class="row"><span>${i.qty} × ${i.name} <small>(${money(i.price)} c/u)</small>${warn}</span><span>${money(i.qty * i.price)}</span></div>`;
+  }).join('')
+    + `<div class="row"><span>Precios de referencia</span><span>${suffix}</span></div>`
+    + `<div class="row total"><span>Total</span><span>${money(cartSubtotal())}</span></div>`;
 }
+
+function renderFinalReview(){
+  if (!finalReviewEl) return;
+  const name = document.getElementById('custName') ? document.getElementById('custName').value.trim() : '';
+  const phone = document.getElementById('custPhone') ? document.getElementById('custPhone').value.trim() : '';
+  const address = custAddressEl ? custAddressEl.value.trim() : '';
+  const notes = custNotesEl ? custNotesEl.value.trim() : '';
+  const payMethod = checkoutForm ? checkoutForm.querySelector('input[name="payMethod"]:checked') : null;
+  const payLabel = payMethod ? payMethod.parentElement.querySelector('.pt').textContent : 'A coordinar';
+  const rows = [
+    ['N° de pedido', currentOrderId || '—'],
+    ['Nombre', name || '—'],
+    ['Teléfono', phone || '—'],
+    ['Dirección', address || '—']
+  ];
+  if (notes) rows.push(['Notas', notes]);
+  rows.push(['Método de pago', payLabel]);
+  rows.push(['Total', money(cartSubtotal())]);
+  finalReviewEl.innerHTML = `<p class="cart-note" style="margin-bottom:8px;">Revisá tu pedido antes de enviarlo:</p>` +
+    rows.map(([k, v]) => `<div class="row"><span>${escapeHtml(k)}</span><span>${escapeHtml(v)}</span></div>`).join('');
+}
+['custName', 'custPhone'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', renderFinalReview);
+});
+if (custAddressEl) custAddressEl.addEventListener('input', renderFinalReview);
+if (custNotesEl) custNotesEl.addEventListener('input', renderFinalReview);
+document.querySelectorAll('input[name="payMethod"]').forEach(el => el.addEventListener('change', renderFinalReview));
 
 function openCheckout(){
   if (!checkoutPanel) return;
+  currentOrderId = generateOrderId();
   renderOrderSummary();
+  renderFinalReview();
   populateSavedAddresses();
   closeCart();
   checkoutPanel.classList.add('open');
@@ -378,12 +453,19 @@ if (checkoutForm){
   checkoutForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = document.getElementById('custName').value.trim();
-    const phone = document.getElementById('custPhone').value.trim();
-    const address = document.getElementById('custAddress').value.trim();
+    const phoneRaw = document.getElementById('custPhone').value.trim();
+    const phone = normalizeCRPhone(phoneRaw);
+    const address = custAddressEl ? custAddressEl.value.trim() : '';
+    const notes = custNotesEl ? custNotesEl.value.trim() : '';
     const payMethod = checkoutForm.querySelector('input[name="payMethod"]:checked');
 
-    if (!name || !phone || cart.length === 0){
+    if (!name || !phoneRaw || !address || cart.length === 0){
       showToast('Completá tus datos antes de continuar');
+      return;
+    }
+    if (!phone){
+      showToast('Ingresá un teléfono válido de Costa Rica (8 dígitos, ej. 8888-8888).');
+      document.getElementById('custPhone').focus();
       return;
     }
 
@@ -430,13 +512,16 @@ if (checkoutForm){
     setSubmitState(true, 'Generando pedido…');
 
     const payLabel = payMethod ? payMethod.parentElement.querySelector('.pt').textContent : 'A coordinar';
+    const suffix = typeof priceSuffix === 'function' ? priceSuffix() : '+ IVA';
 
-    let msg = `Hola LUNATECH3D! Quiero hacer este pedido:\n\n`;
-    cart.forEach(i => { msg += `• ${i.qty} × ${i.name} — ${money(i.qty * i.price)}\n`; });
+    let msg = `Hola LUNATECH3D! Quiero hacer este pedido (N° ${currentOrderId || 'sin asignar'}):\n\n`;
+    cart.forEach(i => { msg += `• ${i.qty} × ${i.name} (${money(i.price)} c/u) — ${money(i.qty * i.price)}\n`; });
+    msg += `\nPrecios de referencia, ${suffix}`;
     msg += `\nTotal: ${money(cartSubtotal())}`;
     msg += `\n\nNombre: ${name}`;
     msg += `\nTeléfono: ${phone}`;
-    if (address) msg += `\nDirección / notas: ${address}`;
+    msg += `\nDirección de entrega: ${address}`;
+    if (notes) msg += `\nNotas: ${notes}`;
     msg += `\nMétodo de pago preferido: ${payLabel}`;
 
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
@@ -465,6 +550,7 @@ if (checkoutForm){
        de que el pedido salió para WhatsApp. Recién acá se limpia el
        carrito — nunca antes de este punto. */
     cart = [];
+    currentOrderId = null;
     renderCart();
     closeCheckout();
     showToast('Pedido enviado por WhatsApp ✓');
