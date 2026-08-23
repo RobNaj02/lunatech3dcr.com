@@ -46,6 +46,26 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://lunatech3d.cr/blog-problemas-impresion-3d.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://lunatech3d.cr/blog-mantenimiento-impresora-3d.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://lunatech3d.cr/blog-proyectos-utiles-impresion-3d.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://lunatech3d.cr/blog-errores-impresion-3d.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://lunatech3d.cr/producto.html?id=sunlu-pla-1kg</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

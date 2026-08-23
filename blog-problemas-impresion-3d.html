@@ -3,16 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Blog · LUNATECH3D</title>
-<meta name="description" content="Guías y tutoriales de impresión 3D: filamentos, resinas y buenas prácticas, escritos por LUNATECH3D.">
-<link rel="canonical" href="https://lunatech3d.cr/blog.html">
+<title>5 problemas comunes en impresión 3D y cómo solucionarlos · LUNATECH3D</title>
+<meta name="description" content="Adhesión a la cama, stringing, capas irregulares, boquilla obstruida y despegues a mitad de impresión: causas comunes y cómo solucionarlas.">
+<link rel="canonical" href="https://lunatech3d.cr/blog-problemas-impresion-3d.html">
 <meta name="robots" content="index, follow">
-<meta property="og:type" content="website">
+<meta property="og:type" content="article">
 <meta property="og:site_name" content="LUNATECH3D">
 <meta property="og:locale" content="es_CR">
-<meta property="og:url" content="https://lunatech3d.cr/blog.html">
-<meta property="og:title" content="Blog · LUNATECH3D">
-<meta property="og:description" content="Guías y tutoriales de impresión 3D, filamentos y resinas.">
+<meta property="og:url" content="https://lunatech3d.cr/blog-problemas-impresion-3d.html">
+<meta property="og:title" content="5 problemas comunes en impresión 3D y cómo solucionarlos">
+<meta property="og:description" content="Los problemas más comunes de impresión 3D — adhesión, stringing, capas irregulares, obstrucciones — y cómo solucionarlos.">
+<meta property="og:image" content="https://lunatech3d.cr/assets/img/products/shared/principal-filamento.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="assets/img/icon-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,6 +21,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 <script async crossorigin="anonymous" data-clerk-publishable-key="pk_test_dmVyaWZpZWQtcmF2ZW4tMS5jbGVyay5hY2NvdW50cy5kZXYk" src="https://verified-raven-1.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" type="text/javascript"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "5 problemas comunes en impresión 3D y cómo solucionarlos",
+  "image": "https://lunatech3d.cr/assets/img/products/shared/principal-filamento.jpg",
+  "author": {"@type": "Organization", "name": "LUNATECH3D"},
+  "publisher": {"@type": "Organization", "name": "LUNATECH3D", "logo": {"@type": "ImageObject", "url": "https://lunatech3d.cr/assets/img/icon-mark.svg"}},
+  "mainEntityOfPage": "https://lunatech3d.cr/blog-problemas-impresion-3d.html"
+}
+</script>
 </head>
 <body>
 <a href="#main" class="skip-link">Saltar al contenido</a>
@@ -66,65 +78,68 @@
 </header>
 
 <main id="main">
+  <nav class="breadcrumb wrap" aria-label="Breadcrumb">
+    <a href="index.html">Inicio</a><span class="sep">/</span>
+    <a href="blog.html">Blog</a><span class="sep">/</span>
+    <span>Problemas comunes</span>
+  </nav>
 
-  <section class="page-hero">
-    <div class="wrap reveal in">
-      <p class="eyebrow">Blog</p>
-      <h1>Guías y tutoriales de impresión 3D</h1>
-      <p>Lo que aprendemos probando materiales, para que no tengas que aprenderlo a la fuerza.</p>
+  <article class="article wrap">
+    <header class="article-head">
+      <p class="eyebrow">Tutoriales · Solución de problemas</p>
+      <h1>5 problemas comunes en impresión 3D y cómo solucionarlos</h1>
+    </header>
+
+    <p>Incluso las mejores impresoras 3D pueden presentar problemas. Una impresión que se despega de la cama, hilos entre las piezas o capas con imperfecciones pueden convertir un proyecto emocionante en una frustración.</p>
+
+    <p>Estos son algunos de los problemas más comunes y sus posibles soluciones.</p>
+
+    <h2>1. La pieza no se adhiere a la cama</h2>
+    <p>Si la primera capa no se adhiere correctamente, toda la impresión puede fallar.</p>
+    <p><strong>Posibles soluciones:</strong></p>
+    <ul class="article-list">
+      <li>Limpia correctamente la superficie de impresión.</li>
+      <li>Verifica que la cama esté correctamente nivelada.</li>
+      <li>Asegúrate de utilizar la temperatura adecuada.</li>
+      <li>Revisa la configuración de la primera capa.</li>
+    </ul>
+
+    <h2>2. Aparecen muchos hilos entre las piezas</h2>
+    <p>Este problema, conocido como <em>stringing</em>, suele aparecer cuando el filamento deja pequeños hilos durante los movimientos del cabezal.</p>
+    <p>Puedes intentar:</p>
+    <ul class="article-list">
+      <li>Revisar la configuración de retracción.</li>
+      <li>Verificar la temperatura del nozzle.</li>
+      <li>Asegurarte de que el filamento esté seco.</li>
+    </ul>
+
+    <h2>3. Las capas se ven irregulares</h2>
+    <p>Las líneas o irregularidades pueden estar relacionadas con problemas mecánicos o con una configuración incorrecta.</p>
+    <p>Revisa:</p>
+    <ul class="article-list">
+      <li>El estado de las correas.</li>
+      <li>Los ejes de movimiento.</li>
+      <li>La lubricación recomendada por el fabricante.</li>
+      <li>La velocidad de impresión.</li>
+    </ul>
+
+    <h2>4. El nozzle se obstruye</h2>
+    <p>Los residuos o partículas pueden provocar una mala extrusión.</p>
+    <p>En estos casos, revisa el nozzle y el sistema de alimentación del filamento. Una limpieza periódica puede ayudar a prevenir este problema.</p>
+
+    <h2>5. La impresión se despega a mitad del proceso</h2>
+    <p>Este problema puede deberse a una mala adhesión inicial, cambios de temperatura o deformación del material.</p>
+    <p>Asegúrate de que la primera capa sea correcta y utiliza una configuración adecuada para el tipo de filamento.</p>
+
+    <h2>Conclusión</h2>
+    <p>Muchos problemas de impresión 3D pueden evitarse con una buena preparación, filamento en buenas condiciones y mantenimiento regular de la impresora.</p>
+    <p>No te desesperes: incluso los makers más experimentados han tenido impresiones fallidas.</p>
+
+    <div class="article-cta">
+      <a class="btn btn-primary" href="producto.html?id=kit-limpieza-boquillas">Ver kit de limpieza de boquillas</a>
+      <a class="btn btn-ghost" href="https://wa.me/50688019404?text=Hola%20LUNATECH3D%2C%20tengo%20un%20problema%20con%20mi%20impresi%C3%B3n%203D" target="_blank" rel="noopener">Preguntar por WhatsApp</a>
     </div>
-  </section>
-
-  <section class="blog-section">
-    <div class="wrap">
-      <div class="blog-grid">
-
-        <a class="blog-card reveal in" href="blog-pla-vs-petg.html">
-          <div class="blog-card-tag">Guías · Filamentos</div>
-          <h2>PLA vs PETG: cómo elegir el filamento correcto</h2>
-          <p>Las diferencias reales entre los dos filamentos más usados, y cuándo conviene cada uno.</p>
-          <span class="blog-card-read">Leer artículo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </a>
-
-        <a class="blog-card reveal in" href="blog-almacenar-filamento.html">
-          <div class="blog-card-tag">Tutoriales · Filamentos</div>
-          <h2>Cómo guardar tu filamento para que no absorba humedad</h2>
-          <p>Por qué un rollo "se pone raro" con el tiempo, y cómo evitarlo con almacenamiento simple.</p>
-          <span class="blog-card-read">Leer artículo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </a>
-
-        <a class="blog-card reveal in" href="blog-problemas-impresion-3d.html">
-          <div class="blog-card-tag">Tutoriales · Solución de problemas</div>
-          <h2>5 problemas comunes en impresión 3D y cómo solucionarlos</h2>
-          <p>Adhesión a la cama, stringing, capas irregulares y boquillas obstruidas: causas y soluciones.</p>
-          <span class="blog-card-read">Leer artículo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </a>
-
-        <a class="blog-card reveal in" href="blog-mantenimiento-impresora-3d.html">
-          <div class="blog-card-tag">Tutoriales · Mantenimiento</div>
-          <h2>Mantenimiento básico de tu impresora 3D: cómo prolongar su vida útil</h2>
-          <p>Una rutina simple de limpieza y revisión para que tu impresora dure más y siga imprimiendo bien.</p>
-          <span class="blog-card-read">Leer artículo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </a>
-
-        <a class="blog-card reveal in" href="blog-proyectos-utiles-impresion-3d.html">
-          <div class="blog-card-tag">Ideas · Proyectos</div>
-          <h2>10 proyectos útiles que puedes imprimir en 3D para tu día a día</h2>
-          <p>Organizadores, soportes, ganchos y otras ideas prácticas para tu casa o escritorio.</p>
-          <span class="blog-card-read">Leer artículo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </a>
-
-        <a class="blog-card reveal in" href="blog-errores-impresion-3d.html">
-          <div class="blog-card-tag">Guías · Buenas prácticas</div>
-          <h2>¿Por qué tus impresiones 3D fallan? 7 errores que todo maker debería evitar</h2>
-          <p>Filamento húmedo, cama sucia, material incorrecto y otros errores que arruinan impresiones.</p>
-          <span class="blog-card-read">Leer artículo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </a>
-
-      </div>
-    </div>
-  </section>
-
+  </article>
 </main>
 
 <footer>
