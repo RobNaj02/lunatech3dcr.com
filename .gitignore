@@ -1,0 +1,10 @@
+# Secrets / credenciales — nunca deben subirse al repo
+.env
+.env.*
+*.pem
+*.key
+
+# Archivos de sistema operativo / editor
+.DS_Store
+Thumbs.db
+.vscode/
