@@ -126,10 +126,10 @@ p{margin:0;}
 .comet-a{top:20%;left:2%;transform:rotate(-20deg);}
 .comet-b{top:58%;left:-4%;width:54px;transform:rotate(-14deg);animation-duration:13s;animation-delay:4.5s;background:linear-gradient(90deg, transparent, rgba(176,164,214,.9) 75%, #fff);}
 @keyframes comet-fly{
-  0%{transform:translate(0,0) rotate(-20deg);opacity:0;}
+  0%{transform:translate(0,0) rotate(20deg);opacity:0;}
   5%{opacity:1;}
-  26%{transform:translate(36vw,20vh) rotate(-20deg);opacity:0;}
-  100%{transform:translate(36vw,20vh) rotate(-20deg);opacity:0;}
+  26%{transform:translate(36vw,20vh) rotate(20deg);opacity:0;}
+  100%{transform:translate(36vw,20vh) rotate(20deg);opacity:0;}
 }
 .planet-deco{position:absolute;pointer-events:none;color:var(--lilac);animation:planet-float 8s ease-in-out infinite;}
 .planet-deco svg{width:100%;height:100%;}
