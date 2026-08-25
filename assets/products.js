@@ -252,7 +252,7 @@ const PRODUCTS = {
 
   'etiquetas-nfc': {
     id: 'etiquetas-nfc',
-    name: 'Etiquetas NFC Programables',
+    name: 'Etiquetas NFC Programables (Pack de 10)',
     categoryLabel: 'Accesorio',
     category: 'electronica',
     brand: 'Genérico',
@@ -315,7 +315,7 @@ const PRODUCTS = {
 
   'switches-blue': {
     id: 'switches-blue',
-    name: 'Switches Mecánicos Azules para Teclado (Blue Switches)',
+    name: 'Switches Mecánicos Azules para Teclado (Blue Switches, Pack de 10)',
     categoryLabel: 'Accesorio',
     category: 'electronica',
     brand: 'Genérico',
@@ -367,7 +367,7 @@ const PRODUCTS = {
 
   'insertos-roscados-laton': {
     id: 'insertos-roscados-laton',
-    name: 'Insertos Roscados de Latón para Impresión 3D',
+    name: 'Insertos Roscados de Latón para Impresión 3D (Pack de 20)',
     categoryLabel: 'Repuesto',
     category: 'insertos-termicos',
     brand: 'Genérico',
