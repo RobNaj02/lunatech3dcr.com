@@ -146,19 +146,27 @@ begin
   -- Paso 3: dejar registrado el pedido (antes esto no se guardaba en
   -- ningún lado — solo salía como mensaje de WhatsApp — así que no
   -- había forma de reponer el stock automáticamente si el cliente no
-  -- concretaba la compra). on conflict evita reventar si el número de
-  -- pedido (generado en el navegador) llegara a repetirse.
-  insert into public.orders (order_number, items, customer_name, customer_phone, customer_address, notes, pay_method)
-  values (
-    order_number,
-    items,
-    customer->>'name',
-    customer->>'phone',
-    customer->>'address',
-    customer->>'notes',
-    customer->>'pay_method'
-  )
-  on conflict (order_number) do nothing;
+  -- concretaba la compra). Va en su propio sub-bloque con manejo de
+  -- excepción (en vez de "on conflict", que depende de que exista un
+  -- índice único sobre order_number) para que un problema al guardar
+  -- el registro nunca tumbe una venta que ya se validó y restó del
+  -- stock real.
+  begin
+    insert into public.orders (order_number, items, customer_name, customer_phone, customer_address, notes, pay_method)
+    values (
+      order_number,
+      items,
+      customer->>'name',
+      customer->>'phone',
+      customer->>'address',
+      customer->>'notes',
+      customer->>'pay_method'
+    );
+  exception when unique_violation then
+    -- Número de pedido repetido (colisión aleatoria generada en el
+    -- navegador): no es motivo para cancelar una venta ya validada.
+    null;
+  end;
 
   return jsonb_build_object('ok', true);
 end;
