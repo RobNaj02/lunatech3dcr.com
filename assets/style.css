@@ -668,10 +668,11 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 .cart-foot .btn{width:100%;justify-content:center;}
 
 /* ---------- CHECKOUT PANEL ---------- */
+.checkout-panel{min-height:0;}
 .checkout-panel .cart-items{gap:0;}
-.checkout-order-head{padding:18px 24px 0;}
+.checkout-order-head{padding:18px 24px 0;flex-shrink:0;}
 .checkout-order-head h2{font-size:19px;margin-bottom:14px;}
-.checkout-form{display:flex;flex-direction:column;gap:14px;padding:18px 24px;}
+.checkout-form{display:flex;flex-direction:column;gap:14px;padding:18px 24px;flex:1;min-height:0;overflow-y:auto;}
 .field{display:flex;flex-direction:column;gap:6px;}
 .field label, .field legend{font-size:12.5px;font-weight:600;color:var(--ink-soft);padding:0;}
 fieldset.field{border:none;margin:0;min-width:0;}
