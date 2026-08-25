@@ -15,7 +15,7 @@
     const message = document.getElementById('ctMessage').value.trim();
     if (!name || !message) return;
     const text = `Hola LUNATECH3D! Soy ${name}.\nMotivo: ${topic}\n\n${message}`;
-    window.open((typeof waLink === 'function' ? waLink(text) : 'https://wa.me/50688019404?text=' + encodeURIComponent(text)), '_blank', 'noopener');
+    window.open((typeof waLink === 'function' ? waLink(text) : 'https://wa.me/50688632253?text=' + encodeURIComponent(text)), '_blank', 'noopener');
     contactForm.reset();
   });
 })();

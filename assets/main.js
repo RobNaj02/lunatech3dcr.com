@@ -58,7 +58,7 @@ if ('IntersectionObserver' in window) {
    between pages (index → tienda → producto) and reopening the
    site later. Falls back gracefully if storage is unavailable.
    ========================================================= */
-const WHATSAPP_NUMBER = (window.SITE_CONFIG && window.SITE_CONFIG.whatsappNumber) || '50688019404';
+const WHATSAPP_NUMBER = (window.SITE_CONFIG && window.SITE_CONFIG.whatsappNumber) || '50688632253';
 const CURRENCY = '₡';
 const CART_STORAGE_KEY = 'lunatech3d_cart_v1';
 

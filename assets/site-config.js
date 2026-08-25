@@ -10,7 +10,7 @@
    - instagramHandle / instagramUrl: sigue siendo @lunarlab3d.
      Si ya existe una cuenta @lunatech3d, actualizá este único
      valor (no lo cambiamos nosotros sin confirmación tuya).
-   - whatsappNumber: es el que ya estaba en uso.
+   - whatsappNumber: actualizado a 8863-2253 (2026-08-24, a pedido del dueño).
    - email: info@lunatech3dcr.com (actualizado — antes era un Gmail
      personal usado como placeholder).
    - domain: se asume que lunatech3dcr.com es el dominio de
@@ -20,8 +20,8 @@
    ========================================================= */
 window.SITE_CONFIG = {
   brandName: 'LUNATECH3D',
-  whatsappNumber: '50688019404',        // formato wa.me, sin '+' ni espacios
-  whatsappDisplay: '+506 8801-9404',
+  whatsappNumber: '50688632253',        // formato wa.me, sin '+' ni espacios
+  whatsappDisplay: '+506 8863-2253',
   email: 'info@lunatech3dcr.com',
   instagramHandle: '@lunarlab3d',       // TODO(dueño): actualizar si cambia la cuenta
   instagramUrl: 'https://instagram.com/lunarlab3d',
@@ -74,7 +74,7 @@ window.formatCRC = formatCRC;
 
 /* ---------- Helper de enlace de WhatsApp ----------
    Arma la URL de wa.me con el número centralizado de arriba,
-   para no repetir '50688019404' en cada script. */
+   para no repetir el número en cada script. */
 function waLink(text){
   const number = (window.SITE_CONFIG && window.SITE_CONFIG.whatsappNumber) || '';
   return `https://wa.me/${number}` + (text ? `?text=${encodeURIComponent(text)}` : '');
