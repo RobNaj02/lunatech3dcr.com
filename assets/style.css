@@ -1113,3 +1113,34 @@ body.lightbox-lock{overflow:hidden;}
   .nav-actions{gap:4px;}
   .search-toggle, .cart-btn{width:36px;height:36px;}
 }
+
+/* ---------- ADMIN: pedidos-admin.html ---------- */
+.admin-body{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:60px 20px;}
+.admin-wrap{width:100%;max-width:720px;}
+.admin-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius-lg);padding:32px;box-shadow:var(--shadow-soft);}
+.admin-title{font-size:clamp(24px,3vw,30px);margin-bottom:4px;}
+.admin-sub{color:var(--ink-soft);font-size:14px;margin-bottom:24px;}
+.admin-form{display:flex;flex-direction:column;gap:14px;}
+.admin-error{color:var(--danger);background:var(--danger-mist);border-radius:var(--radius-sm);padding:10px 14px;font-size:13.5px;margin-bottom:14px;}
+.admin-empty{color:var(--ink-faint);font-size:14px;padding:20px 0;}
+.admin-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:24px;}
+.admin-head .admin-sub{margin-bottom:0;}
+.admin-orders{display:flex;flex-direction:column;gap:16px;}
+.admin-order{border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;}
+.admin-order.is-cancelled{opacity:.6;}
+.admin-order-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px;}
+.admin-order-head strong{font-family:'Outfit',sans-serif;font-size:15px;}
+.admin-order-date{display:block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-faint);margin-top:2px;}
+.admin-badge{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.04em;padding:5px 10px;border-radius:100px;white-space:nowrap;}
+.admin-badge.is-pending{background:var(--warn-mist);color:var(--warn);}
+.admin-badge.is-cancelled{background:var(--paper-soft);color:var(--ink-faint);}
+.admin-order-items{display:flex;flex-direction:column;gap:4px;font-size:13.5px;color:var(--ink);margin-bottom:10px;}
+.admin-order-total{font-weight:600;font-size:14px;margin-bottom:12px;}
+.admin-order-customer{display:flex;flex-direction:column;gap:2px;font-size:13px;color:var(--ink-soft);margin-bottom:14px;}
+.admin-cancel-btn{width:100%;justify-content:center;color:var(--danger);border-color:var(--danger-mist);}
+.admin-cancel-btn:hover{border-color:var(--danger);background:var(--danger-mist);}
+@media (max-width: 560px){
+  .admin-body{padding:24px 14px;}
+  .admin-card{padding:22px;}
+  .admin-head{flex-direction:column;}
+}

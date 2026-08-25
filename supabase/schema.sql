@@ -68,7 +68,14 @@ end $$;
 -- stock, no se resta nada y se informa cuáles fallaron. Corre
 -- como SECURITY DEFINER para poder escribir aunque RLS bloquee
 -- escrituras directas del navegador.
-create or replace function public.checkout_cart(items jsonb)
+-- La firma cambió (se le agregaron order_number y customer) respecto a
+-- versiones anteriores de este script: create or replace no puede cambiar
+-- los parámetros de una función, así que hay que borrar la versión vieja
+-- primero o quedan las dos coexistiendo (Postgres las trata como funciones
+-- distintas si difieren en argumentos).
+drop function if exists public.checkout_cart(jsonb);
+
+create or replace function public.checkout_cart(items jsonb, order_number text, customer jsonb default '{}'::jsonb)
 returns jsonb
 language plpgsql
 security definer
@@ -129,11 +136,129 @@ begin
         and variant_name = coalesce(item->>'variant_name', '');
   end loop;
 
+  -- Paso 3: dejar registrado el pedido (antes esto no se guardaba en
+  -- ningún lado — solo salía como mensaje de WhatsApp — así que no
+  -- había forma de reponer el stock automáticamente si el cliente no
+  -- concretaba la compra). on conflict evita reventar si el número de
+  -- pedido (generado en el navegador) llegara a repetirse.
+  insert into public.orders (order_number, items, customer_name, customer_phone, customer_address, notes, pay_method)
+  values (
+    order_number,
+    items,
+    customer->>'name',
+    customer->>'phone',
+    customer->>'address',
+    customer->>'notes',
+    customer->>'pay_method'
+  )
+  on conflict (order_number) do nothing;
+
   return jsonb_build_object('ok', true);
 end;
 $$;
 
-grant execute on function public.checkout_cart(jsonb) to anon, authenticated;
+grant execute on function public.checkout_cart(jsonb, text, jsonb) to anon, authenticated;
+
+-- =========================================================
+-- ADMIN — quién puede ver/cancelar pedidos desde pedidos-admin.html
+-- =========================================================
+-- Un usuario de Supabase Auth (creado a mano en Authentication →
+-- Users, con email + contraseña) cuyo UID esté en esta tabla puede
+-- iniciar sesión en el panel de admin. No hay señalizadores/roles:
+-- basta con estar en esta tabla.
+create table if not exists public.admins (
+  user_id uuid primary key references auth.users(id) on delete cascade
+);
+alter table public.admins enable row level security;
+-- Sin políticas a propósito: nadie puede leer esta tabla directo desde
+-- el navegador (ni siquiera un admin), solo is_admin() de abajo (que
+-- corre con permisos elevados) puede consultarla.
+
+create or replace function public.is_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (select 1 from public.admins where user_id = auth.uid());
+$$;
+
+grant execute on function public.is_admin() to authenticated;
+
+-- =========================================================
+-- PEDIDOS — registro de cada checkout, para poder reponer stock
+-- si el pedido no se concreta (cliente no contestó, se arrepintió,
+-- etc.) desde pedidos-admin.html
+-- =========================================================
+create table if not exists public.orders (
+  id bigint generated always as identity primary key,
+  order_number text not null unique,
+  items jsonb not null,
+  customer_name text,
+  customer_phone text,
+  customer_address text,
+  notes text,
+  pay_method text,
+  status text not null default 'pending' check (status in ('pending', 'cancelled')),
+  created_at timestamptz not null default now(),
+  cancelled_at timestamptz
+);
+alter table public.orders enable row level security;
+
+-- Solo un admin autenticado puede LEER pedidos desde el navegador.
+-- Los INSERT (checkout_cart) y UPDATE (cancel_order) de abajo no
+-- necesitan política propia: corren con permisos elevados.
+drop policy if exists "admin read orders" on public.orders;
+create policy "admin read orders"
+  on public.orders for select
+  to authenticated
+  using (public.is_admin());
+
+-- ---------- Función de cancelación ----------
+-- Repone en product_stock exactamente lo que ese pedido había
+-- restado, y marca el pedido como cancelado. Es idempotente en el
+-- sentido de que un pedido ya cancelado no se puede volver a
+-- cancelar (así no se repone el stock dos veces por error).
+create or replace function public.cancel_order(p_order_id bigint)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_order public.orders%rowtype;
+  item jsonb;
+begin
+  if not public.is_admin() then
+    raise exception 'not authorized';
+  end if;
+
+  select * into v_order from public.orders where id = p_order_id for update;
+
+  if v_order.id is null then
+    return jsonb_build_object('ok', false, 'error', 'order_not_found');
+  end if;
+  if v_order.status = 'cancelled' then
+    return jsonb_build_object('ok', false, 'error', 'already_cancelled');
+  end if;
+
+  for item in select * from jsonb_array_elements(v_order.items) loop
+    update product_stock
+      set quantity = quantity + (item->>'qty')::int, updated_at = now()
+      where product_id = item->>'product_id'
+        and variant_name = coalesce(item->>'variant_name', '');
+  end loop;
+
+  update public.orders
+    set status = 'cancelled', cancelled_at = now()
+    where id = p_order_id;
+
+  return jsonb_build_object('ok', true);
+end;
+$$;
+
+grant execute on function public.cancel_order(bigint) to authenticated;
 
 -- =========================================================
 -- DATOS INICIALES — un renglón por producto/variante del

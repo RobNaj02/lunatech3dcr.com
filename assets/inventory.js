@@ -99,14 +99,20 @@
     })
     .subscribe();
 
-  LunatechStock.checkout = async function(items){
+  LunatechStock.checkout = async function(items, orderNumber, customer){
     const payload = items.map(i => ({
       product_id: i.productId,
       variant_name: i.variantName || '',
-      qty: i.qty
+      qty: i.qty,
+      name: i.name,
+      price: i.price
     }));
     try {
-      const { data, error } = await client.rpc('checkout_cart', { items: payload });
+      const { data, error } = await client.rpc('checkout_cart', {
+        items: payload,
+        order_number: orderNumber || null,
+        customer: customer || {}
+      });
       if (error){ console.error('[inventory] error en checkout_cart', error); return { ok: false }; }
       return data;
     } catch (err) {

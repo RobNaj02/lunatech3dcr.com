@@ -478,6 +478,8 @@ if (checkoutForm){
     }
     setSubmitState(true, 'Verificando disponibilidad…');
 
+    const payLabel = payMethod ? payMethod.parentElement.querySelector('.pt').textContent : 'A coordinar';
+
     /* Última validación, justo antes de "vender": resta el stock de
        todo el carrito en una sola transacción en Supabase. Si algo
        ya no alcanza (otro comprador se lo llevó primero, por ejemplo),
@@ -489,8 +491,10 @@ if (checkoutForm){
        que este código asuma silenciosamente que no hay nada que
        validar y deje pasar la venta. */
     if (window.LunatechStock){
-      const items = cart.map(i => ({ productId: i.productId || i.id, variantName: i.variantName || '', qty: i.qty }));
-      const result = await window.LunatechStock.checkout(items);
+      const items = cart.map(i => ({ productId: i.productId || i.id, variantName: i.variantName || '', qty: i.qty, name: i.name, price: i.price }));
+      const result = await window.LunatechStock.checkout(items, currentOrderId, {
+        name, phone, address, notes, pay_method: payLabel
+      });
       if (!result || result.ok === false){
         setSubmitState(false);
         if (result && result.failed && result.failed.length){
@@ -511,7 +515,6 @@ if (checkoutForm){
 
     setSubmitState(true, 'Generando pedido…');
 
-    const payLabel = payMethod ? payMethod.parentElement.querySelector('.pt').textContent : 'A coordinar';
     const suffix = typeof priceSuffix === 'function' ? priceSuffix() : '+ IVA';
 
     let msg = `Hola LUNATECH3D! Quiero hacer este pedido (N° ${currentOrderId || 'sin asignar'}):\n\n`;

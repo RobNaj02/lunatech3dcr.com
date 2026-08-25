@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pedidos · LUNATECH3D</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="assets/img/icon-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="admin-body">
+
+<div class="admin-wrap">
+
+  <section class="admin-card" id="loginView">
+    <h1 class="admin-title">Panel de pedidos</h1>
+    <p class="admin-sub">Acceso solo para administración.</p>
+    <form id="loginForm" class="admin-form">
+      <div class="field">
+        <label for="adminEmail">Correo</label>
+        <input type="email" id="adminEmail" required autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="adminPassword">Contraseña</label>
+        <input type="password" id="adminPassword" required autocomplete="current-password">
+      </div>
+      <p class="admin-error" id="loginError" hidden></p>
+      <button type="submit" class="btn btn-lilac" id="loginBtn">Entrar</button>
+    </form>
+  </section>
+
+  <section class="admin-card admin-dashboard" id="dashboardView" hidden>
+    <div class="admin-head">
+      <div>
+        <h1 class="admin-title">Pedidos</h1>
+        <p class="admin-sub">Cancelá un pedido que no se concretó para reponer su stock automáticamente.</p>
+      </div>
+      <button class="btn btn-ghost" id="logoutBtn">Cerrar sesión</button>
+    </div>
+    <p class="admin-error" id="ordersError" hidden></p>
+    <p class="admin-empty" id="ordersEmpty" hidden>Todavía no hay pedidos registrados.</p>
+    <div class="admin-orders" id="ordersList"></div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span>Mensaje</span></div>
+
+<script src="assets/supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.4/dist/umd/supabase.js" integrity="sha384-ysv13JVP3fufiEXfjML9OdCa/rRbMJvUBOWyor82wfuK8INNZAvmbxHgKIHi+oqz" crossorigin="anonymous"></script>
+<script src="assets/pedidos-admin.js"></script>
+</body>
+</html>
