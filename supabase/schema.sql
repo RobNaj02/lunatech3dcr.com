@@ -43,7 +43,24 @@ create policy "public read stock"
 
 -- ---------- Tiempo real ----------
 -- Permite que el navegador reciba cambios de stock al instante.
-alter publication supabase_realtime add table public.product_stock;
+-- "alter publication ... add table" no es idempotente (no existe un
+-- "if not exists" universal para esto en Postgres) — si la tabla ya
+-- estaba agregada, correrlo de nuevo tira el error 42710 y aborta el
+-- resto del script (Supabase corre todo el bloque pegado como una
+-- sola transacción implícita). Este bloque hace el mismo efecto pero
+-- solo si hace falta, así el script completo se puede re-correr
+-- siempre sin romper nada.
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime'
+      and schemaname = 'public'
+      and tablename = 'product_stock'
+  ) then
+    alter publication supabase_realtime add table public.product_stock;
+  end if;
+end $$;
 
 -- ---------- Función de checkout ----------
 -- Recibe el carrito completo y resta el stock de todos los
