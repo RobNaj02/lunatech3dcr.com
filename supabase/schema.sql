@@ -81,6 +81,13 @@ language plpgsql
 security definer
 set search_path = public
 as $$
+#variable_conflict use_variable
+-- El parámetro "order_number" tiene el mismo nombre que la columna
+-- public.orders.order_number. Sin esta línea, el INSERT de más abajo
+-- falla con "column reference order_number is ambiguous" porque
+-- Postgres no puede decidir si te referís al parámetro o a la columna.
+-- Esta directiva le dice que, ante esa ambigüedad, siempre gane la
+-- variable/parámetro de PL/pgSQL (que es lo que queremos acá).
 declare
   item jsonb;
   v_product_id text;
