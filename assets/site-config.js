@@ -7,9 +7,9 @@
 
    NOTA PARA EL DUEÑO DEL SITIO — datos que no se pueden inventar
    y quedan tal como estaban, solo centralizados acá:
-   - instagramHandle / instagramUrl: sigue siendo @lunarlab3d.
-     Si ya existe una cuenta @lunatech3d, actualizá este único
-     valor (no lo cambiamos nosotros sin confirmación tuya).
+   - instagramHandle / instagramUrl: actualizado a @lunatech3dcr
+     (2026-08-24, a pedido del dueño — verificado disponible antes
+     de asumirlo como el handle real).
    - whatsappNumber: actualizado a 8863-2253 (2026-08-24, a pedido del dueño).
    - email: info@lunatech3dcr.com (actualizado — antes era un Gmail
      personal usado como placeholder).
@@ -23,8 +23,8 @@ window.SITE_CONFIG = {
   whatsappNumber: '50688632253',        // formato wa.me, sin '+' ni espacios
   whatsappDisplay: '+506 8863-2253',
   email: 'info@lunatech3dcr.com',
-  instagramHandle: '@lunarlab3d',       // TODO(dueño): actualizar si cambia la cuenta
-  instagramUrl: 'https://instagram.com/lunarlab3d',
+  instagramHandle: '@lunatech3dcr',
+  instagramUrl: 'https://instagram.com/lunatech3dcr',
   domain: 'https://lunatech3dcr.com'
 };
 
