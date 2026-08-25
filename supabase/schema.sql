@@ -2,6 +2,14 @@
 -- LUNATECH3D — esquema de stock en tiempo real
 -- Corré este script completo una sola vez en:
 --   Supabase Dashboard → SQL Editor → New query → pegar → Run
+--
+-- Este archivo es la fuente de verdad, pero NO se aplica solo:
+-- Supabase no lee este repo. Si ya corriste una versión anterior
+-- y volvés a pegar el script completo, es seguro (create or
+-- replace function + create table if not exists + ON CONFLICT DO
+-- NOTHING en los datos), así que simplemente volvé a correrlo
+-- entero para aplicar cualquier cambio hecho acá (ej. la
+-- validación de qty > 0 agregada a checkout_cart()).
 -- =========================================================
 
 -- ---------- Tabla de stock ----------
@@ -62,6 +70,21 @@ begin
     v_product_id := item->>'product_id';
     v_variant := coalesce(item->>'variant_name', '');
     v_qty := (item->>'qty')::int;
+
+    -- qty debe ser un entero positivo: una cantidad <= 0 (o negativa) no es
+    -- un pedido real y, si se restara tal cual, SUMARÍA stock en vez de
+    -- restarlo (quantity - (-5) = quantity + 5). Cualquiera puede llamar a
+    -- esta función directo desde la consola del navegador con el payload
+    -- que quiera, así que esto no puede depender de que el frontend ya
+    -- valide qty > 0 — se rechaza acá también, en el server.
+    if v_qty is null or v_qty <= 0 then
+      failed := failed || jsonb_build_object(
+        'product_id', v_product_id,
+        'variant_name', v_variant,
+        'available', 0
+      );
+      continue;
+    end if;
 
     select quantity into v_available
       from product_stock

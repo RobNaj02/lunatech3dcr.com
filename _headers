@@ -1,0 +1,30 @@
+# =========================================================
+# Cabeceras de seguridad HTTP — Cloudflare Pages lee este
+# archivo automáticamente (sin build step) y las aplica a toda
+# respuesta que matchee el patrón. No requiere configuración
+# adicional en el dashboard.
+#
+# Dominios permitidos en la CSP, y por qué:
+#   - clerk.lunatech3dcr.com   → proxy propio de Clerk (auth), ver assets/clerk-init.js
+#   - *.protect.clerk.com,
+#     challenges.cloudflare.com → verificación anti-bot que usa Clerk
+#   - clerk-telemetry.com(s)   → telemetría de Clerk (no bloquea el login si falla)
+#   - img.clerk.com            → avatares de usuario de Clerk
+#   - cdn.jsdelivr.net         → librería @supabase/supabase-js (pineada + SRI en el HTML)
+#   - aslhvhhxcnnuwrdcrmak.supabase.co → proyecto de stock en tiempo real
+#   - fonts.googleapis.com / fonts.gstatic.com → tipografías del sitio
+#   - wa.me                    → destino del formulario de checkout/contacto (form-action)
+#
+# Si en el futuro se agrega un servicio externo nuevo (otro CDN,
+# otra fuente, un pixel de analytics, etc.) y el sitio deja de
+# funcionar o la consola muestra errores "Refused to load/connect",
+# hay que sumar ese dominio acá — no quitar la CSP entera.
+# =========================================================
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://clerk.lunatech3dcr.com https://challenges.cloudflare.com https://*.protect.clerk.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://img.clerk.com; connect-src 'self' https://clerk.lunatech3dcr.com https://*.protect.clerk.com:* https://clerk-telemetry.com https://*.clerk-telemetry.com https://aslhvhhxcnnuwrdcrmak.supabase.co wss://aslhvhhxcnnuwrdcrmak.supabase.co https://cdn.jsdelivr.net; worker-src 'self' blob:; frame-src https://challenges.cloudflare.com https://*.protect.clerk.com https://clerk.lunatech3dcr.com; object-src 'none'; base-uri 'self'; form-action 'self' https://wa.me; frame-ancestors 'none'; upgrade-insecure-requests
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=(), interest-cohort=()
+  Strict-Transport-Security: max-age=15552000
