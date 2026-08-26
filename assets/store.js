@@ -358,13 +358,21 @@
       searchPanel.classList.add('open');
       searchToggle.setAttribute('aria-expanded', 'true');
       searchPanel.setAttribute('aria-hidden', 'false');
-      setTimeout(() => searchInput.focus(), 50);
+      if (typeof window.trapFocusOpen === 'function') window.trapFocusOpen(searchInput);
+      else setTimeout(() => searchInput.focus(), 50);
       renderSuggestions('');
     }
     function closeSearch(){
+      /* closeSearch() se llama en cada click/Escape sin importar si
+         el buscador está abierto (ver los listeners de abajo) — sin
+         este guard, esas llamadas de más decrementarían el contador
+         compartido de trapFocus y le robarían el foco atrapado a
+         OTRO panel que sí esté abierto (carrito/checkout). */
+      if (!searchPanel.classList.contains('open')) return;
       searchPanel.classList.remove('open');
       searchToggle.setAttribute('aria-expanded', 'false');
       searchPanel.setAttribute('aria-hidden', 'true');
+      if (typeof window.trapFocusClose === 'function') window.trapFocusClose();
     }
     searchToggle.addEventListener('click', () => {
       searchPanel.classList.contains('open') ? closeSearch() : openSearch();
@@ -498,7 +506,12 @@
     const badge = document.getElementById('wishlistBadge');
     const itemsEl = document.getElementById('wishlistItems');
     if (typeof PRODUCTS === 'undefined') return;
-    const ids = readList(WISHLIST_KEY);
+    /* Un id de un producto que ya no existe en el catálogo (removido,
+       renombrado) se filtra acá: si no, el badge podía mostrar un
+       número más alto que la cantidad real de tarjetas que se ven al
+       abrir el drawer (el .map de abajo ya las saltea con `if (!p)
+       return ''`, pero el badge seguía contando el total sin filtrar). */
+    const ids = readList(WISHLIST_KEY).filter(id => PRODUCTS[id]);
     if (badge){ badge.textContent = ids.length; badge.style.display = ids.length ? 'flex' : 'none'; }
     if (!itemsEl) return;
     if (!ids.length){ itemsEl.innerHTML = '<p class="cart-empty">Todavía no guardaste productos. Tocá el corazón en cualquier producto para guardarlo acá.</p><a class="btn btn-ghost" style="width:100%;justify-content:center" href="tienda.html">Ver catálogo</a>'; return; }

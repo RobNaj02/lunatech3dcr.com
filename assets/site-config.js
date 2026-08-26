@@ -40,7 +40,16 @@ window.SITE_CONFIG = {
                                  así que no se calcula nada, solo
                                  se avisa "+ IVA"
    Si más adelante se define taxRatePercent (ej. 13), el helper
-   priceSuffix() de abajo puede empezar a mostrar el monto final. */
+   priceSuffix() de abajo puede empezar a mostrar el monto final.
+
+   OJO — 4 lugares que NO se hidratan solos porque son oraciones
+   completas, no una etiqueta corta como "+ IVA": si cambiás
+   pricesIncludeTax, revisá y ajustá el texto a mano en:
+     - index.html (sección de catálogo destacado)
+     - terminos.html ("Precios")
+     - faq.html ("¿Los precios incluyen impuestos?")
+   Todo lo demás (cada tarjeta de producto vía priceSuffix(), y la
+   nota del carrito vía [data-tax-note] más abajo) se actualiza solo. */
 window.PRICING_CONFIG = {
   pricesIncludeTax: false,
   taxRatePercent: null,
@@ -101,5 +110,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.querySelectorAll('[data-ig-handle]').forEach(el => {
     if (cfg.instagramHandle) el.textContent = cfg.instagramHandle;
+  });
+  /* La nota de IVA del pie del carrito vive copiada en 24 páginas
+     (todas comparten el mismo bloque de carrito) — hidratarla desde
+     PRICING_CONFIG evita que cambiar pricesIncludeTax algún día deje
+     23 de esas 24 copias diciendo lo contrario del precio real. */
+  const taxCfg = window.PRICING_CONFIG || {};
+  document.querySelectorAll('[data-tax-note]').forEach(el => {
+    el.textContent = taxCfg.pricesIncludeTax
+      ? `Precios de referencia, ${taxCfg.taxLabel || 'IVA'} incluido. El total final se confirma por WhatsApp.`
+      : `Precios de referencia, sin ${taxCfg.taxLabel || 'IVA'}. El total final se confirma por WhatsApp.`;
   });
 });

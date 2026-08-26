@@ -7,6 +7,13 @@
 <meta name="description" content="Qué cubre la garantía de los productos de LUNATECH3D.">
 <link rel="canonical" href="https://lunatech3dcr.com/garantia.html">
 <meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LUNATECH3D">
+<meta property="og:locale" content="es_CR">
+<meta property="og:url" content="https://lunatech3dcr.com/garantia.html">
+<meta property="og:title" content="Garantía · LUNATECH3D">
+<meta property="og:description" content="Qué cubre la garantía de los productos de LUNATECH3D.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="assets/img/icon-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -150,7 +157,7 @@
   <div class="cart-items" id="cartItems"></div>
   <div class="cart-foot" id="cartFoot">
     <div class="cart-subtotal"><span>Subtotal</span><strong id="cartSubtotalValue">₡0</strong></div>
-    <p class="cart-note">Precios de referencia, sin IVA. El total final se confirma por WhatsApp.</p>
+    <p class="cart-note" data-tax-note>Precios de referencia, sin IVA. El total final se confirma por WhatsApp.</p>
     <button class="btn btn-primary" id="checkoutBtn" disabled>Finalizar compra</button>
   </div>
 </aside>
@@ -169,11 +176,11 @@
   <form class="checkout-form" id="checkoutForm">
     <div class="field">
       <label for="custName">Nombre completo</label>
-      <input type="text" id="custName" name="custName" required placeholder="Tu nombre">
+      <input type="text" id="custName" name="custName" required maxlength="120" placeholder="Tu nombre">
     </div>
     <div class="field">
       <label for="custPhone">Teléfono</label>
-      <input type="tel" id="custPhone" name="custPhone" required placeholder="8888-8888">
+      <input type="tel" id="custPhone" name="custPhone" required maxlength="20" placeholder="8888-8888">
     </div>
     <div class="field" id="savedAddressField" style="display:none;">
       <label for="savedAddressSelect">Usar dirección guardada</label>
@@ -181,11 +188,11 @@
     </div>
     <div class="field">
       <label for="custAddress">Dirección de entrega</label>
-      <textarea id="custAddress" name="custAddress" rows="2" required placeholder="Provincia, cantón, señas para encontrar el lugar..."></textarea>
+      <textarea id="custAddress" name="custAddress" rows="2" required maxlength="300" placeholder="Provincia, cantón, señas para encontrar el lugar..."></textarea>
     </div>
     <div class="field">
       <label for="custNotes">Notas adicionales (opcional)</label>
-      <textarea id="custNotes" name="custNotes" rows="2" placeholder="Ej. horario para recibir, referencias, algo que debamos saber..."></textarea>
+      <textarea id="custNotes" name="custNotes" rows="2" maxlength="300" placeholder="Ej. horario para recibir, referencias, algo que debamos saber..."></textarea>
     </div>
     <fieldset class="field">
       <legend>Método de pago</legend>

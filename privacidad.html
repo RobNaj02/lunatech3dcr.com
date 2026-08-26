@@ -7,6 +7,13 @@
 <meta name="description" content="Qué datos recopila LUNATECH3D, para qué los usa y cómo se manejan tus datos de pedido.">
 <link rel="canonical" href="https://lunatech3dcr.com/privacidad.html">
 <meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LUNATECH3D">
+<meta property="og:locale" content="es_CR">
+<meta property="og:url" content="https://lunatech3dcr.com/privacidad.html">
+<meta property="og:title" content="Política de Privacidad · LUNATECH3D">
+<meta property="og:description" content="Qué datos recopila LUNATECH3D, para qué los usa y cómo se manejan tus datos de pedido.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="assets/img/icon-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -71,19 +78,25 @@
     <p class="policy-updated">Última actualización: agosto de 2026</p>
 
     <h2>Qué datos recopilamos</h2>
-    <p>Para procesar un pedido te pedimos nombre, número de teléfono y, si corresponde, dirección de envío. Esta información nos la compartís directamente por WhatsApp o por el formulario de contacto — no operamos un sistema de cuentas de usuario con contraseña.</p>
+    <p>Para procesar un pedido te pedimos nombre, número de teléfono, dirección de envío y, opcionalmente, notas adicionales. Podés comprar como invitado (sin cuenta) o crear una cuenta para guardar direcciones y ver tu historial de pedidos — la cuenta se maneja con Clerk, un proveedor externo de autenticación, y solo te pide correo y contraseña (o inicio de sesión con Google, si lo usás).</p>
 
     <h2>Cómo la usamos</h2>
     <p>Usamos tus datos únicamente para coordinar y despachar tu pedido, y para responder tus consultas. No vendemos ni compartimos tu información con terceros con fines publicitarios.</p>
 
-    <h2>Datos guardados en tu navegador</h2>
-    <p>El carrito de compras, tu lista de favoritos, los productos que marcaste para comparar y el historial de "vistos recientemente" se guardan únicamente en tu propio navegador (localStorage), no en un servidor. Si limpiás los datos del sitio en tu navegador, esa información se pierde.</p>
+    <h2>Dónde se guardan tus datos</h2>
+    <p>Los datos de cada pedido (nombre, teléfono, dirección, notas y qué compraste) se guardan en nuestra base de datos con Supabase, para poder gestionar el stock y, si tenés una cuenta, mostrarte tu historial en "Mis pedidos". El carrito de compras, tu lista de favoritos, los productos marcados para comparar, tus direcciones guardadas y el historial de "vistos recientemente" se guardan en tu propio navegador (localStorage) — si limpiás los datos del sitio en tu navegador, esa información local se pierde (tu historial de pedidos en la cuenta no, porque vive en Supabase).</p>
 
     <h2>Servicios externos</h2>
-    <p>El sitio carga tipografías desde Google Fonts, lo que implica una solicitud a los servidores de Google al visitar la página. Las cotizaciones de pedido se envían por WhatsApp, un servicio operado por Meta, sujeto a su propia política de privacidad.</p>
+    <p>El sitio usa estos servicios de terceros, cada uno sujeto a su propia política de privacidad:</p>
+    <ul>
+      <li><strong>Google Fonts</strong>: tipografías del sitio; implica una solicitud a los servidores de Google al visitar la página.</li>
+      <li><strong>Clerk</strong>: gestiona el inicio de sesión y las cuentas de usuario.</li>
+      <li><strong>Supabase</strong>: base de datos donde se guardan el stock de productos y los pedidos.</li>
+      <li><strong>WhatsApp (Meta)</strong>: ahí se coordina y confirma cada pedido con nosotros directamente.</li>
+    </ul>
 
     <h2>Tus derechos</h2>
-    <p>Podés solicitarnos en cualquier momento que eliminemos la información de contacto que tengamos guardada de conversaciones anteriores, escribiéndonos a <a href="mailto:info@lunatech3dcr.com" data-email-link>info@lunatech3dcr.com</a>.</p>
+    <p>Podés solicitarnos en cualquier momento que eliminemos tus datos de pedidos guardados en Supabase o tu cuenta de Clerk, escribiéndonos a <a href="mailto:info@lunatech3dcr.com" data-email-link>info@lunatech3dcr.com</a>. También podés eliminar tu cuenta vos mismo desde "Mi cuenta".</p>
   </article>
 </main>
 
@@ -156,7 +169,7 @@
   <div class="cart-items" id="cartItems"></div>
   <div class="cart-foot" id="cartFoot">
     <div class="cart-subtotal"><span>Subtotal</span><strong id="cartSubtotalValue">₡0</strong></div>
-    <p class="cart-note">Precios de referencia, sin IVA. El total final se confirma por WhatsApp.</p>
+    <p class="cart-note" data-tax-note>Precios de referencia, sin IVA. El total final se confirma por WhatsApp.</p>
     <button class="btn btn-primary" id="checkoutBtn" disabled>Finalizar compra</button>
   </div>
 </aside>
@@ -175,11 +188,11 @@
   <form class="checkout-form" id="checkoutForm">
     <div class="field">
       <label for="custName">Nombre completo</label>
-      <input type="text" id="custName" name="custName" required placeholder="Tu nombre">
+      <input type="text" id="custName" name="custName" required maxlength="120" placeholder="Tu nombre">
     </div>
     <div class="field">
       <label for="custPhone">Teléfono</label>
-      <input type="tel" id="custPhone" name="custPhone" required placeholder="8888-8888">
+      <input type="tel" id="custPhone" name="custPhone" required maxlength="20" placeholder="8888-8888">
     </div>
     <div class="field" id="savedAddressField" style="display:none;">
       <label for="savedAddressSelect">Usar dirección guardada</label>
@@ -187,11 +200,11 @@
     </div>
     <div class="field">
       <label for="custAddress">Dirección de entrega</label>
-      <textarea id="custAddress" name="custAddress" rows="2" required placeholder="Provincia, cantón, señas para encontrar el lugar..."></textarea>
+      <textarea id="custAddress" name="custAddress" rows="2" required maxlength="300" placeholder="Provincia, cantón, señas para encontrar el lugar..."></textarea>
     </div>
     <div class="field">
       <label for="custNotes">Notas adicionales (opcional)</label>
-      <textarea id="custNotes" name="custNotes" rows="2" placeholder="Ej. horario para recibir, referencias, algo que debamos saber..."></textarea>
+      <textarea id="custNotes" name="custNotes" rows="2" maxlength="300" placeholder="Ej. horario para recibir, referencias, algo que debamos saber..."></textarea>
     </div>
     <fieldset class="field">
       <legend>Método de pago</legend>

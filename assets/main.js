@@ -78,7 +78,20 @@ function loadCart(){
       }
     }
     const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) return [];
+    /* El carrito guardado pudo ser manipulado a mano (devtools) o
+       corromperse; nunca se confía en su forma. Un ítem sin id/nombre
+       no sirve para nada (no hay con qué armar el mensaje de
+       WhatsApp), así que se descarta entero. qty se acota a un
+       entero positivo razonable — esto es solo para que la UI no
+       muestre disparates (₡NaN, cantidades negativas): la validación
+       real que protege la venta corre en checkout_cart() en Supabase,
+       que ya rechaza cualquier qty inválida del lado del servidor. */
+    return parsed.filter(i => i && typeof i === 'object' && (i.id || i.productId) && i.name).map(i => ({
+      ...i,
+      qty: Math.min(999, Math.max(1, Math.floor(Number(i.qty)) || 1)),
+      price: Number(i.price) >= 0 ? Number(i.price) : 0
+    }));
   } catch (e) {
     return [];
   }
@@ -137,7 +150,7 @@ function updateBadge(){
 
 function cartItemThumb(item){
   if (item.image){
-    return `<img src="${item.image}" alt="${item.name}">`;
+    return `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">`;
   }
   return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/></svg>`;
 }
@@ -162,8 +175,8 @@ function renderCart(){
     <div class="cart-item" data-id="${item.id}">
       <div class="cart-item-thumb">${cartItemThumb(item)}</div>
       <div class="cart-item-info">
-        <h4>${item.name}</h4>
-        <div class="spec">${item.spec}</div>
+        <h4>${escapeHtml(item.name)}</h4>
+        <div class="spec">${escapeHtml(item.spec)}</div>
         <div class="qty-row">
           <button class="qty-btn" data-action="dec" aria-label="Quitar una unidad">−</button>
           <span class="qty-val">${item.qty}</span>
@@ -276,13 +289,50 @@ window.addEventListener('storage', (e) => {
    favoritos, sin duplicar esta lógica. */
 let lastFocusedEl = null;
 let openOverlayCount = 0;
-function trapFocusOpen(closeBtnEl){
+/* Panel actualmente "atrapado" para el ciclo de Tab de abajo. No es
+   una pila real: en este sitio nunca hay dos paneles abiertos a la
+   vez de verdad (ej. abrir checkout primero cierra el carrito), así
+   que una sola referencia alcanza. */
+let activeTrapPanelEl = null;
+
+function getFocusableIn(container){
+  if (!container) return [];
+  return Array.from(container.querySelectorAll(
+    'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  )).filter(el => el.offsetParent !== null);
+}
+
+/* Antes aria-modal="true" en estos paneles era una promesa vacía:
+   nada impedía que Tab saliera del panel hacia la página de atrás
+   (marcada como inerte para lectores de pantalla, pero no para
+   teclado). Este handler cicla Tab/Shift+Tab dentro del panel
+   abierto, que es lo que aria-modal dice que ya pasa. */
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Tab' || !activeTrapPanelEl) return;
+  const focusable = getFocusableIn(activeTrapPanelEl);
+  if (focusable.length === 0) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (e.shiftKey && document.activeElement === first){
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last){
+    e.preventDefault();
+    first.focus();
+  }
+});
+
+function trapFocusOpen(focusEl){
   if (openOverlayCount === 0) lastFocusedEl = document.activeElement;
   openOverlayCount++;
-  if (closeBtnEl) setTimeout(() => closeBtnEl.focus(), 10);
+  if (focusEl){
+    activeTrapPanelEl = focusEl.closest('.cart-drawer, .search-panel, [role="dialog"]');
+    setTimeout(() => focusEl.focus(), 10);
+  }
 }
 function trapFocusClose(){
   openOverlayCount = Math.max(0, openOverlayCount - 1);
+  activeTrapPanelEl = null;
   if (openOverlayCount === 0 && lastFocusedEl && typeof lastFocusedEl.focus === 'function'){
     lastFocusedEl.focus();
     lastFocusedEl = null;
@@ -362,7 +412,7 @@ function renderOrderSummary(){
     const warn = available !== null && available < i.qty
       ? `<span class="cart-item-oos">${available > 0 ? `Solo quedan ${available}` : 'Agotado'}</span>`
       : '';
-    return `<div class="row"><span>${i.qty} × ${i.name} <small>(${money(i.price)} c/u)</small>${warn}</span><span>${money(i.qty * i.price)}</span></div>`;
+    return `<div class="row"><span>${i.qty} × ${escapeHtml(i.name)} <small>(${money(i.price)} c/u)</small>${warn}</span><span>${money(i.qty * i.price)}</span></div>`;
   }).join('')
     + `<div class="row"><span>Precios de referencia</span><span>${suffix}</span></div>`
     + `<div class="row total"><span>Total</span><span>${money(cartSubtotal())}</span></div>`;

@@ -150,6 +150,7 @@
   <!-- VALUES -->
   <section class="values">
     <div class="wrap">
+      <h2 class="sr-only">Por qué comprar en LUNATECH3D</h2>
       <div class="value-card reveal" tabindex="0" role="button" aria-expanded="false">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5L12 2z"/></svg>
         <h3>Calidad que se nota en la impresión</h3>
@@ -207,10 +208,10 @@
     </div>
   </section>
 
-  <!-- PRINT SERVICE TEASER -->
-  <section class="print-teaser">
-    <div class="wrap print-teaser-inner reveal">
-      <div class="print-teaser-copy">
+  <!-- CALCULATOR PROMO (herramienta gratuita, no es servicio de impresión de LUNATECH3D) -->
+  <section class="calc-promo">
+    <div class="wrap calc-promo-inner reveal">
+      <div class="calc-promo-copy">
         <p class="eyebrow">Herramienta gratuita</p>
         <h2>¿Querés saber cuánto cobrar por tus impresiones?</h2>
         <p>Usá nuestra calculadora gratuita para estimar el costo real y el precio de venta de tus propias piezas: material, electricidad, desgaste de impresora, mano de obra y margen. En dólares o colones.</p>
@@ -224,7 +225,7 @@
     <div class="wrap products-inner">
       <div class="head reveal">
         <p class="eyebrow">Destacados</p>
-        <h2>Lo más pedido esta temporada</h2>
+        <h2>Nuestros favoritos</h2>
         <p>Precios de referencia en colones, más IVA. Agregalos al carrito o escríbenos para confirmar disponibilidad.</p>
       </div>
       <div class="prod-grid" id="featuredGrid"></div>
@@ -360,7 +361,7 @@
   <div class="cart-items" id="cartItems"></div>
   <div class="cart-foot" id="cartFoot">
     <div class="cart-subtotal"><span>Subtotal</span><strong id="cartSubtotalValue">₡0</strong></div>
-    <p class="cart-note">Precios de referencia, sin IVA. El total final se confirma por WhatsApp.</p>
+    <p class="cart-note" data-tax-note>Precios de referencia, sin IVA. El total final se confirma por WhatsApp.</p>
     <button class="btn btn-primary" id="checkoutBtn" disabled>Finalizar compra</button>
   </div>
 </aside>
@@ -379,11 +380,11 @@
   <form class="checkout-form" id="checkoutForm">
     <div class="field">
       <label for="custName">Nombre completo</label>
-      <input type="text" id="custName" name="custName" required placeholder="Tu nombre">
+      <input type="text" id="custName" name="custName" required maxlength="120" placeholder="Tu nombre">
     </div>
     <div class="field">
       <label for="custPhone">Teléfono</label>
-      <input type="tel" id="custPhone" name="custPhone" required placeholder="8888-8888">
+      <input type="tel" id="custPhone" name="custPhone" required maxlength="20" placeholder="8888-8888">
     </div>
     <div class="field" id="savedAddressField" style="display:none;">
       <label for="savedAddressSelect">Usar dirección guardada</label>
@@ -391,11 +392,11 @@
     </div>
     <div class="field">
       <label for="custAddress">Dirección de entrega</label>
-      <textarea id="custAddress" name="custAddress" rows="2" required placeholder="Provincia, cantón, señas para encontrar el lugar..."></textarea>
+      <textarea id="custAddress" name="custAddress" rows="2" required maxlength="300" placeholder="Provincia, cantón, señas para encontrar el lugar..."></textarea>
     </div>
     <div class="field">
       <label for="custNotes">Notas adicionales (opcional)</label>
-      <textarea id="custNotes" name="custNotes" rows="2" placeholder="Ej. horario para recibir, referencias, algo que debamos saber..."></textarea>
+      <textarea id="custNotes" name="custNotes" rows="2" maxlength="300" placeholder="Ej. horario para recibir, referencias, algo que debamos saber..."></textarea>
     </div>
     <fieldset class="field">
       <legend>Método de pago</legend>

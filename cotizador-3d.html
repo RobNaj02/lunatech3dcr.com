@@ -204,7 +204,7 @@
               <input type="number" id="calcFail" min="0" max="100" step="1" value="5">
             </div>
             <div class="field">
-              <label for="calcMargin">Margen de ganancia (%)</label>
+              <label for="calcMargin">Margen sobre el costo (%)</label>
               <input type="number" id="calcMargin" min="0" step="1" value="40">
             </div>
           </div>
@@ -234,7 +234,7 @@
           <div class="calc-row calc-row-sub"><span>Subtotal</span><strong id="calcRowSubtotal">—</strong></div>
           <div class="calc-row"><span>+ Fallos/desperdicio</span><strong id="calcRowFail">—</strong></div>
           <div class="calc-row calc-row-sub"><span>Costo de producción</span><strong id="calcRowCost">—</strong></div>
-          <div class="calc-row"><span>+ Margen de ganancia</span><strong id="calcRowMargin">—</strong></div>
+          <div class="calc-row"><span>+ Margen sobre el costo</span><strong id="calcRowMargin">—</strong></div>
         </div>
 
         <div class="calc-total-box">
@@ -318,7 +318,7 @@
   <div class="cart-items" id="cartItems"></div>
   <div class="cart-foot" id="cartFoot">
     <div class="cart-subtotal"><span>Subtotal</span><strong id="cartSubtotalValue">₡0</strong></div>
-    <p class="cart-note">Precios de referencia, sin IVA. El total final se confirma por WhatsApp.</p>
+    <p class="cart-note" data-tax-note>Precios de referencia, sin IVA. El total final se confirma por WhatsApp.</p>
     <button class="btn btn-primary" id="checkoutBtn" disabled>Finalizar compra</button>
   </div>
 </aside>
@@ -337,11 +337,11 @@
   <form class="checkout-form" id="checkoutForm">
     <div class="field">
       <label for="custName">Nombre completo</label>
-      <input type="text" id="custName" name="custName" required placeholder="Tu nombre">
+      <input type="text" id="custName" name="custName" required maxlength="120" placeholder="Tu nombre">
     </div>
     <div class="field">
       <label for="custPhone">Teléfono</label>
-      <input type="tel" id="custPhone" name="custPhone" required placeholder="8888-8888">
+      <input type="tel" id="custPhone" name="custPhone" required maxlength="20" placeholder="8888-8888">
     </div>
     <div class="field" id="savedAddressField" style="display:none;">
       <label for="savedAddressSelect">Usar dirección guardada</label>
@@ -349,11 +349,11 @@
     </div>
     <div class="field">
       <label for="custAddress">Dirección de entrega</label>
-      <textarea id="custAddress" name="custAddress" rows="2" required placeholder="Provincia, cantón, señas para encontrar el lugar..."></textarea>
+      <textarea id="custAddress" name="custAddress" rows="2" required maxlength="300" placeholder="Provincia, cantón, señas para encontrar el lugar..."></textarea>
     </div>
     <div class="field">
       <label for="custNotes">Notas adicionales (opcional)</label>
-      <textarea id="custNotes" name="custNotes" rows="2" placeholder="Ej. horario para recibir, referencias, algo que debamos saber..."></textarea>
+      <textarea id="custNotes" name="custNotes" rows="2" maxlength="300" placeholder="Ej. horario para recibir, referencias, algo que debamos saber..."></textarea>
     </div>
     <fieldset class="field">
       <legend>Método de pago</legend>

@@ -106,14 +106,24 @@ begin
   for item in select * from jsonb_array_elements(items) loop
     v_product_id := item->>'product_id';
     v_variant := coalesce(item->>'variant_name', '');
-    v_qty := (item->>'qty')::int;
+
+    -- Cualquiera puede llamar a esta función directo (curl, consola del
+    -- navegador) con el jsonb que quiera — un qty que no sea un entero
+    -- real ("abc", 1.5, un número fuera de rango) hacía tronar el cast
+    -- ::int con un error crudo de Postgres en vez de la respuesta
+    -- controlada {ok:false, failed:[...]} que el resto de esta función
+    -- ya devuelve. Ahora ese ítem simplemente se marca como fallido.
+    begin
+      v_qty := (item->>'qty')::int;
+    exception when others then
+      v_qty := null;
+    end;
 
     -- qty debe ser un entero positivo: una cantidad <= 0 (o negativa) no es
     -- un pedido real y, si se restara tal cual, SUMARÍA stock en vez de
-    -- restarlo (quantity - (-5) = quantity + 5). Cualquiera puede llamar a
-    -- esta función directo desde la consola del navegador con el payload
-    -- que quiera, así que esto no puede depender de que el frontend ya
-    -- valide qty > 0 — se rechaza acá también, en el server.
+    -- restarlo (quantity - (-5) = quantity + 5). Esto tampoco puede
+    -- depender de que el frontend ya valide qty > 0 — se rechaza acá
+    -- también, en el server.
     if v_qty is null or v_qty <= 0 then
       failed := failed || jsonb_build_object(
         'product_id', v_product_id,
@@ -158,15 +168,20 @@ begin
   -- el registro nunca tumbe una venta que ya se validó y restó del
   -- stock real.
   begin
+    -- left(...) trunca en vez de rechazar: esta función es pública (la
+    -- llama cualquiera, no solo el formulario del sitio, que ya limita
+    -- estos campos con maxlength), así que un valor absurdamente largo
+    -- no puede tumbar una venta ya validada y con el stock ya restado
+    -- — simplemente se guarda recortado.
     insert into public.orders (order_number, items, customer_name, customer_phone, customer_address, notes, pay_method, customer_clerk_id)
     values (
-      order_number,
+      left(order_number, 60),
       items,
-      customer->>'name',
-      customer->>'phone',
-      customer->>'address',
-      customer->>'notes',
-      customer->>'pay_method',
+      left(customer->>'name', 120),
+      left(customer->>'phone', 30),
+      left(customer->>'address', 500),
+      left(customer->>'notes', 500),
+      left(customer->>'pay_method', 60),
       v_clerk_id
     );
   exception when unique_violation then
@@ -364,6 +379,62 @@ end;
 $$;
 
 grant execute on function public.cancel_order(bigint) to authenticated;
+
+-- ---------- Auto-expirar pedidos pendientes viejos ----------
+-- checkout_cart() es una función pública: cualquiera puede llamarla
+-- directo (curl, consola del navegador) con un product_id real y
+-- qty:1, sin pasar nunca por WhatsApp, y eso resta stock de verdad.
+-- No hay forma de impedir eso desde acá sin agregar algo como rate
+-- limiting o un captcha delante (fuera del alcance de este archivo);
+-- esta función acota el daño: un pedido que se queda "pending" más
+-- de 48 horas se cancela solo y repone su stock, igual que si un
+-- admin lo hubiera cancelado a mano desde pedidos-admin.html.
+create or replace function public.expire_stale_orders()
+returns integer
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_order record;
+  item jsonb;
+  v_count int := 0;
+begin
+  for v_order in
+    select * from public.orders
+    where status = 'pending' and created_at < now() - interval '48 hours'
+    for update skip locked
+  loop
+    for item in select * from jsonb_array_elements(v_order.items) loop
+      update product_stock
+        set quantity = quantity + (item->>'qty')::int, updated_at = now()
+        where product_id = item->>'product_id'
+          and variant_name = coalesce(item->>'variant_name', '');
+    end loop;
+
+    update public.orders
+      set status = 'cancelled', cancelled_at = now()
+      where id = v_order.id;
+
+    v_count := v_count + 1;
+  end loop;
+
+  return v_count;
+end;
+$$;
+-- A propósito, sin "grant execute" a anon/authenticated: esta función
+-- corre sola por tarea programada (con privilegios de owner), nunca
+-- se llama desde el navegador ni el sitio.
+
+-- Para activar la tarea programada (una sola vez, no hace falta
+-- repetirlo cada vez que vuelvas a correr este archivo completo):
+--   1. Dashboard → Database → Extensions → activá "pg_cron".
+--   2. Corré en el SQL Editor:
+--        select cron.schedule('expire-stale-orders', '0 * * * *',
+--          $$select public.expire_stale_orders()$$);
+--      (la corre cada hora; podés probarla a mano ejecutando
+--      "select public.expire_stale_orders();" para ver cuántos
+--      pedidos canceló).
 
 -- =========================================================
 -- DATOS INICIALES — un renglón por producto/variante del
