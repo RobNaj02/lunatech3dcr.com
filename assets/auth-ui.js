@@ -66,7 +66,7 @@
              La página dedicada (mi-cuenta.html) sigue existiendo,
              solo que se llega ahí por el link, no desde acá. */
           Clerk.mountUserButton(iconSlot, {
-            userProfileProps: { customPages: [window.LunatechAddresses.addressesCustomPage()] },
+            userProfileProps: { customPages: [window.LunatechAddresses.addressesCustomPage(), window.LunatechOrders.ordersCustomPage()] },
           });
         }
         else iconSlot.appendChild(signInIcon());

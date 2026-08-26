@@ -95,6 +95,12 @@ declare
   v_qty int;
   v_available int;
   failed jsonb := '[]'::jsonb;
+  -- Id de Clerk de quien llama, si venía logueado (requiere la
+  -- integración Clerk↔Supabase activa). Se lee del JWT verificado de
+  -- la request, nunca de un valor mandado por el navegador — así
+  -- nadie puede "plantar" un pedido en la cuenta de otra persona
+  -- pasando un id ajeno.
+  v_clerk_id text := auth.jwt() ->> 'sub';
 begin
   -- Paso 1: bloquear las filas involucradas y validar que haya stock suficiente
   for item in select * from jsonb_array_elements(items) loop
@@ -152,7 +158,7 @@ begin
   -- el registro nunca tumbe una venta que ya se validó y restó del
   -- stock real.
   begin
-    insert into public.orders (order_number, items, customer_name, customer_phone, customer_address, notes, pay_method)
+    insert into public.orders (order_number, items, customer_name, customer_phone, customer_address, notes, pay_method, customer_clerk_id)
     values (
       order_number,
       items,
@@ -160,7 +166,8 @@ begin
       customer->>'phone',
       customer->>'address',
       customer->>'notes',
-      customer->>'pay_method'
+      customer->>'pay_method',
+      v_clerk_id
     );
   exception when unique_violation then
     -- Número de pedido repetido (colisión aleatoria generada en el
@@ -189,14 +196,31 @@ alter table public.admins enable row level security;
 -- el navegador (ni siquiera un admin), solo is_admin() de abajo (que
 -- corre con permisos elevados) puede consultarla.
 
+-- plpgsql (no sql) a propósito, para poder atajar el cast a uuid: una
+-- vez activada la integración Clerk↔Supabase, cualquier cliente
+-- logueado con Clerk también llega acá como rol "authenticated", pero
+-- su "sub" es texto tipo "user_2abc..." (no un uuid). auth.uid() hace
+-- ese cast internamente y con un sub así truena con un error real (no
+-- devuelve null) — y como Postgres evalúa TODAS las políticas de una
+-- tabla, eso rompería incluso a un cliente leyendo sus propios pedidos
+-- en "Mis pedidos" si no se atrapa acá.
 create or replace function public.is_admin()
 returns boolean
-language sql
+language plpgsql
 stable
 security definer
 set search_path = public
 as $$
-  select exists (select 1 from public.admins where user_id = auth.uid());
+declare
+  v_uid uuid;
+begin
+  begin
+    v_uid := auth.uid();
+  exception when others then
+    return false;
+  end;
+  return exists (select 1 from public.admins where user_id = v_uid);
+end;
 $$;
 
 grant execute on function public.is_admin() to authenticated;
@@ -221,6 +245,15 @@ create table if not exists public.orders (
 );
 alter table public.orders enable row level security;
 
+-- Quién hizo el pedido si estaba logueado con Clerk al momento del
+-- checkout (null en un pedido de invitado). Requiere la integración
+-- nativa Clerk↔Supabase (Clerk Dashboard → Supabase integration +
+-- Supabase Dashboard → Authentication → Sign In/Providers → Clerk):
+-- sin eso, auth.jwt() no trae el "sub" de Clerk y esta columna
+-- siempre queda en null (el resto del sitio sigue funcionando igual,
+-- solo no aparece nada en "Mis pedidos").
+alter table public.orders add column if not exists customer_clerk_id text;
+
 -- Solo un admin autenticado puede LEER pedidos desde el navegador.
 -- Los INSERT (checkout_cart) y UPDATE (cancel_order) de abajo no
 -- necesitan política propia: corren con permisos elevados.
@@ -229,6 +262,16 @@ create policy "admin read orders"
   on public.orders for select
   to authenticated
   using (public.is_admin());
+
+-- Un cliente logueado con Clerk puede leer sus propios pedidos (para
+-- "Mis pedidos" en Mi cuenta) — nunca los de otro. (auth.jwt()->>'sub'
+-- es el user id de Clerk; no se usa auth.uid() porque ese id no es un
+-- uuid.)
+drop policy if exists "customer read own orders" on public.orders;
+create policy "customer read own orders"
+  on public.orders for select
+  to authenticated
+  using (customer_clerk_id is not null and customer_clerk_id = (auth.jwt() ->> 'sub'));
 
 -- ---------- Función de cancelación ----------
 -- Repone en product_stock exactamente lo que ese pedido había

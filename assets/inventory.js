@@ -67,7 +67,22 @@
     return;
   }
 
-  const client = window.supabase.createClient(url, key);
+  const client = window.supabase.createClient(url, key, {
+    /* Si hay sesión de Clerk, cada request a Supabase viaja con su
+       token — necesario para que "Mis pedidos" (assets/orders-history.js)
+       pueda leer, vía RLS, únicamente los pedidos de esa cuenta.
+       Requiere la integración nativa Clerk↔Supabase activada en ambos
+       paneles; si no está activada, o si no hay sesión, esto
+       simplemente devuelve null y todo sigue funcionando como
+       invitado (anon), igual que antes. */
+    accessToken: async () => {
+      try {
+        const Clerk = window.clerkReady ? await window.clerkReady : window.Clerk;
+        if (Clerk && Clerk.session) return await Clerk.session.getToken();
+      } catch (err) { /* sin sesión de Clerk disponible — seguimos como anon */ }
+      return null;
+    }
+  });
   LunatechStock.client = client;
 
   LunatechStock.ready = client

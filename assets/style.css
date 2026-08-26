@@ -217,6 +217,16 @@ header{
 .addr-remove{background:none;border:none;color:var(--ink-faint);cursor:pointer;font-size:14px;padding:2px 4px;flex-shrink:0;}
 .addr-remove:hover{color:#B5433B;}
 .addr-empty{color:var(--ink-faint);font-size:13.5px;}
+
+/* ---------- MIS PEDIDOS (mi-cuenta.html) ---------- */
+.my-orders-list{display:flex;flex-direction:column;gap:14px;}
+.my-order{border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;}
+.my-order.is-cancelled{opacity:.6;}
+.my-order-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px;}
+.my-order-head strong{font-family:'Outfit',sans-serif;font-size:14px;}
+.my-order-date{display:block;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-faint);margin-top:2px;}
+.my-order-items{display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--ink);margin-bottom:8px;}
+.my-order-total{font-size:12.5px;color:var(--ink-soft);}
 .menu-toggle{display:none;background:none;border:none;cursor:pointer;padding:6px;}
 .menu-toggle span{display:block;width:22px;height:2px;background:var(--ink);margin:5px 0;transition:transform .2s ease, opacity .2s ease;}
 

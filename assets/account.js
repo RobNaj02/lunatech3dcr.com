@@ -41,7 +41,7 @@
         const el = document.createElement('div');
         el.className = 'account-mount';
         mount.appendChild(el);
-        Clerk.mountUserProfile(el, { customPages: [window.LunatechAddresses.addressesCustomPage()] });
+        Clerk.mountUserProfile(el, { customPages: [window.LunatechAddresses.addressesCustomPage(), window.LunatechOrders.ordersCustomPage()] });
       } else {
         renderSignedOut();
       }
