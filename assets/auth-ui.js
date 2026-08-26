@@ -55,8 +55,23 @@
       return;
     }
 
+    let lastUserId; // undefined hasta el primer paint()
+
     function paint(){
+      /* Clerk.addListener dispara por muchos motivos internos, no
+         solo login/logout — entre ellos, navegar entre las pestañas
+         del propio popover de cuenta (Perfil / Direcciones / Mis
+         pedidos). Repintar en cada disparo desmonta y remonta el
+         UserButton a mitad de esa navegación, lo que deja a Clerk en
+         un estado roto (el ícono de cuenta del header desaparece y no
+         vuelve a abrir hasta refrescar). Por eso solo repintamos
+         cuando cambia de verdad quién está logueado. */
+      const userId = Clerk.user ? Clerk.user.id : null;
+      if (userId === lastUserId) return;
+      lastUserId = userId;
+
       if (iconSlot){
+        try { Clerk.unmountUserButton(iconSlot); } catch (e) { /* ya desmontado */ }
         iconSlot.innerHTML = '';
         if (Clerk.user){
           /* Popover normal de Clerk (no 'navigation': el sitio es

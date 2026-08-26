@@ -35,13 +35,33 @@
 
     if (!Clerk){ renderUnavailable(); return; }
 
+    let mountedEl = null;
+    let lastUserId; // undefined hasta el primer paint()
+
     function paint(){
+      /* Clerk.addListener dispara por muchos motivos internos, no solo
+         login/logout — entre ellos, navegar entre las pestañas del
+         propio <UserProfile /> (Perfil / Direcciones / Mis pedidos).
+         Si repintamos en cada disparo, desmontamos y volvemos a montar
+         el UserProfile A MITAD de esa navegación interna, lo que deja
+         a Clerk en un estado roto (el panel se cierra y el ícono de
+         cuenta del header deja de poder volver a abrirse hasta
+         refrescar). Por eso solo repintamos cuando cambia de verdad
+         quién está logueado. */
+      const userId = Clerk.user ? Clerk.user.id : null;
+      if (userId === lastUserId) return;
+      lastUserId = userId;
+
+      if (mountedEl){ try { Clerk.unmountUserProfile(mountedEl); } catch (e) { /* ya desmontado */ } }
       mount.innerHTML = '';
+      mountedEl = null;
+
       if (Clerk.user){
         const el = document.createElement('div');
         el.className = 'account-mount';
         mount.appendChild(el);
         Clerk.mountUserProfile(el, { customPages: [window.LunatechAddresses.addressesCustomPage(), window.LunatechOrders.ordersCustomPage()] });
+        mountedEl = el;
       } else {
         renderSignedOut();
       }
