@@ -799,12 +799,6 @@ fieldset.field{border:none;margin:0;min-width:0;}
 .calc-total-box .calc-row strong{font-weight:700;}
 
 .calc-note{font-size:12px;color:var(--ink-faint);line-height:1.5;text-align:center;}
-.calc-contact-cta{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-  border:1px solid var(--line);border-radius:var(--radius);padding:14px 18px;background:var(--paper-soft);
-}
-.calc-contact-cta p{margin:0;font-size:13px;color:var(--ink-soft);}
-.calc-contact-cta .btn{padding:9px 18px;font-size:13px;}
 
 @media (max-width: 980px){
   .calc-grid{grid-template-columns:1fr;}
