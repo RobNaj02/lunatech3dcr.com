@@ -245,6 +245,15 @@ create table if not exists public.orders (
 );
 alter table public.orders enable row level security;
 
+-- Se agregó el estado 'completed' (pedido ya entregado/procesado) a lo
+-- que originalmente era solo pending/cancelled. drop+add porque un
+-- check constraint no se puede "or replace" — el nombre por defecto
+-- de un check inline de columna es <tabla>_<columna>_check.
+alter table public.orders drop constraint if exists orders_status_check;
+alter table public.orders add constraint orders_status_check
+  check (status in ('pending', 'completed', 'cancelled'));
+alter table public.orders add column if not exists completed_at timestamptz;
+
 -- Quién hizo el pedido si estaba logueado con Clerk al momento del
 -- checkout (null en un pedido de invitado). Requiere la integración
 -- nativa Clerk↔Supabase (Clerk Dashboard → Supabase integration +
@@ -273,10 +282,48 @@ create policy "customer read own orders"
   to authenticated
   using (customer_clerk_id is not null and customer_clerk_id = (auth.jwt() ->> 'sub'));
 
+-- ---------- Función para marcar como completado ----------
+-- Solo cambia el estado (el stock ya se restó en el checkout y no
+-- hay nada más que tocar) — para cuando el pedido efectivamente se
+-- entregó/procesó.
+create or replace function public.complete_order(p_order_id bigint)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_order public.orders%rowtype;
+begin
+  if not public.is_admin() then
+    raise exception 'not authorized';
+  end if;
+
+  select * into v_order from public.orders where id = p_order_id for update;
+
+  if v_order.id is null then
+    return jsonb_build_object('ok', false, 'error', 'order_not_found');
+  end if;
+  if v_order.status <> 'pending' then
+    return jsonb_build_object('ok', false, 'error', 'not_pending');
+  end if;
+
+  update public.orders
+    set status = 'completed', completed_at = now()
+    where id = p_order_id;
+
+  return jsonb_build_object('ok', true);
+end;
+$$;
+
+grant execute on function public.complete_order(bigint) to authenticated;
+
 -- ---------- Función de cancelación ----------
 -- Repone en product_stock exactamente lo que ese pedido había
--- restado, y marca el pedido como cancelado. Es idempotente en el
--- sentido de que un pedido ya cancelado no se puede volver a
+-- restado, y marca el pedido como cancelado. Solo aplica a pedidos
+-- pendientes: uno ya completado (entregado de verdad) no se debería
+-- poder "cancelar y reponer" por acá — eso sería más bien una
+-- devolución, un caso distinto — y uno ya cancelado no se vuelve a
 -- cancelar (así no se repone el stock dos veces por error).
 create or replace function public.cancel_order(p_order_id bigint)
 returns jsonb
@@ -297,8 +344,8 @@ begin
   if v_order.id is null then
     return jsonb_build_object('ok', false, 'error', 'order_not_found');
   end if;
-  if v_order.status = 'cancelled' then
-    return jsonb_build_object('ok', false, 'error', 'already_cancelled');
+  if v_order.status <> 'pending' then
+    return jsonb_build_object('ok', false, 'error', 'not_pending');
   end if;
 
   for item in select * from jsonb_array_elements(v_order.items) loop

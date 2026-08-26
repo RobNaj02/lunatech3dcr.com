@@ -222,6 +222,7 @@ header{
 .my-orders-list{display:flex;flex-direction:column;gap:14px;}
 .my-order{border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;}
 .my-order.is-cancelled{opacity:.6;}
+.my-order.is-completed{border-color:var(--stardust);}
 .my-order-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px;}
 .my-order-head strong{font-family:'Outfit',sans-serif;font-size:14px;}
 .my-order-date{display:block;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-faint);margin-top:2px;}
@@ -1132,16 +1133,20 @@ body.lightbox-lock{overflow:hidden;}
 .admin-orders{display:flex;flex-direction:column;gap:16px;}
 .admin-order{border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;}
 .admin-order.is-cancelled{opacity:.6;}
+.admin-order.is-completed{border-color:var(--stardust);}
 .admin-order-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px;}
 .admin-order-head strong{font-family:'Outfit',sans-serif;font-size:15px;}
 .admin-order-date{display:block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-faint);margin-top:2px;}
 .admin-badge{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.04em;padding:5px 10px;border-radius:100px;white-space:nowrap;}
 .admin-badge.is-pending{background:var(--warn-mist);color:var(--warn);}
+.admin-badge.is-completed{background:var(--lilac-mist);color:var(--lilac-deep);}
 .admin-badge.is-cancelled{background:var(--paper-soft);color:var(--ink-faint);}
 .admin-order-items{display:flex;flex-direction:column;gap:4px;font-size:13.5px;color:var(--ink);margin-bottom:10px;}
 .admin-order-total{font-weight:600;font-size:14px;margin-bottom:12px;}
 .admin-order-customer{display:flex;flex-direction:column;gap:2px;font-size:13px;color:var(--ink-soft);margin-bottom:14px;}
-.admin-cancel-btn{width:100%;justify-content:center;color:var(--danger);border-color:var(--danger-mist);}
+.admin-order-actions{display:flex;gap:10px;}
+.admin-order-actions .btn{flex:1;justify-content:center;}
+.admin-cancel-btn{color:var(--danger);border-color:var(--danger-mist);}
 .admin-cancel-btn:hover{border-color:var(--danger);background:var(--danger-mist);}
 @media (max-width: 560px){
   .admin-body{padding:24px 14px;}

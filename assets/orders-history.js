@@ -25,6 +25,8 @@
     return (items || []).reduce((s, i) => s + (Number(i.qty) || 0) * (Number(i.price) || 0), 0);
   }
 
+  const STATUS_LABEL = { pending: 'Pendiente', completed: 'Completado', cancelled: 'Cancelado' };
+
   function renderOrdersTab(el){
     async function paint(){
       el.innerHTML = '<div class="addr-page"><h2>Mis pedidos</h2><p class="account-loading">Cargando…</p></div>';
@@ -63,7 +65,7 @@
             ${orders.length === 0
               ? '<p class="addr-empty">Todavía no hiciste ningún pedido con esta cuenta.</p>'
               : orders.map(o => {
-                  const cancelled = o.status === 'cancelled';
+                  const status = o.status || 'pending';
                   const items = Array.isArray(o.items) ? o.items : [];
                   const itemsHtml = items.map(i => {
                     const label = escapeHtml(i.name || i.product_id || 'Producto');
@@ -71,13 +73,13 @@
                     return `<li>${Number(i.qty) || 0} × ${label}${variant}</li>`;
                   }).join('');
                   return `
-                    <article class="my-order${cancelled ? ' is-cancelled' : ''}">
+                    <article class="my-order${status === 'pending' ? '' : ' is-' + status}">
                       <div class="my-order-head">
                         <div>
                           <strong>${escapeHtml(o.order_number)}</strong>
                           <span class="my-order-date">${escapeHtml(new Date(o.created_at).toLocaleString('es-CR'))}</span>
                         </div>
-                        <span class="admin-badge ${cancelled ? 'is-cancelled' : 'is-pending'}">${cancelled ? 'Cancelado' : 'Pendiente'}</span>
+                        <span class="admin-badge is-${status}">${STATUS_LABEL[status] || status}</span>
                       </div>
                       <ul class="my-order-items">${itemsHtml || '<li>Sin detalle</li>'}</ul>
                       <div class="my-order-total">Total: ${money(orderTotal(items))} · Pago: ${escapeHtml(o.pay_method) || '—'}</div>

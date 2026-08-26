@@ -64,11 +64,14 @@
     return (items || []).reduce((s, i) => s + (Number(i.qty) || 0) * (Number(i.price) || 0), 0);
   }
 
+  const STATUS_LABEL = { pending: 'Pendiente', completed: 'Completado', cancelled: 'Cancelado · stock repuesto' };
+
   function renderOrders(orders){
     ordersList.innerHTML = '';
     ordersEmpty.hidden = orders.length > 0;
     orders.forEach(order => {
-      const cancelled = order.status === 'cancelled';
+      const status = order.status || 'pending';
+      const isPending = status === 'pending';
       const items = Array.isArray(order.items) ? order.items : [];
       const itemsHtml = items.map(i => {
         const label = escapeHtml(i.name || i.product_id || 'Producto');
@@ -78,14 +81,14 @@
         return `<li>${qty} × ${label}${variant}${price}</li>`;
       }).join('');
       const card = document.createElement('article');
-      card.className = 'admin-order' + (cancelled ? ' is-cancelled' : '');
+      card.className = 'admin-order' + (isPending ? '' : ' is-' + status);
       card.innerHTML = `
         <div class="admin-order-head">
           <div>
             <strong>${escapeHtml(order.order_number) || '—'}</strong>
             <span class="admin-order-date">${escapeHtml(new Date(order.created_at).toLocaleString('es-CR'))}</span>
           </div>
-          <span class="admin-badge ${cancelled ? 'is-cancelled' : 'is-pending'}">${cancelled ? 'Cancelado · stock repuesto' : 'Pendiente'}</span>
+          <span class="admin-badge is-${status}">${STATUS_LABEL[status] || status}</span>
         </div>
         <ul class="admin-order-items">${itemsHtml || '<li>Sin detalle de ítems</li>'}</ul>
         <div class="admin-order-total">Total: ${money(orderTotal(items))}</div>
@@ -96,7 +99,11 @@
           ${order.notes ? `<span>Notas: ${escapeHtml(order.notes)}</span>` : ''}
           <span>Pago: ${escapeHtml(order.pay_method) || '—'}</span>
         </div>
-        ${cancelled ? '' : `<button class="btn btn-ghost admin-cancel-btn" data-order-id="${order.id}">Cancelar y reponer stock</button>`}
+        ${isPending ? `
+        <div class="admin-order-actions">
+          <button class="btn btn-primary admin-complete-btn" data-order-id="${order.id}">Marcar como completado</button>
+          <button class="btn btn-ghost admin-cancel-btn" data-order-id="${order.id}">Cancelar y reponer stock</button>
+        </div>` : ''}
       `;
       ordersList.appendChild(card);
     });
@@ -118,21 +125,42 @@
   }
 
   ordersList.addEventListener('click', async (e) => {
-    const btn = e.target.closest('.admin-cancel-btn');
-    if (!btn) return;
-    const orderId = btn.dataset.orderId;
-    btn.disabled = true;
-    btn.textContent = 'Cancelando…';
-    const { data, error } = await client.rpc('cancel_order', { p_order_id: Number(orderId) });
-    if (error || !data || data.ok === false){
-      console.error('[pedidos-admin] error cancelando pedido', error, data);
-      showToast('No se pudo cancelar el pedido.');
-      btn.disabled = false;
-      btn.textContent = 'Cancelar y reponer stock';
+    const cancelBtn = e.target.closest('.admin-cancel-btn');
+    const completeBtn = e.target.closest('.admin-complete-btn');
+    if (!cancelBtn && !completeBtn) return;
+
+    if (cancelBtn){
+      const orderId = cancelBtn.dataset.orderId;
+      cancelBtn.disabled = true;
+      cancelBtn.textContent = 'Cancelando…';
+      const { data, error } = await client.rpc('cancel_order', { p_order_id: Number(orderId) });
+      if (error || !data || data.ok === false){
+        console.error('[pedidos-admin] error cancelando pedido', error, data);
+        showToast('No se pudo cancelar el pedido.');
+        cancelBtn.disabled = false;
+        cancelBtn.textContent = 'Cancelar y reponer stock';
+        return;
+      }
+      showToast('Pedido cancelado — stock repuesto ✓');
+      loadOrders();
       return;
     }
-    showToast('Pedido cancelado — stock repuesto ✓');
-    loadOrders();
+
+    if (completeBtn){
+      const orderId = completeBtn.dataset.orderId;
+      completeBtn.disabled = true;
+      completeBtn.textContent = 'Marcando…';
+      const { data, error } = await client.rpc('complete_order', { p_order_id: Number(orderId) });
+      if (error || !data || data.ok === false){
+        console.error('[pedidos-admin] error completando pedido', error, data);
+        showToast('No se pudo marcar el pedido como completado.');
+        completeBtn.disabled = false;
+        completeBtn.textContent = 'Marcar como completado';
+        return;
+      }
+      showToast('Pedido marcado como completado ✓');
+      loadOrders();
+    }
   });
 
   async function showDashboard(){
