@@ -27,7 +27,7 @@
   "mainEntity": [
     {"@type": "Question", "name": "¿A dónde hacen envíos?", "acceptedAnswer": {"@type": "Answer", "text": "Hacemos envíos a todo Costa Rica. Coordinamos el método y el tiempo estimado según tu provincia por WhatsApp antes de despachar."}},
     {"@type": "Question", "name": "¿Cómo empacan el filamento y la resina?", "acceptedAnswer": {"@type": "Answer", "text": "El filamento se empaca sellado contra la humedad y la resina se cierra bien para que no se derrame durante el transporte."}},
-    {"@type": "Question", "name": "¿Qué métodos de pago aceptan?", "acceptedAnswer": {"@type": "Answer", "text": "SINPE Móvil, enlace de pago con tarjeta (Visa o Mastercard) por WhatsApp, o coordinar el método directamente con nosotros."}},
+    {"@type": "Question", "name": "¿Qué métodos de pago aceptan?", "acceptedAnswer": {"@type": "Answer", "text": "SINPE Móvil, efectivo, o coordinar el método directamente con nosotros por WhatsApp."}},
     {"@type": "Question", "name": "¿Qué pasa si mi pedido llega con un defecto?", "acceptedAnswer": {"@type": "Answer", "text": "Escribinos por WhatsApp con fotos del problema apenas lo notés y lo resolvemos — reposición o reembolso según el caso."}},
     {"@type": "Question", "name": "¿Cómo elijo entre PLA y PETG?", "acceptedAnswer": {"@type": "Answer", "text": "PLA es más fácil de imprimir y buena opción para empezar; PETG resiste mejor el impacto y la temperatura para piezas funcionales."}}
   ]
@@ -117,7 +117,7 @@
 
         <div class="faq-group" id="pagos">
           <h2>Pagos</h2>
-          <details class="faq-item"><summary>¿Qué métodos de pago aceptan?</summary><p>SINPE Móvil, enlace de pago seguro con tarjeta (Visa o Mastercard) que te enviamos por WhatsApp, o coordinar el método directamente con nosotros.</p></details>
+          <details class="faq-item"><summary>¿Qué métodos de pago aceptan?</summary><p>SINPE Móvil, efectivo (al recoger en el local o al recibir tu pedido), o coordinar el método directamente con nosotros por WhatsApp.</p></details>
           <details class="faq-item"><summary>¿Los precios incluyen impuestos?</summary><p>Los precios del catálogo son de referencia más IVA. El total con impuestos se confirma al cerrar el pedido.</p></details>
         </div>
 
@@ -255,13 +255,32 @@
       <label for="custPhone">Teléfono</label>
       <input type="tel" id="custPhone" name="custPhone" required maxlength="20" placeholder="8888-8888">
     </div>
-    <div class="field" id="savedAddressField" style="display:none;">
-      <label for="savedAddressSelect">Usar dirección guardada</label>
-      <select id="savedAddressSelect"><option value="">Elegí una dirección…</option></select>
-    </div>
-    <div class="field">
-      <label for="custAddress">Dirección de entrega</label>
-      <textarea id="custAddress" name="custAddress" rows="2" required maxlength="300" placeholder="Provincia, cantón, señas para encontrar el lugar..."></textarea>
+    <fieldset class="field">
+      <legend>Método de entrega</legend>
+      <div class="pay-options">
+        <label class="pay-option">
+          <input type="radio" name="deliveryMethod" value="local" required>
+          <span><span class="pt">Recoger en el local</span><br><span class="ps">Te avisamos por WhatsApp cuando tu pedido esté listo para retirar.</span></span>
+        </label>
+        <label class="pay-option">
+          <input type="radio" name="deliveryMethod" value="gam">
+          <span><span class="pt">Entrega en la GAM</span><br><span class="ps">Llevamos tu pedido dentro de la Gran Área Metropolitana.</span></span>
+        </label>
+        <label class="pay-option">
+          <input type="radio" name="deliveryMethod" value="correos">
+          <span><span class="pt">Correos de Costa Rica</span><br><span class="ps">Enviamos tu pedido a cualquier parte del país.</span></span>
+        </label>
+      </div>
+    </fieldset>
+    <div id="deliveryAddressGroup" hidden>
+      <div class="field" id="savedAddressField" style="display:none;">
+        <label for="savedAddressSelect">Usar dirección guardada</label>
+        <select id="savedAddressSelect"><option value="">Elegí una dirección…</option></select>
+      </div>
+      <div class="field">
+        <label for="custAddress">Dirección de entrega</label>
+        <textarea id="custAddress" name="custAddress" rows="2" maxlength="300" placeholder="Provincia, cantón, señas para encontrar el lugar..."></textarea>
+      </div>
     </div>
     <div class="field">
       <label for="custNotes">Notas adicionales (opcional)</label>
@@ -275,8 +294,8 @@
           <span><span class="pt">SINPE Móvil</span><br><span class="ps">Te confirmamos el número al recibir tu pedido.</span></span>
         </label>
         <label class="pay-option">
-          <input type="radio" name="payMethod" value="tarjeta">
-          <span><span class="pt">Tarjeta (enlace de pago seguro)</span><br><span class="ps">Te enviamos un enlace de pago por WhatsApp para pagar con Visa o Mastercard.</span></span>
+          <input type="radio" name="payMethod" value="efectivo">
+          <span><span class="pt">Efectivo</span><br><span class="ps">Pagás en efectivo al recoger o al recibir tu pedido.</span></span>
         </label>
         <label class="pay-option">
           <input type="radio" name="payMethod" value="coordinar">

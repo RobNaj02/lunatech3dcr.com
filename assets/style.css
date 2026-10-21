@@ -825,6 +825,7 @@ fieldset.field{border:none;margin:0;min-width:0;}
 .pay-option input{margin-top:3px;}
 .pay-option .pt{font-size:14px;font-weight:600;}
 .pay-option .ps{font-size:12.5px;color:var(--ink-soft);margin-top:2px;}
+.checkout-form #deliveryAddressGroup:not([hidden]){display:flex;flex-direction:column;gap:14px;}
 .pay-option.selected{border-color:var(--lilac-deep);background:var(--lilac-mist);}
 .order-summary{background:var(--paper-soft);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;font-size:13.5px;}
 .order-summary .row{display:flex;justify-content:space-between;padding:4px 0;}

@@ -124,6 +124,7 @@ const finalReviewEl = document.getElementById('finalReview');
 const savedAddressField = document.getElementById('savedAddressField');
 const savedAddressSelect = document.getElementById('savedAddressSelect');
 const custAddressEl = document.getElementById('custAddress');
+const deliveryAddressGroup = document.getElementById('deliveryAddressGroup');
 const custNotesEl = document.getElementById('custNotes');
 
 const toastEl = document.getElementById('toast');
@@ -404,6 +405,32 @@ if (savedAddressSelect){
   });
 }
 
+/* Método de entrega: "local" (recoger en el local) no necesita
+   dirección; GAM y Correos sí, así que el campo de dirección solo
+   aparece (y solo es obligatorio) con esas dos opciones. */
+const DELIVERY_LABELS = {
+  local: 'Recoger en el local',
+  gam: 'Entrega en la GAM',
+  correos: 'Correos de Costa Rica'
+};
+function getDeliveryMethod(){
+  const el = checkoutForm ? checkoutForm.querySelector('input[name="deliveryMethod"]:checked') : null;
+  return el ? el.value : '';
+}
+function deliveryNeedsAddress(method){
+  return method === 'gam' || method === 'correos';
+}
+function updateDeliveryAddressVisibility(){
+  if (!deliveryAddressGroup) return;
+  const needs = deliveryNeedsAddress(getDeliveryMethod());
+  deliveryAddressGroup.hidden = !needs;
+  if (custAddressEl) custAddressEl.required = needs;
+}
+document.querySelectorAll('input[name="deliveryMethod"]').forEach(el => el.addEventListener('change', () => {
+  updateDeliveryAddressVisibility();
+  renderFinalReview();
+}));
+
 function renderOrderSummary(){
   if (!orderSummaryEl) return;
   const suffix = typeof priceSuffix === 'function' ? priceSuffix() : '+ IVA';
@@ -426,12 +453,14 @@ function renderFinalReview(){
   const notes = custNotesEl ? custNotesEl.value.trim() : '';
   const payMethod = checkoutForm ? checkoutForm.querySelector('input[name="payMethod"]:checked') : null;
   const payLabel = payMethod ? payMethod.parentElement.querySelector('.pt').textContent : 'A coordinar';
+  const delivery = getDeliveryMethod();
   const rows = [
     ['N° de pedido', currentOrderId || '—'],
     ['Nombre', name || '—'],
     ['Teléfono', phone || '—'],
-    ['Dirección', address || '—']
+    ['Entrega', DELIVERY_LABELS[delivery] || '—']
   ];
+  if (deliveryNeedsAddress(delivery)) rows.push(['Dirección', address || '—']);
   if (notes) rows.push(['Notas', notes]);
   rows.push(['Método de pago', payLabel]);
   rows.push(['Total', money(cartSubtotal())]);
@@ -452,6 +481,7 @@ function openCheckout(){
   renderOrderSummary();
   renderFinalReview();
   populateSavedAddresses();
+  updateDeliveryAddressVisibility();
   closeCart();
   checkoutPanel.classList.add('open');
   checkoutBackdrop.classList.add('open');
@@ -491,11 +521,21 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+/* Cada grupo (.pay-options) se marca por separado: elegir método de
+   entrega no debe desmarcar visualmente el método de pago, y viceversa. */
 document.querySelectorAll('.pay-option').forEach(opt => {
   opt.addEventListener('click', () => {
-    document.querySelectorAll('.pay-option').forEach(o => o.classList.remove('selected'));
+    const group = opt.closest('.pay-options') || document;
+    group.querySelectorAll('.pay-option').forEach(o => o.classList.remove('selected'));
     opt.classList.add('selected');
-    opt.querySelector('input').checked = true;
+    /* Al marcarlo acá a mano, el clic nativo del label ya lo encuentra
+       marcado y el navegador no dispara "change": lo disparamos nosotros
+       para que el resumen y el campo de dirección se actualicen. */
+    const input = opt.querySelector('input');
+    if (!input.checked){
+      input.checked = true;
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    }
   });
 });
 
@@ -505,11 +545,17 @@ if (checkoutForm){
     const name = document.getElementById('custName').value.trim();
     const phoneRaw = document.getElementById('custPhone').value.trim();
     const phone = normalizeCRPhone(phoneRaw);
-    const address = custAddressEl ? custAddressEl.value.trim() : '';
+    const delivery = getDeliveryMethod();
+    const needsAddress = deliveryNeedsAddress(delivery);
+    const address = needsAddress && custAddressEl ? custAddressEl.value.trim() : '';
     const notes = custNotesEl ? custNotesEl.value.trim() : '';
     const payMethod = checkoutForm.querySelector('input[name="payMethod"]:checked');
 
-    if (!name || !phoneRaw || !address || cart.length === 0){
+    if (!delivery){
+      showToast('Elegí cómo querés recibir tu pedido.');
+      return;
+    }
+    if (!name || !phoneRaw || (needsAddress && !address) || cart.length === 0){
       showToast('Completá tus datos antes de continuar');
       return;
     }
@@ -529,6 +575,10 @@ if (checkoutForm){
     setSubmitState(true, 'Verificando disponibilidad…');
 
     const payLabel = payMethod ? payMethod.parentElement.querySelector('.pt').textContent : 'A coordinar';
+    const deliveryLabel = DELIVERY_LABELS[delivery];
+    /* orders no tiene columna propia para el método de entrega: va
+       al inicio de customer_address para que se vea en el panel de pedidos. */
+    const orderAddress = needsAddress ? `${deliveryLabel} — ${address}` : deliveryLabel;
 
     /* Última validación, justo antes de "vender": resta el stock de
        todo el carrito en una sola transacción en Supabase. Si algo
@@ -543,7 +593,7 @@ if (checkoutForm){
     if (window.LunatechStock){
       const items = cart.map(i => ({ productId: i.productId || i.id, variantName: i.variantName || '', qty: i.qty, name: i.name, price: i.price }));
       const result = await window.LunatechStock.checkout(items, currentOrderId, {
-        name, phone, address, notes, pay_method: payLabel
+        name, phone, address: orderAddress, notes, pay_method: payLabel
       });
       if (!result || result.ok === false){
         setSubmitState(false);
@@ -573,7 +623,8 @@ if (checkoutForm){
     msg += `\nTotal: ${money(cartSubtotal())}`;
     msg += `\n\nNombre: ${name}`;
     msg += `\nTeléfono: ${phone}`;
-    msg += `\nDirección de entrega: ${address}`;
+    msg += `\nEntrega: ${deliveryLabel}`;
+    if (needsAddress) msg += `\nDirección de entrega: ${address}`;
     if (notes) msg += `\nNotas: ${notes}`;
     msg += `\nMétodo de pago preferido: ${payLabel}`;
 
@@ -608,6 +659,8 @@ if (checkoutForm){
     closeCheckout();
     showToast('Pedido enviado por WhatsApp ✓');
     checkoutForm.reset();
+    checkoutForm.querySelectorAll('.pay-option').forEach(o => o.classList.toggle('selected', o.querySelector('input').checked));
+    updateDeliveryAddressVisibility();
   });
 }
 

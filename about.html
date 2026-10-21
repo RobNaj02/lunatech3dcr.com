@@ -146,7 +146,7 @@
         <div class="value-card reveal" tabindex="0" role="button" aria-expanded="false">
           <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 21V9l8-6 8 6v12M9 21v-6h6v6"/></svg>
           <h3>Catálogo pensado para Costa Rica</h3>
-          <div class="value-card-body"><p>Precios en colones, pago por SINPE o tarjeta, y coordinación directa por WhatsApp.</p></div>
+          <div class="value-card-body"><p>Precios en colones, pago por SINPE o efectivo, y coordinación directa por WhatsApp.</p></div>
           <span class="expand-hint">Ver más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></span>
         </div>
       </div>
@@ -198,7 +198,7 @@
         <li class="reveal"><span class="process-num">01</span><div><h3>Consultá por WhatsApp o elegí en la tienda</h3><p>Te ayudamos a elegir el material correcto si no estás seguro cuál necesitás.</p></div></li>
         <li class="reveal"><span class="process-num">02</span><div><h3>Verificamos disponibilidad y calidad</h3><p>Confirmamos color, cantidad y que el producto esté en condiciones antes de empacar.</p></div></li>
         <li class="reveal"><span class="process-num">03</span><div><h3>Empacamos para proteger el material</h3><p>Filamento sellado contra la humedad, resina bien cerrada, piezas frágiles con relleno.</p></div></li>
-        <li class="reveal"><span class="process-num">04</span><div><h3>Coordinamos el envío</h3><p>Te confirmamos el método de pago (SINPE, tarjeta o a coordinar) y el envío a tu provincia.</p></div></li>
+        <li class="reveal"><span class="process-num">04</span><div><h3>Coordinamos el envío</h3><p>Te confirmamos el método de pago (SINPE, efectivo o a coordinar) y la entrega: retiro en el local, envío en la GAM o por Correos de Costa Rica.</p></div></li>
       </ol>
     </div>
   </section>
@@ -315,13 +315,32 @@
       <label for="custPhone">Teléfono</label>
       <input type="tel" id="custPhone" name="custPhone" required maxlength="20" placeholder="8888-8888">
     </div>
-    <div class="field" id="savedAddressField" style="display:none;">
-      <label for="savedAddressSelect">Usar dirección guardada</label>
-      <select id="savedAddressSelect"><option value="">Elegí una dirección…</option></select>
-    </div>
-    <div class="field">
-      <label for="custAddress">Dirección de entrega</label>
-      <textarea id="custAddress" name="custAddress" rows="2" required maxlength="300" placeholder="Provincia, cantón, señas para encontrar el lugar..."></textarea>
+    <fieldset class="field">
+      <legend>Método de entrega</legend>
+      <div class="pay-options">
+        <label class="pay-option">
+          <input type="radio" name="deliveryMethod" value="local" required>
+          <span><span class="pt">Recoger en el local</span><br><span class="ps">Te avisamos por WhatsApp cuando tu pedido esté listo para retirar.</span></span>
+        </label>
+        <label class="pay-option">
+          <input type="radio" name="deliveryMethod" value="gam">
+          <span><span class="pt">Entrega en la GAM</span><br><span class="ps">Llevamos tu pedido dentro de la Gran Área Metropolitana.</span></span>
+        </label>
+        <label class="pay-option">
+          <input type="radio" name="deliveryMethod" value="correos">
+          <span><span class="pt">Correos de Costa Rica</span><br><span class="ps">Enviamos tu pedido a cualquier parte del país.</span></span>
+        </label>
+      </div>
+    </fieldset>
+    <div id="deliveryAddressGroup" hidden>
+      <div class="field" id="savedAddressField" style="display:none;">
+        <label for="savedAddressSelect">Usar dirección guardada</label>
+        <select id="savedAddressSelect"><option value="">Elegí una dirección…</option></select>
+      </div>
+      <div class="field">
+        <label for="custAddress">Dirección de entrega</label>
+        <textarea id="custAddress" name="custAddress" rows="2" maxlength="300" placeholder="Provincia, cantón, señas para encontrar el lugar..."></textarea>
+      </div>
     </div>
     <div class="field">
       <label for="custNotes">Notas adicionales (opcional)</label>
@@ -335,8 +354,8 @@
           <span><span class="pt">SINPE Móvil</span><br><span class="ps">Te confirmamos el número al recibir tu pedido.</span></span>
         </label>
         <label class="pay-option">
-          <input type="radio" name="payMethod" value="tarjeta">
-          <span><span class="pt">Tarjeta (enlace de pago seguro)</span><br><span class="ps">Te enviamos un enlace de pago por WhatsApp para pagar con Visa o Mastercard.</span></span>
+          <input type="radio" name="payMethod" value="efectivo">
+          <span><span class="pt">Efectivo</span><br><span class="ps">Pagás en efectivo al recoger o al recibir tu pedido.</span></span>
         </label>
         <label class="pay-option">
           <input type="radio" name="payMethod" value="coordinar">

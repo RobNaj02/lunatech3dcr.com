@@ -247,13 +247,32 @@
       <label for="custPhone">Teléfono</label>
       <input type="tel" id="custPhone" name="custPhone" required maxlength="20" placeholder="8888-8888">
     </div>
-    <div class="field" id="savedAddressField" style="display:none;">
-      <label for="savedAddressSelect">Usar dirección guardada</label>
-      <select id="savedAddressSelect"><option value="">Elegí una dirección…</option></select>
-    </div>
-    <div class="field">
-      <label for="custAddress">Dirección de entrega</label>
-      <textarea id="custAddress" name="custAddress" rows="2" required maxlength="300" placeholder="Provincia, cantón, señas para encontrar el lugar..."></textarea>
+    <fieldset class="field">
+      <legend>Método de entrega</legend>
+      <div class="pay-options">
+        <label class="pay-option">
+          <input type="radio" name="deliveryMethod" value="local" required>
+          <span><span class="pt">Recoger en el local</span><br><span class="ps">Te avisamos por WhatsApp cuando tu pedido esté listo para retirar.</span></span>
+        </label>
+        <label class="pay-option">
+          <input type="radio" name="deliveryMethod" value="gam">
+          <span><span class="pt">Entrega en la GAM</span><br><span class="ps">Llevamos tu pedido dentro de la Gran Área Metropolitana.</span></span>
+        </label>
+        <label class="pay-option">
+          <input type="radio" name="deliveryMethod" value="correos">
+          <span><span class="pt">Correos de Costa Rica</span><br><span class="ps">Enviamos tu pedido a cualquier parte del país.</span></span>
+        </label>
+      </div>
+    </fieldset>
+    <div id="deliveryAddressGroup" hidden>
+      <div class="field" id="savedAddressField" style="display:none;">
+        <label for="savedAddressSelect">Usar dirección guardada</label>
+        <select id="savedAddressSelect"><option value="">Elegí una dirección…</option></select>
+      </div>
+      <div class="field">
+        <label for="custAddress">Dirección de entrega</label>
+        <textarea id="custAddress" name="custAddress" rows="2" maxlength="300" placeholder="Provincia, cantón, señas para encontrar el lugar..."></textarea>
+      </div>
     </div>
     <div class="field">
       <label for="custNotes">Notas adicionales (opcional)</label>
@@ -267,8 +286,8 @@
           <span><span class="pt">SINPE Móvil</span><br><span class="ps">Te confirmamos el número al recibir tu pedido.</span></span>
         </label>
         <label class="pay-option">
-          <input type="radio" name="payMethod" value="tarjeta">
-          <span><span class="pt">Tarjeta (enlace de pago seguro)</span><br><span class="ps">Te enviamos un enlace de pago por WhatsApp para pagar con Visa o Mastercard.</span></span>
+          <input type="radio" name="payMethod" value="efectivo">
+          <span><span class="pt">Efectivo</span><br><span class="ps">Pagás en efectivo al recoger o al recibir tu pedido.</span></span>
         </label>
         <label class="pay-option">
           <input type="radio" name="payMethod" value="coordinar">
