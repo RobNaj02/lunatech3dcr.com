@@ -60,6 +60,13 @@
     return '₡' + Math.round(n || 0).toLocaleString('es-CR');
   }
 
+  /* El checkout guarda el envío dentro de customer_address como
+     "(envío ₡3.000)" (orders no tiene columna propia): se lee de ahí
+     para que el total incluya lo que el cliente vio al pedir. */
+  function shippingFromAddress(address){
+    const m = /\(envío ₡\s?([\d.,\s]+)\)/.exec(address || '');
+    return m ? Number(m[1].replace(/\D/g, '')) || 0 : 0;
+  }
   function orderTotal(items){
     return (items || []).reduce((s, i) => s + (Number(i.qty) || 0) * (Number(i.price) || 0), 0);
   }
@@ -91,7 +98,7 @@
           <span class="admin-badge is-${status}">${STATUS_LABEL[status] || status}</span>
         </div>
         <ul class="admin-order-items">${itemsHtml || '<li>Sin detalle de ítems</li>'}</ul>
-        <div class="admin-order-total">Total: ${money(orderTotal(items))}</div>
+        <div class="admin-order-total">Total: ${money(orderTotal(items) + shippingFromAddress(order.customer_address))}${shippingFromAddress(order.customer_address) ? ` <small>(incluye envío ${money(shippingFromAddress(order.customer_address))})</small>` : ''}</div>
         <div class="admin-order-customer">
           <span>${escapeHtml(order.customer_name) || '—'}</span>
           <span>${escapeHtml(order.customer_phone) || '—'}</span>

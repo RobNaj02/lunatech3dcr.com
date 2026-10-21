@@ -56,6 +56,14 @@ window.PRICING_CONFIG = {
   taxLabel: 'IVA'
 };
 
+/* ---------- Costo de envío por método de entrega ----------
+   Se suma al total del checkout. Los métodos que no aparecen acá
+   (recoger en el local, Correos) no suman nada en la web: el envío
+   por Correos se cotiza aparte por WhatsApp. */
+window.SHIPPING_FEES = {
+  gam: 3000
+};
+
 function priceSuffix(){
   const cfg = window.PRICING_CONFIG || {};
   if (cfg.pricesIncludeTax) return `${cfg.taxLabel || 'IVA'} incl.`;

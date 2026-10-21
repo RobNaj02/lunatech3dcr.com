@@ -417,6 +417,10 @@ function getDeliveryMethod(){
   const el = checkoutForm ? checkoutForm.querySelector('input[name="deliveryMethod"]:checked') : null;
   return el ? el.value : '';
 }
+function shippingFee(method){
+  const fees = window.SHIPPING_FEES || {};
+  return Number(fees[method]) > 0 ? Number(fees[method]) : 0;
+}
 function deliveryNeedsAddress(method){
   return method === 'gam' || method === 'correos';
 }
@@ -445,12 +449,15 @@ function updateCashAvailability(){
 }
 document.querySelectorAll('input[name="deliveryMethod"]').forEach(el => el.addEventListener('change', () => {
   updateDeliveryAddressVisibility();
+  renderOrderSummary();
   renderFinalReview();
 }));
 
 function renderOrderSummary(){
   if (!orderSummaryEl) return;
   const suffix = typeof priceSuffix === 'function' ? priceSuffix() : '+ IVA';
+  const delivery = getDeliveryMethod();
+  const fee = shippingFee(delivery);
   orderSummaryEl.innerHTML = cart.map(i => {
     const available = window.LunatechStock ? window.LunatechStock.get(i.productId || i.id, i.variantName || '') : null;
     const warn = available !== null && available < i.qty
@@ -459,7 +466,8 @@ function renderOrderSummary(){
     return `<div class="row"><span>${i.qty} × ${escapeHtml(i.name)} <small>(${money(i.price)} c/u)</small>${warn}</span><span>${money(i.qty * i.price)}</span></div>`;
   }).join('')
     + `<div class="row"><span>Precios de referencia</span><span>${suffix}</span></div>`
-    + `<div class="row total"><span>Total</span><span>${money(cartSubtotal())}</span></div>`;
+    + (fee ? `<div class="row"><span>Envío (${escapeHtml(DELIVERY_LABELS[delivery])})</span><span>${money(fee)}</span></div>` : '')
+    + `<div class="row total"><span>Total</span><span>${money(cartSubtotal() + fee)}</span></div>`;
 }
 
 function renderFinalReview(){
@@ -480,7 +488,9 @@ function renderFinalReview(){
   if (deliveryNeedsAddress(delivery)) rows.push(['Dirección', address || '—']);
   if (notes) rows.push(['Notas', notes]);
   rows.push(['Método de pago', payLabel]);
-  rows.push(['Total', money(cartSubtotal())]);
+  const fee = shippingFee(delivery);
+  if (fee) rows.push(['Envío', money(fee)]);
+  rows.push(['Total', money(cartSubtotal() + fee)]);
   finalReviewEl.innerHTML = `<p class="cart-note" style="margin-bottom:8px;">Revisá tu pedido antes de enviarlo:</p>` +
     rows.map(([k, v]) => `<div class="row"><span>${escapeHtml(k)}</span><span>${escapeHtml(v)}</span></div>`).join('');
 }
@@ -593,9 +603,14 @@ if (checkoutForm){
 
     const payLabel = payMethod ? payMethod.parentElement.querySelector('.pt').textContent : 'A coordinar';
     const deliveryLabel = DELIVERY_LABELS[delivery];
-    /* orders no tiene columna propia para el método de entrega: va
-       al inicio de customer_address para que se vea en el panel de pedidos. */
-    const orderAddress = needsAddress ? `${deliveryLabel} — ${address}` : deliveryLabel;
+    const fee = shippingFee(delivery);
+    /* orders no tiene columnas propias para el método de entrega ni el
+       envío: van al inicio de customer_address para que se vean en el
+       panel de pedidos. El "(envío ₡X)" queda con el monto de ese
+       momento, y pedidos-admin.js / orders-history.js lo leen de ahí
+       para sumarlo al total — así una tarifa nueva no cambia pedidos viejos. */
+    const deliveryTag = fee ? `${deliveryLabel} (envío ${money(fee)})` : deliveryLabel;
+    const orderAddress = needsAddress ? `${deliveryTag} — ${address}` : deliveryTag;
 
     /* Última validación, justo antes de "vender": resta el stock de
        todo el carrito en una sola transacción en Supabase. Si algo
@@ -637,7 +652,11 @@ if (checkoutForm){
     let msg = `Hola LUNATECH3D! Quiero hacer este pedido (N° ${currentOrderId || 'sin asignar'}):\n\n`;
     cart.forEach(i => { msg += `• ${i.qty} × ${i.name} (${money(i.price)} c/u) — ${money(i.qty * i.price)}\n`; });
     msg += `\nPrecios de referencia, ${suffix}`;
-    msg += `\nTotal: ${money(cartSubtotal())}`;
+    if (fee){
+      msg += `\nSubtotal: ${money(cartSubtotal())}`;
+      msg += `\nEnvío (${deliveryLabel}): ${money(fee)}`;
+    }
+    msg += `\nTotal: ${money(cartSubtotal() + fee)}`;
     msg += `\n\nNombre: ${name}`;
     msg += `\nTeléfono: ${phone}`;
     msg += `\nEntrega: ${deliveryLabel}`;

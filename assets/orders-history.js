@@ -21,6 +21,13 @@
     return '₡' + Math.round(n || 0).toLocaleString('es-CR');
   }
 
+  /* El checkout guarda el envío dentro de customer_address como
+     "(envío ₡3.000)" (orders no tiene columna propia): se lee de ahí
+     para que el total incluya lo que el cliente vio al pedir. */
+  function shippingFromAddress(address){
+    const m = /\(envío ₡\s?([\d.,\s]+)\)/.exec(address || '');
+    return m ? Number(m[1].replace(/\D/g, '')) || 0 : 0;
+  }
   function orderTotal(items){
     return (items || []).reduce((s, i) => s + (Number(i.qty) || 0) * (Number(i.price) || 0), 0);
   }
@@ -43,7 +50,7 @@
 
       const { data, error } = await client
         .from('orders')
-        .select('order_number, items, status, pay_method, created_at')
+        .select('order_number, items, status, pay_method, customer_address, created_at')
         .order('created_at', { ascending: false });
 
       if (error){
@@ -82,7 +89,7 @@
                         <span class="admin-badge is-${status}">${STATUS_LABEL[status] || status}</span>
                       </div>
                       <ul class="my-order-items">${itemsHtml || '<li>Sin detalle</li>'}</ul>
-                      <div class="my-order-total">Total: ${money(orderTotal(items))} · Pago: ${escapeHtml(o.pay_method) || '—'}</div>
+                      <div class="my-order-total">Total: ${money(orderTotal(items) + shippingFromAddress(o.customer_address))}${shippingFromAddress(o.customer_address) ? ` (incluye envío ${money(shippingFromAddress(o.customer_address))})` : ''} · Pago: ${escapeHtml(o.pay_method) || '—'}</div>
                     </article>`;
                 }).join('')}
           </div>
