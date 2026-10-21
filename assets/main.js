@@ -425,6 +425,23 @@ function updateDeliveryAddressVisibility(){
   const needs = deliveryNeedsAddress(getDeliveryMethod());
   deliveryAddressGroup.hidden = !needs;
   if (custAddressEl) custAddressEl.required = needs;
+  updateCashAvailability();
+}
+/* Por Correos de Costa Rica no se cobra contra entrega, así que el
+   efectivo no aplica: se oculta y, si estaba elegido, vuelve a SINPE. */
+function updateCashAvailability(){
+  const cash = checkoutForm ? checkoutForm.querySelector('input[name="payMethod"][value="efectivo"]') : null;
+  if (!cash) return;
+  const cashOption = cash.closest('.pay-option');
+  const blocked = getDeliveryMethod() === 'correos';
+  cashOption.hidden = blocked;
+  if (blocked && cash.checked){
+    const sinpe = checkoutForm.querySelector('input[name="payMethod"][value="sinpe"]');
+    if (sinpe){
+      sinpe.checked = true;
+      checkoutForm.querySelectorAll('input[name="payMethod"]').forEach(i => i.closest('.pay-option').classList.toggle('selected', i.checked));
+    }
+  }
 }
 document.querySelectorAll('input[name="deliveryMethod"]').forEach(el => el.addEventListener('change', () => {
   updateDeliveryAddressVisibility();
