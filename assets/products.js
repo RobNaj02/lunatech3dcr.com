@@ -12,11 +12,12 @@ const CATEGORY_GROUPS = [
 
 const CATEGORIES = [
   { id: 'pla',               label: 'PLA',               group: 'filamentos' },
+  { id: 'pla-especiales',    label: 'PLA Especiales',    group: 'filamentos' },
   { id: 'petg',              label: 'PETG',              group: 'filamentos' },
+  { id: 'abs',               label: 'ABS',               group: 'filamentos' },
+  { id: 'tpu',               label: 'TPU',               group: 'filamentos' },
+  { id: 'silk-pla',          label: 'Silk PLA',          group: 'filamentos' },
   { id: 'asa',               label: 'ASA',               group: 'filamentos', comingSoon: true },
-  { id: 'abs',               label: 'ABS',               group: 'filamentos', comingSoon: true },
-  { id: 'tpu',               label: 'TPU',               group: 'filamentos', comingSoon: true },
-  { id: 'silk-pla',          label: 'Silk PLA',          group: 'filamentos', comingSoon: true },
   { id: 'resina',            label: 'Resina',            group: 'resina' },
   { id: 'herramientas',      label: 'Herramientas',      group: 'accesorios' },
   { id: 'boquillas',         label: 'Boquillas',         group: 'accesorios', comingSoon: true },
@@ -51,7 +52,7 @@ const PRODUCTS = {
     weightG: 1000,
     availability: true,
     featured: true,
-    price: 10500,
+    price: 10900,
     spec: '1.75mm · 1kg',
     description: 'El PLA de SUNLU está pensado para el uso diario: fácil de imprimir, con alta compatibilidad y resultados consistentes desde el primer rollo. Es de origen vegetal y biodegradable, con un encogimiento bajo (0.3–0.5% según ficha del fabricante), lo que reduce el riesgo de que se agriete o deforme durante la impresión frente a otros plásticos. Al ser un material estable, es una buena opción si estás iniciando en la impresión 3D y querés buenos resultados sin ajustes complicados.',
     specs: [
@@ -68,14 +69,78 @@ const PRODUCTS = {
     variantType: 'color',
     mainImage: 'assets/img/products/shared/principal-filamento.jpg',
     variants: [
-      { name: 'Blanco',          hex: '#F5F5F5', available: true, price: 10500, image: 'assets/img/products/pla/blanco.jpg' },
-      { name: 'Negro',           hex: '#1A1A1A', available: true, price: 10500, image: 'assets/img/products/pla/negro.jpg' },
-      { name: 'Azul',            hex: '#2E6FDB', available: true, price: 11500, image: 'assets/img/products/pla/azul.jpg' },
-      { name: 'Amarillo',        hex: '#FFC300', available: true, price: 11500, image: 'assets/img/products/pla/amarillo.jpg' },
-      { name: 'Naranja Intenso', hex: '#E85D04', available: true, price: 11500, image: 'assets/img/products/pla/naranja-intenso.jpg' },
-      { name: 'Azul Cielo',      hex: '#6EC1E4', available: true, price: 11500, image: 'assets/img/products/pla/azul-cielo.jpg' },
-      { name: 'Verde Oliva',     hex: '#6B8E23', available: true, price: 12000, image: 'assets/img/products/pla/verde-oliva.jpg' },
-      { name: 'Rojo Cereza',     hex: '#9E1B32', available: true, price: 12000, image: 'assets/img/products/pla/rojo-cereza.jpg' }
+      { name: 'Blanco',          hex: '#F5F5F5', available: true,  price: 10900, image: 'assets/img/products/pla/blanco.jpg' },
+      { name: 'Negro',           hex: '#1A1A1A', available: true,  price: 10900, image: 'assets/img/products/pla/negro.jpg' },
+      /* Azul: stock 0 en el control de inventario (SKU LT-FIL-PLA-01-03). */
+      { name: 'Azul',            hex: '#2E6FDB', available: false, price: 10900, image: 'assets/img/products/pla/azul.jpg' },
+      { name: 'Amarillo',        hex: '#FFC300', available: true,  price: 10900, image: 'assets/img/products/pla/amarillo.jpg' },
+      { name: 'Naranja Intenso', hex: '#E85D04', available: true,  price: 10900, image: 'assets/img/products/pla/naranja-intenso.jpg' },
+      { name: 'Azul Cielo',      hex: '#6EC1E4', available: true,  price: 10900, image: 'assets/img/products/pla/azul-cielo.jpg' },
+      { name: 'Verde Oliva',     hex: '#6B8E23', available: true,  price: 11500, image: 'assets/img/products/pla/verde-oliva.jpg' },
+      { name: 'Rojo Cereza',     hex: '#9E1B32', available: true,  price: 11500, image: 'assets/img/products/pla/rojo-cereza.jpg' },
+      /* ---- COLORES NUEVOS (inventario de noviembre 2025) ----
+         Todavía sin foto propia: apuntan al render genérico de
+         filamento para no romper la galería de la ficha, que exige
+         que TODAS las variantes tengan "image" (ver producto.js).
+         Al recibir las fotos, reemplazar por la ruta indicada: */
+      // -> assets/img/products/pla/gris.jpg
+      { name: 'Gris',            hex: '#8A8F98', available: true,  price: 10900, image: 'assets/img/products/shared/principal-filamento.jpg' },
+      // -> assets/img/products/pla/blanco-matte.jpg
+      { name: 'Blanco Matte',    hex: '#F2F2EF', available: true,  price: 10900, image: 'assets/img/products/shared/principal-filamento.jpg' },
+      // -> assets/img/products/pla/verde.jpg
+      { name: 'Verde',           hex: '#2E9E4F', available: true,  price: 12500, image: 'assets/img/products/shared/principal-filamento.jpg' },
+      // -> assets/img/products/pla/cafe.jpg
+      { name: 'Café',            hex: '#6F4A2F', available: true,  price: 12500, image: 'assets/img/products/shared/principal-filamento.jpg' },
+      // -> assets/img/products/pla/purpura-lavanda.jpg
+      { name: 'Purpura Lavanda', hex: '#9B7FD4', available: true,  price: 12500, image: 'assets/img/products/shared/principal-filamento.jpg' }
+    ]
+  },
+
+  'sunlu-pla-250g': {
+    id: 'sunlu-pla-250g',
+    name: 'SUNLU Filamento PLA 250g 1.75mm',
+    categoryLabel: 'Filamento',
+    category: 'pla',
+    brand: 'SUNLU',
+    sku: 'LT-FIL-PLA-02',
+    material: 'PLA',
+    diameterMM: 1.75,
+    weightG: 250,
+    availability: true,
+    price: 4500,
+    spec: '1.75mm · 250g',
+    description: 'El mismo PLA de SUNLU que ya conocés, pero en rollo de 250g. Es la opción práctica cuando querés probar un color antes de comprometerte con un kilo entero, cuando necesitás poco material para una pieza puntual, o cuando estás haciendo algo multicolor y no te sirve tener ocho rollos grandes ocupando espacio. Mismo diámetro y misma tolerancia que el rollo de 1kg, así que no hay que recalibrar nada al cambiar.',
+    specs: [
+      ['Marca', 'SUNLU'],
+      ['SKU', 'LT-FIL-PLA-02'],
+      ['Diámetro', '1.75 ± 0.02mm'],
+      ['Temp. de impresión', '200–210°C a 50–100mm/s, o 210–240°C a 100–200mm/s'],
+      ['Cama caliente', 'No es necesaria con pegamento · 50–60°C si no usás pegamento'],
+      ['Peso neto', '250g por rollo'],
+      ['Longitud aproximada', '82m por rollo']
+    ],
+    variantLabel: 'Color',
+    variantType: 'color',
+    mainImage: 'assets/img/products/shared/principal-filamento.jpg',
+    /* Sin fotos propias todavía — ver nota de rutas en el PLA de 1kg.
+       Rutas definitivas: assets/img/products/pla-250g/<color>.jpg */
+    variants: [
+      // -> assets/img/products/pla-250g/negro.jpg
+      { name: 'Negro',           hex: '#1A1A1A', available: true, price: 4500, image: 'assets/img/products/shared/principal-filamento.jpg' },
+      // -> assets/img/products/pla-250g/blanco.jpg
+      { name: 'Blanco',          hex: '#F5F5F5', available: true, price: 4500, image: 'assets/img/products/shared/principal-filamento.jpg' },
+      // -> assets/img/products/pla-250g/gris.jpg
+      { name: 'Gris',            hex: '#8A8F98', available: true, price: 4500, image: 'assets/img/products/shared/principal-filamento.jpg' },
+      // -> assets/img/products/pla-250g/transparente.jpg
+      { name: 'Transparente',    hex: '#DCE8EE', available: true, price: 4500, image: 'assets/img/products/shared/principal-filamento.jpg' },
+      // -> assets/img/products/pla-250g/azul-klein.jpg
+      { name: 'Azul Klein',      hex: '#002FA7', available: true, price: 4500, image: 'assets/img/products/shared/principal-filamento.jpg' },
+      // -> assets/img/products/pla-250g/rojo.jpg
+      { name: 'Rojo',            hex: '#C62828', available: true, price: 4500, image: 'assets/img/products/shared/principal-filamento.jpg' },
+      // -> assets/img/products/pla-250g/naranja-soleado.jpg
+      { name: 'Naranja Soleado', hex: '#FF8C1A', available: true, price: 4500, image: 'assets/img/products/shared/principal-filamento.jpg' },
+      // -> assets/img/products/pla-250g/verde.jpg
+      { name: 'Verde',           hex: '#2E9E4F', available: true, price: 4500, image: 'assets/img/products/shared/principal-filamento.jpg' }
     ]
   },
 
@@ -109,7 +174,248 @@ const PRODUCTS = {
     mainImage: 'assets/img/products/shared/principal-filamento.jpg',
     variants: [
       { name: 'Blanco',         hex: '#F5F5F5', available: true, price: 10500, image: 'assets/img/products/petg/blanco.jpg' },
-      { name: 'Marrón Castaño', hex: '#6B4226', available: true, price: 11500, image: 'assets/img/products/petg/marron-castano.jpg' }
+      { name: 'Marrón Castaño', hex: '#6B4226', available: true, price: 10500, image: 'assets/img/products/petg/marron-castano.jpg' },
+      /* Color nuevo — sin foto propia todavía.
+         -> assets/img/products/petg/negro.jpg */
+      { name: 'Negro',          hex: '#1A1A1A', available: true, price: 10900, image: 'assets/img/products/shared/principal-filamento.jpg' }
+    ]
+  },
+
+  /* ---------- ABS ---------- */
+  'sunlu-abs-1kg': {
+    id: 'sunlu-abs-1kg',
+    name: 'SUNLU Filamento ABS 1kg 1.75mm',
+    categoryLabel: 'Filamento',
+    category: 'abs',
+    brand: 'SUNLU',
+    sku: 'LT-FIL-ABS-01',
+    material: 'ABS',
+    diameterMM: 1.75,
+    weightG: 1000,
+    availability: true,
+    price: 10900,
+    spec: '1.75mm · 1kg',
+    description: 'El ABS es el material a elegir cuando la pieza tiene que aguantar calor y golpes: resiste temperaturas bastante más altas que el PLA sin deformarse, y es tenaz en vez de quebradizo, así que tolera caídas y esfuerzo mecánico. También se lija y se pega con facilidad, y se puede alisar con vapor de acetona para un acabado liso y brillante. A cambio pide más cuidado al imprimir: necesita cama caliente y, sobre todo, una impresora cerrada o al menos un espacio sin corrientes de aire, porque el ABS se contrae al enfriarse y una corriente fría es lo que hace que las esquinas se levanten o que las capas se separen. Imprimí siempre en un lugar ventilado.',
+    specs: [
+      ['Marca', 'SUNLU'],
+      ['SKU', 'LT-FIL-ABS-01'],
+      ['Diámetro', '1.75 ± 0.02mm'],
+      ['Temp. de impresión', '230–260°C'],
+      ['Cama caliente', '90–110°C (indispensable)'],
+      ['Cámara cerrada', 'Muy recomendada, para evitar warping'],
+      ['Ventilación de capa', 'Baja o apagada'],
+      ['Peso neto', '1kg por rollo'],
+      ['Ventilación del ambiente', 'Necesaria: el ABS libera olor al imprimir']
+    ],
+    variantLabel: 'Color',
+    variantType: 'color',
+    mainImage: 'assets/img/products/shared/principal-filamento.jpg',
+    /* Sin foto propia todavía -> assets/img/products/abs/blanco.jpg */
+    variants: [
+      { name: 'Blanco', hex: '#F5F5F5', available: true, price: 10900, image: 'assets/img/products/shared/principal-filamento.jpg' }
+    ]
+  },
+
+  /* ---------- TPU ---------- */
+  'sunlu-tpu-1kg': {
+    id: 'sunlu-tpu-1kg',
+    name: 'SUNLU Filamento TPU 90A 1kg 1.75mm',
+    categoryLabel: 'Filamento',
+    category: 'tpu',
+    brand: 'SUNLU',
+    sku: 'LT-FIL-TPU-01',
+    material: 'TPU',
+    diameterMM: 1.75,
+    weightG: 1000,
+    availability: true,
+    price: 15900,
+    spec: '1.75mm · 1kg · flexible 90A',
+    description: 'TPU es filamento flexible: la pieza sale gomosa, se dobla, se estira y vuelve a su forma. Con una dureza de 90A queda firme al tacto — no es blandito como una goma de borrar, sino más bien como la suela de una zapatilla — y eso lo hace ideal para fundas de celular, empaques, topes, ruedas, correas, juntas y cualquier pieza que tenga que absorber golpes o vibración. Al ser flexible pide paciencia: imprimí despacio, con retracción baja, y si tu extrusor no es de recorrido corto (direct drive) puede costarle empujar el filamento.',
+    specs: [
+      ['Marca', 'SUNLU'],
+      ['SKU', 'LT-FIL-TPU-01'],
+      ['Dureza', '90A (semi-rígido)'],
+      ['Diámetro', '1.75 ± 0.03mm'],
+      ['Temp. de impresión', '200–230°C'],
+      ['Cama caliente', '30–60°C'],
+      ['Velocidad recomendada', '20–40mm/s'],
+      ['Retracción', 'Baja (0.5–1mm) para evitar atascos'],
+      ['Extrusor', 'Preferible direct drive'],
+      ['Peso neto', '1kg por rollo']
+    ],
+    variantLabel: 'Color',
+    variantType: 'color',
+    mainImage: 'assets/img/products/shared/principal-filamento.jpg',
+    /* Sin foto propia todavía -> assets/img/products/tpu/negro.jpg */
+    variants: [
+      { name: 'Negro', hex: '#1A1A1A', available: true, price: 15900, image: 'assets/img/products/shared/principal-filamento.jpg' }
+    ]
+  },
+
+  /* ---------- SILK PLA ---------- */
+  'sunlu-silk-pla-1kg': {
+    id: 'sunlu-silk-pla-1kg',
+    name: 'SUNLU Filamento SILK PLA+ 1kg 1.75mm',
+    categoryLabel: 'Filamento',
+    category: 'silk-pla',
+    brand: 'SUNLU',
+    sku: 'LT-FIL-SILK-01',
+    material: 'PLA+',
+    diameterMM: 1.75,
+    weightG: 1000,
+    availability: true,
+    price: 11900,
+    spec: '1.75mm · 1kg · acabado seda',
+    description: 'El Silk PLA+ tiene un brillo tipo seda que hace que la pieza parezca metálica o esmaltada, sin pintar ni posprocesar nada. El brillo resalta mucho las curvas y las superficies grandes, así que luce especialmente bien en figuras decorativas, jarrones y regalos. Al ser PLA+ imprime casi igual de fácil que el PLA normal, con la ventaja de ser algo más resistente. Un consejo: como el brillo también marca más las imperfecciones, conviene imprimir con capas finas y temperatura un poco alta para que las capas se fundan bien entre sí.',
+    specs: [
+      ['Marca', 'SUNLU'],
+      ['SKU', 'LT-FIL-SILK-01'],
+      ['Diámetro', '1.75 ± 0.02mm'],
+      ['Temp. de impresión', '200–230°C'],
+      ['Cama caliente', '50–60°C'],
+      ['Acabado', 'Seda brillante, efecto metálico'],
+      ['Altura de capa sugerida', '0.12–0.20mm para un brillo parejo'],
+      ['Peso neto', '1kg por rollo']
+    ],
+    variantLabel: 'Color',
+    variantType: 'color',
+    mainImage: 'assets/img/products/shared/principal-filamento.jpg',
+    /* Sin fotos propias todavía -> assets/img/products/silk/<color>.jpg */
+    variants: [
+      // -> assets/img/products/silk/dorado.jpg
+      { name: 'Dorado', hex: '#D4AF37', available: true, price: 12900, image: 'assets/img/products/shared/principal-filamento.jpg' },
+      // -> assets/img/products/silk/verde.jpg
+      { name: 'Verde',  hex: '#2BA84A', available: true, price: 11900, image: 'assets/img/products/shared/principal-filamento.jpg' },
+      // -> assets/img/products/silk/rojo.jpg
+      { name: 'Rojo',   hex: '#C62828', available: true, price: 11900, image: 'assets/img/products/shared/principal-filamento.jpg' }
+    ]
+  },
+
+  /* ---------- PLA ESPECIALES ---------- */
+  'sunlu-pla-wood-1kg': {
+    id: 'sunlu-pla-wood-1kg',
+    name: 'SUNLU Filamento Wood PLA 1kg 1.75mm',
+    categoryLabel: 'Filamento',
+    category: 'pla-especiales',
+    brand: 'SUNLU',
+    sku: 'LT-FIL-WOOD-01',
+    material: 'PLA con fibra de madera',
+    diameterMM: 1.75,
+    weightG: 1000,
+    availability: true,
+    price: 12500,
+    spec: '1.75mm · 1kg · con fibra de madera',
+    description: 'PLA mezclado con fibra de madera real: la pieza sale con color y textura de madera, e incluso con un leve olor a madera al imprimir. Se puede lijar y teñir como si fuera madera de verdad, lo que lo hace perfecto para figuras rústicas, marcos, maceteros decorativos y piezas que querés que no parezcan plástico. Ojo con dos cosas: la fibra desgasta la boquilla más rápido que el PLA común (conviene una boquilla de acero endurecido si vas a imprimir mucho) y, por el mismo motivo, es mejor usar boquilla de 0.4mm o más grande para que no se tape.',
+    specs: [
+      ['Marca', 'SUNLU'],
+      ['SKU', 'LT-FIL-WOOD-01'],
+      ['Composición', 'PLA con fibra de madera'],
+      ['Diámetro', '1.75 ± 0.03mm'],
+      ['Temp. de impresión', '190–220°C'],
+      ['Cama caliente', '50–60°C'],
+      ['Boquilla recomendada', '0.4mm o mayor'],
+      ['Desgaste', 'Abrasivo: preferible boquilla de acero endurecido'],
+      ['Posprocesado', 'Se puede lijar y teñir'],
+      ['Peso neto', '1kg por rollo']
+    ],
+    mainImage: 'assets/img/products/shared/principal-filamento.jpg',
+    /* Sin foto propia todavía -> assets/img/products/pla-especiales/wood.jpg */
+    images: [
+      'assets/img/products/shared/principal-filamento.jpg'
+    ]
+  },
+
+  'sunlu-pla-transparente-1kg': {
+    id: 'sunlu-pla-transparente-1kg',
+    name: 'SUNLU Filamento PLA Transparente 1kg 1.75mm',
+    categoryLabel: 'Filamento',
+    category: 'pla-especiales',
+    brand: 'SUNLU',
+    sku: 'LT-FIL-PLA-01-13',
+    material: 'PLA',
+    diameterMM: 1.75,
+    weightG: 1000,
+    availability: true,
+    price: 12500,
+    spec: '1.75mm · 1kg · translúcido',
+    description: 'PLA translúcido, para piezas que dejan pasar la luz: pantallas de lámpara, difusores de LED, tapas que dejan ver lo que hay adentro, maquetas y carcasas donde querés mostrar la electrónica. Qué tan transparente queda depende mucho de cómo lo imprimas — con pocas paredes, relleno bajo y capas gruesas la luz atraviesa mucho mejor; si buscás un efecto casi vidrio, imprimí en modo espiral (vase mode) y con temperatura alta para que las capas se fundan sin dejar burbujas.',
+    specs: [
+      ['Marca', 'SUNLU'],
+      ['SKU', 'LT-FIL-PLA-01-13'],
+      ['Diámetro', '1.75 ± 0.02mm'],
+      ['Temp. de impresión', '200–230°C'],
+      ['Cama caliente', '50–60°C'],
+      ['Tip', 'Menos paredes y relleno bajo = más translucidez'],
+      ['Peso neto', '1kg por rollo']
+    ],
+    mainImage: 'assets/img/products/shared/principal-filamento.jpg',
+    /* Sin foto propia todavía -> assets/img/products/pla-especiales/transparente.jpg */
+    images: [
+      'assets/img/products/shared/principal-filamento.jpg'
+    ]
+  },
+
+  'sunlu-pla-glow-1kg': {
+    id: 'sunlu-pla-glow-1kg',
+    name: 'SUNLU Filamento PLA Brilla en la Oscuridad 1kg 1.75mm',
+    categoryLabel: 'Filamento',
+    category: 'pla-especiales',
+    brand: 'SUNLU',
+    sku: 'LT-FIL-PLA-01-09',
+    material: 'PLA fosforescente',
+    diameterMM: 1.75,
+    weightG: 1000,
+    availability: true,
+    price: 15900,
+    spec: '1.75mm · 1kg · brilla en la oscuridad',
+    description: 'PLA con pigmento fosforescente: la pieza carga luz durante el día (o con una linterna en unos segundos) y después brilla en la oscuridad con un resplandor verdoso. Es un éxito garantizado en llaveros, figuras, señalización de interruptores, decoración de cuarto de niños y piezas de Halloween. El pigmento es abrasivo, así que si vas a imprimir bastante conviene usar boquilla de acero endurecido; con una boquilla de latón común funciona igual, solo que se desgasta antes.',
+    specs: [
+      ['Marca', 'SUNLU'],
+      ['SKU', 'LT-FIL-PLA-01-09'],
+      ['Efecto', 'Fosforescente, resplandor verdoso'],
+      ['Diámetro', '1.75 ± 0.03mm'],
+      ['Temp. de impresión', '200–230°C'],
+      ['Cama caliente', '50–60°C'],
+      ['Desgaste', 'Abrasivo: preferible boquilla de acero endurecido'],
+      ['Carga', 'Con luz solar o artificial, brilla al apagar la luz'],
+      ['Peso neto', '1kg por rollo']
+    ],
+    mainImage: 'assets/img/products/shared/principal-filamento.jpg',
+    /* Sin foto propia todavía -> assets/img/products/pla-especiales/glow.jpg */
+    images: [
+      'assets/img/products/shared/principal-filamento.jpg'
+    ]
+  },
+
+  'sunlu-pla-galaxia-1kg': {
+    id: 'sunlu-pla-galaxia-1kg',
+    name: 'SUNLU Filamento PLA Galaxia 1kg 1.75mm',
+    categoryLabel: 'Filamento',
+    category: 'pla-especiales',
+    brand: 'SUNLU',
+    sku: 'LT-FIL-PLA-01-10',
+    material: 'PLA con destellos',
+    diameterMM: 1.75,
+    weightG: 1000,
+    availability: true,
+    price: 15900,
+    spec: '1.75mm · 1kg · efecto galaxia',
+    description: 'PLA con partículas brillantes repartidas en un color oscuro profundo: el resultado es un acabado tipo cielo estrellado que cambia según le da la luz. Queda espectacular en figuras, portalápices, posavasos y regalos, y tiene la gran ventaja de que los destellos disimulan las líneas de capa, así que las piezas se ven bien terminadas sin lijar. Como las partículas son abrasivas, se recomienda boquilla de acero endurecido si vas a imprimir rollos enteros.',
+    specs: [
+      ['Marca', 'SUNLU'],
+      ['SKU', 'LT-FIL-PLA-01-10'],
+      ['Efecto', 'Destellos tipo galaxia sobre base oscura'],
+      ['Diámetro', '1.75 ± 0.03mm'],
+      ['Temp. de impresión', '200–230°C'],
+      ['Cama caliente', '50–60°C'],
+      ['Desgaste', 'Abrasivo: preferible boquilla de acero endurecido'],
+      ['Ventaja', 'Los destellos disimulan las líneas de capa'],
+      ['Peso neto', '1kg por rollo']
+    ],
+    mainImage: 'assets/img/products/shared/principal-filamento.jpg',
+    /* Sin foto propia todavía -> assets/img/products/pla-especiales/galaxia.jpg */
+    images: [
+      'assets/img/products/shared/principal-filamento.jpg'
     ]
   },
 
@@ -125,7 +431,7 @@ const PRODUCTS = {
     weightG: 1000,
     availability: true,
     featured: true,
-    price: 16000,
+    price: 15900,
     spec: '405nm · lavable en agua',
     description: 'La resina estándar de SUNLU se lava con agua corriente en vez de alcohol isopropílico (IPA), así que te ahorrás esa compra y el proceso de limpieza es más simple. Cura rápido y fluye muy bien durante la impresión, con alta precisión y bajo encogimiento para piezas con buen nivel de detalle.',
     specs: [
@@ -145,6 +451,36 @@ const PRODUCTS = {
     variants: [
       { name: 'Negro',  hex: '#1A1A1A', available: true, image: 'assets/img/products/resina/negro.jpg' },
       { name: 'Blanco', hex: '#F5F5F5', available: true, image: 'assets/img/products/resina/blanco.jpg' }
+    ]
+  },
+
+  'sunlu-resina-transparente-1kg': {
+    id: 'sunlu-resina-transparente-1kg',
+    name: 'Resina Transparente SUNLU 1000g',
+    categoryLabel: 'Resina',
+    category: 'resina',
+    brand: 'SUNLU',
+    sku: 'LT-RES-TRA-01',
+    material: 'Resina transparente',
+    weightG: 1000,
+    availability: true,
+    price: 16900,
+    spec: '405nm · 1000g · translúcida',
+    description: 'Resina translúcida de SUNLU para piezas que dejan pasar la luz: prototipos donde querés ver el interior, lentes y difusores, piezas decorativas tipo cristal y modelos que después vas a pintar o teñir con tinte de resina. Cura con la misma longitud de onda de 405nm que el resto de resinas LCD y mantiene buen nivel de detalle y bajo encogimiento. Para que quede lo más transparente posible, conviene lijar y dar una capa de barniz transparente después del curado.',
+    specs: [
+      ['Marca', 'SUNLU'],
+      ['SKU', 'LT-RES-TRA-01'],
+      ['Longitud de onda', '405nm'],
+      ['Contenido', '1000g'],
+      ['Acabado', 'Translúcido, apto para teñir'],
+      ['Almacenamiento', '15°C – 35°C · lugar seco, ventilado y sin luz directa'],
+      ['Precaución', 'Mantener fuera del alcance de los niños'],
+      ['Uso recomendado', 'Impresoras de resina (LCD/DLP)']
+    ],
+    mainImage: 'assets/img/products/shared/principal-resina.jpg',
+    /* Sin foto propia todavía -> assets/img/products/resina/transparente.jpg */
+    images: [
+      'assets/img/products/shared/principal-resina.jpg'
     ]
   },
 

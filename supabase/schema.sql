@@ -453,12 +453,42 @@ insert into public.product_stock (product_id, variant_name, quantity) values
   ('sunlu-pla-1kg', 'Azul Cielo', 10),
   ('sunlu-pla-1kg', 'Verde Oliva', 10),
   ('sunlu-pla-1kg', 'Rojo Cereza', 10),
+  ('sunlu-pla-1kg', 'Gris', 10),
+  ('sunlu-pla-1kg', 'Blanco Matte', 10),
+  ('sunlu-pla-1kg', 'Verde', 10),
+  ('sunlu-pla-1kg', 'Café', 10),
+  ('sunlu-pla-1kg', 'Purpura Lavanda', 10),
+  -- SUNLU PLA 250g (colores)
+  ('sunlu-pla-250g', 'Negro', 10),
+  ('sunlu-pla-250g', 'Blanco', 10),
+  ('sunlu-pla-250g', 'Gris', 10),
+  ('sunlu-pla-250g', 'Transparente', 10),
+  ('sunlu-pla-250g', 'Azul Klein', 10),
+  ('sunlu-pla-250g', 'Rojo', 10),
+  ('sunlu-pla-250g', 'Naranja Soleado', 10),
+  ('sunlu-pla-250g', 'Verde', 10),
   -- SUNLU PETG 1kg (colores)
   ('sunlu-petg-1kg', 'Blanco', 10),
   ('sunlu-petg-1kg', 'Marrón Castaño', 10),
+  ('sunlu-petg-1kg', 'Negro', 10),
+  -- SUNLU ABS 1kg (colores)
+  ('sunlu-abs-1kg', 'Blanco', 10),
+  -- SUNLU TPU 90A 1kg (colores)
+  ('sunlu-tpu-1kg', 'Negro', 10),
+  -- SUNLU SILK PLA+ 1kg (colores)
+  ('sunlu-silk-pla-1kg', 'Dorado', 10),
+  ('sunlu-silk-pla-1kg', 'Verde', 10),
+  ('sunlu-silk-pla-1kg', 'Rojo', 10),
+  -- PLA Especiales (sin variantes)
+  ('sunlu-pla-wood-1kg', '', 10),
+  ('sunlu-pla-transparente-1kg', '', 10),
+  ('sunlu-pla-glow-1kg', '', 10),
+  ('sunlu-pla-galaxia-1kg', '', 10),
   -- Resina estándar SUNLU (colores)
   ('sunlu-resina-estandar-1kg', 'Negro', 10),
   ('sunlu-resina-estandar-1kg', 'Blanco', 10),
+  -- Resina transparente SUNLU (sin variantes)
+  ('sunlu-resina-transparente-1kg', '', 10),
   -- Imanes de neodimio (tamaños)
   ('imanes-neodimio', '3×1mm', 10),
   ('imanes-neodimio', '3×2mm', 10),

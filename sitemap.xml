@@ -71,12 +71,57 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://lunatech3dcr.com/producto.html?id=sunlu-pla-250g</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://lunatech3dcr.com/producto.html?id=sunlu-petg-1kg</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://lunatech3dcr.com/producto.html?id=sunlu-abs-1kg</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://lunatech3dcr.com/producto.html?id=sunlu-tpu-1kg</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://lunatech3dcr.com/producto.html?id=sunlu-silk-pla-1kg</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://lunatech3dcr.com/producto.html?id=sunlu-pla-wood-1kg</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://lunatech3dcr.com/producto.html?id=sunlu-pla-transparente-1kg</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://lunatech3dcr.com/producto.html?id=sunlu-pla-glow-1kg</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://lunatech3dcr.com/producto.html?id=sunlu-pla-galaxia-1kg</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://lunatech3dcr.com/producto.html?id=sunlu-resina-estandar-1kg</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://lunatech3dcr.com/producto.html?id=sunlu-resina-transparente-1kg</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
