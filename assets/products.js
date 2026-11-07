@@ -78,21 +78,12 @@ const PRODUCTS = {
       { name: 'Azul Cielo',      hex: '#6EC1E4', available: true,  price: 10900, image: 'assets/img/products/pla/azul-cielo.jpg' },
       { name: 'Verde Oliva',     hex: '#6B8E23', available: true,  price: 11500, image: 'assets/img/products/pla/verde-oliva.jpg' },
       { name: 'Rojo Cereza',     hex: '#9E1B32', available: true,  price: 11500, image: 'assets/img/products/pla/rojo-cereza.jpg' },
-      /* ---- COLORES NUEVOS (inventario de noviembre 2025) ----
-         Todavía sin foto propia: apuntan al render genérico de
-         filamento para no romper la galería de la ficha, que exige
-         que TODAS las variantes tengan "image" (ver producto.js).
-         Al recibir las fotos, reemplazar por la ruta indicada: */
-      // -> assets/img/products/pla/gris.jpg
-      { name: 'Gris',            hex: '#8A8F98', available: true,  price: 10900, image: 'assets/img/products/shared/principal-filamento.jpg' },
-      // -> assets/img/products/pla/blanco-matte.jpg
-      { name: 'Blanco Matte',    hex: '#F2F2EF', available: true,  price: 10900, image: 'assets/img/products/shared/principal-filamento.jpg' },
-      // -> assets/img/products/pla/verde.jpg
-      { name: 'Verde',           hex: '#2E9E4F', available: true,  price: 12500, image: 'assets/img/products/shared/principal-filamento.jpg' },
-      // -> assets/img/products/pla/cafe.jpg
-      { name: 'Café',            hex: '#6F4A2F', available: true,  price: 12500, image: 'assets/img/products/shared/principal-filamento.jpg' },
-      // -> assets/img/products/pla/purpura-lavanda.jpg
-      { name: 'Purpura Lavanda', hex: '#9B7FD4', available: true,  price: 12500, image: 'assets/img/products/shared/principal-filamento.jpg' }
+      /* ---- COLORES NUEVOS (inventario de noviembre 2025) ---- */
+      { name: 'Gris',            hex: '#8A8F98', available: true,  price: 10900, image: 'assets/img/products/pla/gris.jpg' },
+      { name: 'Blanco Matte',    hex: '#F2F2EF', available: true,  price: 10900, image: 'assets/img/products/pla/blanco-matte.jpg' },
+      { name: 'Verde',           hex: '#52B043', available: true,  price: 12500, image: 'assets/img/products/pla/verde.jpg' },
+      { name: 'Café',            hex: '#8B4B2B', available: true,  price: 12500, image: 'assets/img/products/pla/cafe.jpg' },
+      { name: 'Purpura Lavanda', hex: '#9C72D6', available: true,  price: 12500, image: 'assets/img/products/pla/purpura-lavanda.jpg' }
     ]
   },
 
@@ -122,25 +113,15 @@ const PRODUCTS = {
     variantLabel: 'Color',
     variantType: 'color',
     mainImage: 'assets/img/products/shared/principal-filamento.jpg',
-    /* Sin fotos propias todavía — ver nota de rutas en el PLA de 1kg.
-       Rutas definitivas: assets/img/products/pla-250g/<color>.jpg */
     variants: [
-      // -> assets/img/products/pla-250g/negro.jpg
-      { name: 'Negro',           hex: '#1A1A1A', available: true, price: 4500, image: 'assets/img/products/shared/principal-filamento.jpg' },
-      // -> assets/img/products/pla-250g/blanco.jpg
-      { name: 'Blanco',          hex: '#F5F5F5', available: true, price: 4500, image: 'assets/img/products/shared/principal-filamento.jpg' },
-      // -> assets/img/products/pla-250g/gris.jpg
-      { name: 'Gris',            hex: '#8A8F98', available: true, price: 4500, image: 'assets/img/products/shared/principal-filamento.jpg' },
-      // -> assets/img/products/pla-250g/transparente.jpg
-      { name: 'Transparente',    hex: '#DCE8EE', available: true, price: 4500, image: 'assets/img/products/shared/principal-filamento.jpg' },
-      // -> assets/img/products/pla-250g/azul-klein.jpg
-      { name: 'Azul Klein',      hex: '#002FA7', available: true, price: 4500, image: 'assets/img/products/shared/principal-filamento.jpg' },
-      // -> assets/img/products/pla-250g/rojo.jpg
-      { name: 'Rojo',            hex: '#C62828', available: true, price: 4500, image: 'assets/img/products/shared/principal-filamento.jpg' },
-      // -> assets/img/products/pla-250g/naranja-soleado.jpg
-      { name: 'Naranja Soleado', hex: '#FF8C1A', available: true, price: 4500, image: 'assets/img/products/shared/principal-filamento.jpg' },
-      // -> assets/img/products/pla-250g/verde.jpg
-      { name: 'Verde',           hex: '#2E9E4F', available: true, price: 4500, image: 'assets/img/products/shared/principal-filamento.jpg' }
+      { name: 'Negro',           hex: '#1A1A1A', available: true, price: 4500, image: 'assets/img/products/pla-250g/negro.jpg' },
+      { name: 'Blanco',          hex: '#F5F5F5', available: true, price: 4500, image: 'assets/img/products/pla-250g/blanco.jpg' },
+      { name: 'Gris',            hex: '#B2B5AC', available: true, price: 4500, image: 'assets/img/products/pla-250g/gris.jpg' },
+      { name: 'Transparente',    hex: '#E8DCC4', available: true, price: 4500, image: 'assets/img/products/pla-250g/transparente.jpg' },
+      { name: 'Azul Klein',      hex: '#2437C9', available: true, price: 4500, image: 'assets/img/products/pla-250g/azul-klein.jpg' },
+      { name: 'Rojo',            hex: '#E23A33', available: true, price: 4500, image: 'assets/img/products/pla-250g/rojo.jpg' },
+      { name: 'Naranja Soleado', hex: '#F07820', available: true, price: 4500, image: 'assets/img/products/pla-250g/naranja-soleado.jpg' },
+      { name: 'Verde',           hex: '#41C64A', available: true, price: 4500, image: 'assets/img/products/pla-250g/verde.jpg' }
     ]
   },
 
@@ -175,9 +156,7 @@ const PRODUCTS = {
     variants: [
       { name: 'Blanco',         hex: '#F5F5F5', available: true, price: 10500, image: 'assets/img/products/petg/blanco.jpg' },
       { name: 'Marrón Castaño', hex: '#6B4226', available: true, price: 10500, image: 'assets/img/products/petg/marron-castano.jpg' },
-      /* Color nuevo — sin foto propia todavía.
-         -> assets/img/products/petg/negro.jpg */
-      { name: 'Negro',          hex: '#1A1A1A', available: true, price: 10900, image: 'assets/img/products/shared/principal-filamento.jpg' }
+      { name: 'Negro',          hex: '#1A1A1A', available: true, price: 10900, image: 'assets/img/products/petg/negro.jpg' }
     ]
   },
 
@@ -210,9 +189,8 @@ const PRODUCTS = {
     variantLabel: 'Color',
     variantType: 'color',
     mainImage: 'assets/img/products/shared/principal-filamento.jpg',
-    /* Sin foto propia todavía -> assets/img/products/abs/blanco.jpg */
     variants: [
-      { name: 'Blanco', hex: '#F5F5F5', available: true, price: 10900, image: 'assets/img/products/shared/principal-filamento.jpg' }
+      { name: 'Blanco', hex: '#F3F0EC', available: true, price: 10900, image: 'assets/img/products/abs/blanco.jpg' }
     ]
   },
 
@@ -246,9 +224,8 @@ const PRODUCTS = {
     variantLabel: 'Color',
     variantType: 'color',
     mainImage: 'assets/img/products/shared/principal-filamento.jpg',
-    /* Sin foto propia todavía -> assets/img/products/tpu/negro.jpg */
     variants: [
-      { name: 'Negro', hex: '#1A1A1A', available: true, price: 15900, image: 'assets/img/products/shared/principal-filamento.jpg' }
+      { name: 'Negro', hex: '#1A1A1A', available: true, price: 15900, image: 'assets/img/products/tpu/negro.jpg' }
     ]
   },
 
@@ -280,14 +257,10 @@ const PRODUCTS = {
     variantLabel: 'Color',
     variantType: 'color',
     mainImage: 'assets/img/products/shared/principal-filamento.jpg',
-    /* Sin fotos propias todavía -> assets/img/products/silk/<color>.jpg */
     variants: [
-      // -> assets/img/products/silk/dorado.jpg
-      { name: 'Dorado', hex: '#D4AF37', available: true, price: 12900, image: 'assets/img/products/shared/principal-filamento.jpg' },
-      // -> assets/img/products/silk/verde.jpg
-      { name: 'Verde',  hex: '#2BA84A', available: true, price: 11900, image: 'assets/img/products/shared/principal-filamento.jpg' },
-      // -> assets/img/products/silk/rojo.jpg
-      { name: 'Rojo',   hex: '#C62828', available: true, price: 11900, image: 'assets/img/products/shared/principal-filamento.jpg' }
+      { name: 'Dorado', hex: '#E0B23C', available: true, price: 12900, image: 'assets/img/products/silk/dorado.jpg' },
+      { name: 'Verde',  hex: '#35BCA0', available: true, price: 11900, image: 'assets/img/products/silk/verde.jpg' },
+      { name: 'Rojo',   hex: '#E8544C', available: true, price: 11900, image: 'assets/img/products/silk/rojo.jpg' }
     ]
   },
 
@@ -319,9 +292,8 @@ const PRODUCTS = {
       ['Peso neto', '1kg por rollo']
     ],
     mainImage: 'assets/img/products/shared/principal-filamento.jpg',
-    /* Sin foto propia todavía -> assets/img/products/pla-especiales/wood.jpg */
     images: [
-      'assets/img/products/shared/principal-filamento.jpg'
+      'assets/img/products/pla-especiales/wood.jpg'
     ]
   },
 
@@ -349,9 +321,8 @@ const PRODUCTS = {
       ['Peso neto', '1kg por rollo']
     ],
     mainImage: 'assets/img/products/shared/principal-filamento.jpg',
-    /* Sin foto propia todavía -> assets/img/products/pla-especiales/transparente.jpg */
     images: [
-      'assets/img/products/shared/principal-filamento.jpg'
+      'assets/img/products/pla-especiales/transparente.jpg'
     ]
   },
 
@@ -381,9 +352,8 @@ const PRODUCTS = {
       ['Peso neto', '1kg por rollo']
     ],
     mainImage: 'assets/img/products/shared/principal-filamento.jpg',
-    /* Sin foto propia todavía -> assets/img/products/pla-especiales/glow.jpg */
     images: [
-      'assets/img/products/shared/principal-filamento.jpg'
+      'assets/img/products/pla-especiales/glow.jpg'
     ]
   },
 
@@ -413,9 +383,8 @@ const PRODUCTS = {
       ['Peso neto', '1kg por rollo']
     ],
     mainImage: 'assets/img/products/shared/principal-filamento.jpg',
-    /* Sin foto propia todavía -> assets/img/products/pla-especiales/galaxia.jpg */
     images: [
-      'assets/img/products/shared/principal-filamento.jpg'
+      'assets/img/products/pla-especiales/galaxia.jpg'
     ]
   },
 
@@ -478,9 +447,8 @@ const PRODUCTS = {
       ['Uso recomendado', 'Impresoras de resina (LCD/DLP)']
     ],
     mainImage: 'assets/img/products/shared/principal-resina.jpg',
-    /* Sin foto propia todavía -> assets/img/products/resina/transparente.jpg */
     images: [
-      'assets/img/products/shared/principal-resina.jpg'
+      'assets/img/products/resina/transparente.jpg'
     ]
   },
 
